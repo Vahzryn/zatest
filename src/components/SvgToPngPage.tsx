@@ -235,7 +235,7 @@ export function SvgToPngPage({ seoData, onNavigate }: SvgToPngPageProps) {
                     <button
                       key={scale}
                       onClick={() => setTargetScale(scale)}
-                      className={`px-4 py-2 text-xs font-bold rounded-lg border transition-smooth cursor-pointer ${
+                      className={`px-2.5 sm:px-4 py-1.5 sm:py-2 text-xs font-bold rounded-lg border transition-smooth cursor-pointer ${
                         targetScale === scale
                           ? 'bg-indigo-100 border-indigo-300 text-indigo-700 dark:bg-indigo-950/60 dark:border-indigo-700 dark:text-indigo-300'
                           : 'bg-white border-zinc-200 text-zinc-600 hover:bg-zinc-50 dark:bg-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800'

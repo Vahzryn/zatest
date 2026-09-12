@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { UploadCloud, CheckCircle, AlertCircle, ExternalLink, Loader2, Download, Settings, RefreshCw, Shield, Sparkles } from 'lucide-react';
+import { UploadCloud, CheckCircle, AlertCircle, ExternalLink, Loader2, Download, Settings, Shield } from 'lucide-react';
 import { convertSingleImage } from '../../lib/conversionOrchestrator';
 import { ConversionSettings, TargetFormat } from '../../types';
 
@@ -79,7 +79,7 @@ export default function EmbedWidget() {
     
     // Check reasonable size safety limit (50MB)
     if (selectedFile.size > 50 * 1024 * 1024) {
-      setError('File size exceeds 50MB. Please use the full Zapixal app for large batch files.');
+      setError('File size exceeds 50MB. Please use the full Zapixal app for large files.');
       return;
     }
 
@@ -155,24 +155,24 @@ export default function EmbedWidget() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-transparent p-2 sm:p-3 flex flex-col font-sans text-zinc-900 dark:text-white box-border" style={{ background: 'transparent' }}>
+    <div className="min-h-screen w-full bg-transparent p-2 sm:p-3 flex flex-col justify-center items-center font-sans text-zinc-900 dark:text-white box-border overflow-x-hidden" style={{ background: 'transparent' }}>
       <style>{`
         body { background: transparent !important; }
       `}</style>
       
-      <div className="flex-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-sm flex flex-col overflow-hidden max-w-[380px] mx-auto w-full box-border">
+      <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-sm flex flex-col overflow-hidden max-w-[420px] mx-auto w-full box-border min-w-0 transition-all">
         {/* Widget Header */}
-        <div className="px-3.5 py-3 border-b border-zinc-100 dark:border-zinc-800 flex justify-between items-center bg-zinc-50/80 dark:bg-zinc-800/50 backdrop-blur-sm">
-          <div className="flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-indigo-600 animate-pulse" />
-            <h3 className="font-bold text-xs uppercase tracking-wider text-zinc-800 dark:text-zinc-200">
+        <div className="px-3 sm:px-3.5 py-2.5 sm:py-3 border-b border-zinc-100 dark:border-zinc-800 flex justify-between items-center bg-zinc-50/80 dark:bg-zinc-800/50 backdrop-blur-sm min-w-0">
+          <div className="flex items-center gap-1.5 min-w-0">
+            <div className="w-2 h-2 rounded-full bg-indigo-600 animate-pulse shrink-0" />
+            <h3 className="font-bold text-xs uppercase tracking-wider text-zinc-800 dark:text-zinc-200 truncate">
               Zapixal Embed
             </h3>
-            <span className="text-[9px] px-1.5 py-0.5 rounded bg-zinc-200/70 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 font-mono">
+            <span className="text-[9px] px-1.5 py-0.5 rounded bg-zinc-200/70 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 font-mono shrink-0">
               WASM
             </span>
           </div>
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1 shrink-0">
             <button
               type="button"
               onClick={() => setShowSettings(!showSettings)}
@@ -189,22 +189,23 @@ export default function EmbedWidget() {
               href="https://zapixal.com" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-0.5 ml-1"
+              className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-0.5 ml-0.5 px-1.5 py-0.5 rounded hover:bg-indigo-50 dark:hover:bg-indigo-950/40"
+              title="Open full Zapixal application"
             >
-              Full App <ExternalLink className="w-2.5 h-2.5" />
+              <span className="hidden min-[330px]:inline">Full App</span> <ExternalLink className="w-3 h-3" />
             </a>
           </div>
         </div>
 
         {/* Quick Settings Drawer */}
         {showSettings && (
-          <div className="p-3 bg-zinc-50 dark:bg-zinc-800/80 border-b border-zinc-200 dark:border-zinc-700 text-xs space-y-2.5 animate-subtle-in">
-            <div className="flex justify-between items-center">
-              <label className="font-semibold text-zinc-600 dark:text-zinc-300 text-[11px]">Target Format:</label>
+          <div className="p-3 bg-zinc-50 dark:bg-zinc-800/80 border-b border-zinc-200 dark:border-zinc-700 text-xs space-y-2.5 animate-subtle-in min-w-0">
+            <div className="flex justify-between items-center gap-2">
+              <label className="font-semibold text-zinc-600 dark:text-zinc-300 text-[11px] shrink-0">Target Format:</label>
               <select
                 value={targetFormat}
                 onChange={(e) => setTargetFormat(e.target.value as TargetFormat)}
-                className="bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-600 rounded-lg px-2 py-1 text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                className="bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-600 rounded-lg px-2 py-1 text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-indigo-500 min-w-0"
               >
                 <option value="webp">WebP (Smallest)</option>
                 <option value="jpg">JPEG (Universal)</option>
@@ -232,7 +233,7 @@ export default function EmbedWidget() {
         )}
 
         {/* Main Interactive Zone */}
-        <div className="p-4 flex-1 flex flex-col justify-center">
+        <div className="p-3 sm:p-4 flex-1 flex flex-col justify-center min-w-0">
           {!file && !isProcessing && !result && (
             <label
               onDragOver={(e) => e.preventDefault()}
@@ -246,15 +247,15 @@ export default function EmbedWidget() {
                   document.getElementById('zapixal-widget-input')?.click();
                 }
               }}
-              className="group flex flex-col items-center justify-center p-6 border-2 border-dashed border-zinc-200 dark:border-zinc-700/80 rounded-2xl hover:border-indigo-500 dark:hover:border-indigo-400 hover:bg-indigo-50/30 dark:hover:bg-indigo-950/20 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer transition-smooth text-center"
+              className="group flex flex-col items-center justify-center p-5 sm:p-6 border-2 border-dashed border-zinc-200 dark:border-zinc-700/80 rounded-2xl hover:border-indigo-500 dark:hover:border-indigo-400 hover:bg-indigo-50/30 dark:hover:bg-indigo-950/20 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer transition-smooth text-center min-w-0"
             >
-              <div className="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-2 group-hover:scale-105 transition-smooth">
-                <UploadCloud className="w-6 h-6" />
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-indigo-50 dark:bg-indigo-950/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-2 group-hover:scale-105 transition-smooth shrink-0">
+                <UploadCloud className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
-              <span className="text-xs font-bold text-zinc-900 dark:text-white mb-0.5">
+              <span className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white mb-0.5">
                 Drop image to compress
               </span>
-              <span className="text-[10px] text-zinc-500 font-medium">
+              <span className="text-[10px] sm:text-[11px] text-zinc-500 font-medium px-1 leading-tight">
                 Supports JPEG, PNG, WebP, HEIC, AVIF
               </span>
               <input 
@@ -268,11 +269,11 @@ export default function EmbedWidget() {
           )}
 
           {isProcessing && (
-            <div className="flex flex-col items-center justify-center py-6 text-center animate-subtle-in" role="status" aria-live="polite">
+            <div className="flex flex-col items-center justify-center py-6 text-center animate-subtle-in min-w-0" role="status" aria-live="polite">
               <Loader2 className="w-8 h-8 text-indigo-600 dark:text-indigo-400 animate-spin mb-2" />
-              <div className="text-xs font-bold text-zinc-900 dark:text-white">Compressing Locally...</div>
-              <div className="text-[10px] text-zinc-500 mt-0.5">WebAssembly RAM buffer processing</div>
-              <div className="w-full bg-zinc-100 dark:bg-zinc-800 h-1.5 rounded-full mt-3.5 overflow-hidden">
+              <div className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white">Compressing Locally...</div>
+              <div className="text-[10px] sm:text-[11px] text-zinc-500 mt-0.5">WebAssembly RAM buffer processing</div>
+              <div className="w-full max-w-xs bg-zinc-100 dark:bg-zinc-800 h-1.5 rounded-full mt-3.5 overflow-hidden">
                 <div 
                   className="bg-indigo-600 h-full transition-all duration-300 ease-out"
                   style={{ width: `${Math.max(20, progress)}%` }}
@@ -282,9 +283,9 @@ export default function EmbedWidget() {
           )}
 
           {error && (
-            <div className="flex flex-col items-center justify-center py-4 text-center animate-subtle-in">
+            <div className="flex flex-col items-center justify-center py-4 text-center animate-subtle-in min-w-0">
               <AlertCircle className="w-8 h-8 text-red-500 mb-2" />
-              <div className="text-xs font-bold text-red-600 dark:text-red-400 mb-1">Processing Error</div>
+              <div className="text-xs sm:text-sm font-bold text-red-600 dark:text-red-400 mb-1">Processing Error</div>
               <div className="text-[11px] text-zinc-600 dark:text-zinc-400 mb-3 px-2 leading-relaxed">{error}</div>
               <button 
                 type="button"
@@ -297,29 +298,29 @@ export default function EmbedWidget() {
           )}
 
           {result && !isProcessing && (
-            <div className="flex flex-col items-center justify-center py-1 text-center animate-subtle-in">
-              <div className="w-10 h-10 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center mb-2 border border-emerald-200 dark:border-emerald-800/40">
-                <CheckCircle className="w-5 h-5" />
+            <div className="flex flex-col items-center justify-center py-1 text-center animate-subtle-in min-w-0">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center mb-1.5 border border-emerald-200 dark:border-emerald-800/40 shrink-0">
+                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
-              <div className="text-xs font-bold truncate w-full px-2 mb-0.5 text-zinc-900 dark:text-white" title={result.name}>
+              <div className="text-xs sm:text-sm font-bold truncate w-full px-2 mb-0.5 text-zinc-900 dark:text-white" title={result.name}>
                 {result.name}
               </div>
               {result.width && result.height && (
                 <div className="text-[10px] text-zinc-500 font-mono mb-2">{result.width} × {result.height} px</div>
               )}
 
-              <div className="grid grid-cols-3 gap-1.5 w-full mb-3 bg-zinc-50 dark:bg-zinc-800/60 p-2.5 rounded-xl text-[11px] border border-zinc-200/70 dark:border-zinc-700/50">
-                <div>
-                  <span className="block text-[9px] uppercase text-zinc-400 font-bold">Original</span>
-                  <span className="font-mono text-zinc-500">{(result.originalSize / 1024).toFixed(1)} KB</span>
+              <div className="grid grid-cols-3 gap-1.5 w-full mb-3 bg-zinc-50 dark:bg-zinc-800/60 p-2 sm:p-2.5 rounded-xl text-[10px] sm:text-[11px] border border-zinc-200/70 dark:border-zinc-700/50">
+                <div className="min-w-0">
+                  <span className="block text-[9px] uppercase text-zinc-400 font-bold truncate">Original</span>
+                  <span className="font-mono text-zinc-500 truncate block">{(result.originalSize / 1024).toFixed(1)} KB</span>
                 </div>
-                <div>
-                  <span className="block text-[9px] uppercase text-zinc-400 font-bold">Result</span>
-                  <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400">{(result.blob.size / 1024).toFixed(1)} KB</span>
+                <div className="min-w-0">
+                  <span className="block text-[9px] uppercase text-zinc-400 font-bold truncate">Result</span>
+                  <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400 truncate block">{(result.blob.size / 1024).toFixed(1)} KB</span>
                 </div>
-                <div>
-                  <span className="block text-[9px] uppercase text-zinc-400 font-bold">Saved</span>
-                  <span className="font-mono font-bold text-indigo-600 dark:text-indigo-400">
+                <div className="min-w-0">
+                  <span className="block text-[9px] uppercase text-zinc-400 font-bold truncate">Saved</span>
+                  <span className="font-mono font-bold text-indigo-600 dark:text-indigo-400 truncate block">
                     {Math.max(0, ((1 - (result.blob.size / result.originalSize)) * 100)).toFixed(0)}%
                   </span>
                 </div>
@@ -341,6 +342,19 @@ export default function EmbedWidget() {
                   <Download className="w-3.5 h-3.5" /> Download
                 </a>
               </div>
+
+              {/* Clean, subtle one-line guidance for batch processing */}
+              <p className="mt-2.5 text-[11px] text-zinc-500 dark:text-zinc-400 text-center">
+                Need batch processing?{' '}
+                <a
+                  href="https://zapixal.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-indigo-600 dark:text-indigo-400 hover:underline"
+                >
+                  Visit Zapixal &rarr;
+                </a>
+              </p>
             </div>
           )}
         </div>
@@ -354,3 +368,5 @@ export default function EmbedWidget() {
     </div>
   );
 }
+
+

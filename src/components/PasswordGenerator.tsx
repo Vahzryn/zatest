@@ -77,35 +77,35 @@ export function PasswordGenerator() {
 
   return (
     <div className="max-w-3xl mx-auto px-2 sm:px-4 py-2 sm:py-4 space-y-6 animate-in fade-in duration-500">
-      <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xl overflow-hidden p-6 sm:p-8 space-y-8">
+      <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xl overflow-hidden p-4 sm:p-8 space-y-6 sm:space-y-8">
         
         <div className="text-center space-y-2">
           <div className="mx-auto w-12 h-12 bg-indigo-100 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 rounded-2xl flex items-center justify-center mb-4">
             <KeyRound className="w-6 h-6" />
           </div>
-          <h2 className="text-2xl font-black text-zinc-900 dark:text-white">Secure Password Generator</h2>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 max-w-lg mx-auto">
+          <h2 className="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white">Secure Password Generator</h2>
+          <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 max-w-lg mx-auto">
             Generate strong, random passwords using cryptographically secure client-side APIs.
           </p>
         </div>
 
         <div className="space-y-4">
           <div className="relative group">
-            <div className="w-full min-h-[80px] p-4 pr-32 rounded-2xl border-2 border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 flex items-center break-all font-mono text-xl sm:text-2xl text-zinc-800 dark:text-zinc-100 transition-colors">
+            <div className="w-full min-h-[70px] sm:min-h-[80px] p-3.5 sm:p-4 pr-24 sm:pr-32 rounded-2xl border-2 border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 flex items-center break-all font-mono text-lg sm:text-2xl text-zinc-800 dark:text-zinc-100 transition-colors">
               {password || <span className="text-zinc-400">Select options...</span>}
             </div>
             
-            <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
+            <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1.5 sm:gap-2">
               <button
                 onClick={generatePassword}
                 className="p-2 text-zinc-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer bg-white dark:bg-zinc-800 rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-700"
                 title="Generate New Password"
               >
-                <RefreshCw className="w-5 h-5" />
+                <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
               <button
                 onClick={handleCopy}
-                className={`flex items-center gap-2 px-4 py-2 text-sm font-bold text-white rounded-lg shadow-sm transition-smooth cursor-pointer active:scale-95 ${
+                className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 text-xs sm:text-sm font-bold text-white rounded-lg shadow-sm transition-smooth cursor-pointer active:scale-95 ${
                   isCopied ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-indigo-600 hover:bg-indigo-700'
                 }`}
               >

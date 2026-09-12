@@ -134,11 +134,11 @@ export const RegexTesterPage: React.FC<RegexTesterPageProps> = ({ seoData, onNav
   return (
     <div className="w-full max-w-6xl mx-auto px-2 sm:px-4 py-2 sm:py-4 flex flex-col gap-6" id="regex-tester-container">
       {/* Quick Actions Toolbar */}
-      <div className="flex items-center justify-between gap-3 p-3 sm:p-4 bg-white dark:bg-[#1e1f20] border border-zinc-200/80 dark:border-zinc-800 rounded-2xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 sm:p-4 bg-white dark:bg-[#1e1f20] border border-zinc-200/80 dark:border-zinc-800 rounded-2xl">
         <span className="text-xs sm:text-sm font-bold text-zinc-800 dark:text-zinc-200">
           JavaScript RegExp Tester & Capture Inspector
         </span>
-        <div className="flex items-center gap-2 flex-wrap shrink-0">
+        <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={() => setShowPresetsModal(true)}
             className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 rounded-lg transition-colors cursor-pointer"
@@ -384,10 +384,10 @@ export const RegexTesterPage: React.FC<RegexTesterPageProps> = ({ seoData, onNav
       )}
 
       {/* MAIN WORKSPACE TABS */}
-      <div className="flex items-center gap-1.5 border-b border-zinc-200 dark:border-zinc-800 pb-2 overflow-x-auto">
+      <div className="flex items-center gap-1.5 border-b border-zinc-200 dark:border-zinc-800 pb-2 overflow-x-auto no-scrollbar">
         <button
           onClick={() => setActiveTab('highlighter')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
+          className={`flex items-center gap-2 px-3.5 sm:px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
             activeTab === 'highlighter'
               ? 'bg-indigo-600 text-white shadow-sm'
               : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
@@ -405,7 +405,7 @@ export const RegexTesterPage: React.FC<RegexTesterPageProps> = ({ seoData, onNav
 
         <button
           onClick={() => setActiveTab('matches')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
+          className={`flex items-center gap-2 px-3.5 sm:px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
             activeTab === 'matches'
               ? 'bg-indigo-600 text-white shadow-sm'
               : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
@@ -418,7 +418,7 @@ export const RegexTesterPage: React.FC<RegexTesterPageProps> = ({ seoData, onNav
 
         <button
           onClick={() => setActiveTab('replacement')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
+          className={`flex items-center gap-2 px-3.5 sm:px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
             activeTab === 'replacement'
               ? 'bg-indigo-600 text-white shadow-sm'
               : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
@@ -431,7 +431,7 @@ export const RegexTesterPage: React.FC<RegexTesterPageProps> = ({ seoData, onNav
 
         <button
           onClick={() => setActiveTab('extraction')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
+          className={`flex items-center gap-2 px-3.5 sm:px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
             activeTab === 'extraction'
               ? 'bg-indigo-600 text-white shadow-sm'
               : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
@@ -444,7 +444,7 @@ export const RegexTesterPage: React.FC<RegexTesterPageProps> = ({ seoData, onNav
 
         <button
           onClick={() => setActiveTab('diagnostics')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
+          className={`flex items-center gap-2 px-3.5 sm:px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
             activeTab === 'diagnostics'
               ? 'bg-indigo-600 text-white shadow-sm'
               : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'

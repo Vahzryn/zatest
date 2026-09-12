@@ -132,7 +132,7 @@ export function ImageToBase64Converter({ onNavigate }: ImageToBase64ConverterPro
   };
 
   return (
-    <div className="w-full bg-white dark:bg-[#292a2d] border border-zinc-200/80 dark:border-zinc-800 rounded-3xl p-4 sm:p-6 shadow-sm mb-6 animate-in fade-in duration-300">
+    <div className="w-full bg-white dark:bg-[#292a2d] border border-zinc-200/80 dark:border-zinc-800 rounded-3xl p-3.5 sm:p-6 shadow-sm mb-6 animate-in fade-in duration-300">
       <div className="flex flex-col gap-4">
         {/* Header Block */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-100 dark:border-zinc-800 pb-4">
@@ -256,10 +256,10 @@ export function ImageToBase64Converter({ onNavigate }: ImageToBase64ConverterPro
               ) : (
                 <React.Fragment>
                   {/* Panel 1: Complete HTML/CSS Data URL */}
-                  <div className="border border-zinc-200/80 dark:border-zinc-800 rounded-3xl p-4 flex flex-col gap-3 bg-zinc-50/10">
-                    <div className="flex items-center justify-between gap-3 flex-wrap">
+                  <div className="border border-zinc-200/80 dark:border-zinc-800 rounded-3xl p-3.5 sm:p-4 flex flex-col gap-3 bg-zinc-50/10">
+                    <div className="flex items-start sm:items-center justify-between gap-3 flex-col sm:flex-row">
                       <div className="flex items-center gap-2">
-                        <div className="p-1.5 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg text-indigo-600 dark:text-indigo-400">
+                        <div className="p-1.5 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg text-indigo-600 dark:text-indigo-400 shrink-0">
                           <FileImage className="w-4 h-4" />
                         </div>
                         <div>
@@ -270,7 +270,7 @@ export function ImageToBase64Converter({ onNavigate }: ImageToBase64ConverterPro
                       
                       <button
                         onClick={() => copyToClipboard(dataUrl, 'complete')}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-xl shadow-sm transition-all cursor-pointer ${
+                        className={`w-full sm:w-auto justify-center flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-xl shadow-sm transition-all cursor-pointer shrink-0 ${
                           copiedType === 'complete'
                             ? 'bg-green-600 text-white hover:bg-green-700'
                             : 'bg-indigo-600 text-white hover:bg-indigo-700'
@@ -300,10 +300,10 @@ export function ImageToBase64Converter({ onNavigate }: ImageToBase64ConverterPro
                   </div>
 
                   {/* Panel 2: Raw Base64 Payload */}
-                  <div className="border border-zinc-200/80 dark:border-zinc-800 rounded-3xl p-4 flex flex-col gap-3 bg-zinc-50/10">
-                    <div className="flex items-center justify-between gap-3 flex-wrap">
+                  <div className="border border-zinc-200/80 dark:border-zinc-800 rounded-3xl p-3.5 sm:p-4 flex flex-col gap-3 bg-zinc-50/10">
+                    <div className="flex items-start sm:items-center justify-between gap-3 flex-col sm:flex-row">
                       <div className="flex items-center gap-2">
-                        <div className="p-1.5 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg text-indigo-600 dark:text-indigo-400">
+                        <div className="p-1.5 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg text-indigo-600 dark:text-indigo-400 shrink-0">
                           <FileCode className="w-4 h-4" />
                         </div>
                         <div>
@@ -314,7 +314,7 @@ export function ImageToBase64Converter({ onNavigate }: ImageToBase64ConverterPro
                       
                       <button
                         onClick={() => copyToClipboard(rawBase64, 'raw')}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-xl shadow-sm transition-all cursor-pointer ${
+                        className={`w-full sm:w-auto justify-center flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-xl shadow-sm transition-all cursor-pointer shrink-0 ${
                           copiedType === 'raw'
                             ? 'bg-green-600 text-white hover:bg-green-700'
                             : 'bg-indigo-600 text-white hover:bg-indigo-700'

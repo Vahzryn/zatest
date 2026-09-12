@@ -103,7 +103,7 @@ export function Base64ToImageDecoder({ onNavigate }: Base64ToImageDecoderProps) 
 
   return (
     <div className="max-w-5xl mx-auto px-2 sm:px-4 py-2 sm:py-4 space-y-8 animate-in fade-in duration-500">
-      <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xl overflow-hidden p-6 sm:p-8 space-y-6">
+      <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xl overflow-hidden p-4 sm:p-8 space-y-6">
         
         <div className="space-y-2">
           <div className="flex items-center justify-between">
@@ -148,12 +148,12 @@ export function Base64ToImageDecoder({ onNavigate }: Base64ToImageDecoderProps) 
 
         {imgSrc && dimensions && (
           <div className="space-y-6 pt-4 border-t border-zinc-100 dark:border-zinc-800">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-bold text-zinc-900 dark:text-white flex items-center gap-2">
-                <ImageIcon className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <h3 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-white flex items-center gap-2">
+                <ImageIcon className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0" />
                 Decoded Image Preview
               </h3>
-              <div className="flex items-center gap-4 text-sm">
+              <div className="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm flex-wrap">
                 <span className="font-medium text-zinc-500 dark:text-zinc-400">
                   {dimensions.width} × {dimensions.height} px
                 </span>
@@ -183,7 +183,7 @@ export function Base64ToImageDecoder({ onNavigate }: Base64ToImageDecoderProps) 
               <a
                 href={imgSrc}
                 download={`decoded-image.${mimeType.split('/')[1] || 'png'}`}
-                className="flex items-center justify-center gap-2.5 py-3 px-6 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 active:scale-[0.99] rounded-xl shadow-sm transition-smooth cursor-pointer"
+                className="w-full sm:w-auto flex items-center justify-center gap-2.5 py-3 px-6 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 active:scale-[0.99] rounded-xl shadow-sm transition-smooth cursor-pointer"
               >
                 <Download className="w-5 h-5" />
                 <span>Download Image</span>

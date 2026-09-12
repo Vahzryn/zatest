@@ -46,7 +46,7 @@ export function WordCharacterCounter() {
         <StatCard icon={<AlignLeft />} label="Lines" value={stats.lines} color="indigo" />
       </div>
 
-      <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xl overflow-hidden p-6 sm:p-8 space-y-6">
+      <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xl overflow-hidden p-4 sm:p-8 space-y-6">
         <div className="flex items-center justify-between">
           <label className="block text-sm font-bold text-zinc-900 dark:text-white flex items-center gap-2">
             <FileText className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
@@ -96,12 +96,12 @@ function StatCard({ icon, label, value, color }: { icon: React.ReactNode, label:
   };
 
   return (
-    <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200/80 dark:border-zinc-800 shadow-sm p-4 flex flex-col items-center justify-center text-center space-y-2">
-      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${colorMap[color]}`}>
-        {React.cloneElement(icon as React.ReactElement<{className?: string}>, { className: 'w-4 h-4' })}
+    <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200/80 dark:border-zinc-800 shadow-sm p-3 sm:p-4 flex flex-col items-center justify-center text-center space-y-1.5 sm:space-y-2">
+      <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center ${colorMap[color]}`}>
+        {React.cloneElement(icon as React.ReactElement<{className?: string}>, { className: 'w-3.5 h-3.5 sm:w-4 sm:h-4' })}
       </div>
       <div>
-        <div className="text-2xl font-black text-zinc-900 dark:text-white leading-none mb-1">
+        <div className="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white leading-none mb-1 truncate max-w-[120px]">
           {value.toLocaleString()}
         </div>
         <div className="text-[10px] sm:text-xs font-semibold text-zinc-500 uppercase tracking-wider">

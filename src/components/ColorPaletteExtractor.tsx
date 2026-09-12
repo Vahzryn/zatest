@@ -242,7 +242,7 @@ export function ColorPaletteExtractor({ onNavigate }: ColorPaletteExtractorProps
   };
 
   return (
-    <div className="w-full bg-white dark:bg-[#292a2d] border border-zinc-200/80 dark:border-zinc-800 rounded-3xl p-4 sm:p-6 shadow-sm mb-6 animate-in fade-in duration-300">
+    <div className="w-full bg-white dark:bg-[#292a2d] border border-zinc-200/80 dark:border-zinc-800 rounded-3xl p-3.5 sm:p-6 shadow-sm mb-6 animate-in fade-in duration-300">
       <div className="flex flex-col gap-4">
         {/* Header Block */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-100 dark:border-zinc-800 pb-4">
@@ -310,7 +310,7 @@ export function ColorPaletteExtractor({ onNavigate }: ColorPaletteExtractorProps
             
             {/* Left Side: Interactive Preview Canvas */}
             <div className="lg:col-span-6 xl:col-span-7 flex flex-col gap-4">
-              <div className="border border-zinc-150 dark:border-zinc-800/80 bg-zinc-50/20 dark:bg-zinc-800/10 p-4 rounded-3xl flex flex-col gap-3">
+              <div className="border border-zinc-150 dark:border-zinc-800/80 bg-zinc-50/20 dark:bg-zinc-800/10 p-3 sm:p-4 rounded-3xl flex flex-col gap-3">
                 <div className="flex items-center justify-between gap-3 border-b border-zinc-100 dark:border-zinc-800 pb-2">
                   <div className="flex items-center gap-1.5">
                     <Pipette className="w-3.5 h-3.5 text-indigo-500" />
@@ -377,7 +377,7 @@ export function ColorPaletteExtractor({ onNavigate }: ColorPaletteExtractorProps
             <div className="lg:col-span-6 xl:col-span-5 flex flex-col gap-5">
               
               {/* Representative Extracted Swatches */}
-              <div className="border border-zinc-200/80 dark:border-zinc-800 rounded-3xl p-4 sm:p-5 flex flex-col gap-4 bg-zinc-50/10">
+              <div className="border border-zinc-200/80 dark:border-zinc-800 rounded-3xl p-3 sm:p-5 flex flex-col gap-4 bg-zinc-50/10">
                 <div className="flex items-center gap-2 border-b border-zinc-100 dark:border-zinc-800 pb-2.5">
                   <Palette className="w-4 h-4 text-indigo-500" />
                   <h3 className="text-sm font-bold text-zinc-800 dark:text-white">Extracted Representative Palette</h3>
@@ -389,7 +389,7 @@ export function ColorPaletteExtractor({ onNavigate }: ColorPaletteExtractorProps
                     <span>Analyzing color histogram distribution...</span>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 min-[380px]:grid-cols-2 gap-2 sm:gap-3">
                     {extractedPalette.map((hex, index) => {
                       const rgb = hexToRgb(hex);
                       const isDarkText = rgb ? getLuminance(rgb.r, rgb.g, rgb.b) > 0.5 : true;
@@ -425,7 +425,7 @@ export function ColorPaletteExtractor({ onNavigate }: ColorPaletteExtractorProps
               </div>
 
               {/* Pipette Clicked / Custom Sampled Swatches */}
-              <div className="border border-zinc-200/80 dark:border-zinc-800 rounded-3xl p-4 sm:p-5 flex flex-col gap-4 bg-zinc-50/10">
+              <div className="border border-zinc-200/80 dark:border-zinc-800 rounded-3xl p-3 sm:p-5 flex flex-col gap-4 bg-zinc-50/10">
                 <div className="flex items-center justify-between gap-3 border-b border-zinc-100 dark:border-zinc-800 pb-2.5">
                   <div className="flex items-center gap-2">
                     <Pipette className="w-4 h-4 text-emerald-500" />
