@@ -150,7 +150,7 @@ export function PdfSplitterPage({ seoData, onNavigate }: PdfSplitterPageProps) {
       </div>
 
       {/* Main Workspace Card */}
-      <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xl overflow-hidden p-6 sm:p-8 space-y-6">
+      <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xl overflow-hidden p-4 sm:p-8 space-y-6">
         
         {/* State A: Success Result View */}
         {successResult ? (
@@ -179,7 +179,7 @@ export function PdfSplitterPage({ seoData, onNavigate }: PdfSplitterPageProps) {
                 <span>Download Extracted PDF</span>
               </a>
 
-              <div className="flex items-center justify-center gap-4 pt-1">
+              <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 pt-1">
                 <button
                   onClick={() => setSuccessResult(null)}
                   className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors cursor-pointer"
@@ -188,7 +188,7 @@ export function PdfSplitterPage({ seoData, onNavigate }: PdfSplitterPageProps) {
                   <span>Adjust Page Range</span>
                 </button>
 
-                <span className="text-zinc-300 dark:text-zinc-700">•</span>
+                <span className="hidden sm:inline text-zinc-300 dark:text-zinc-700">•</span>
 
                 <button
                   onClick={handleReset}
@@ -238,7 +238,7 @@ export function PdfSplitterPage({ seoData, onNavigate }: PdfSplitterPageProps) {
         ) : (
           <div className="space-y-6">
             {/* File info header */}
-            <div className="p-4 rounded-2xl bg-zinc-50 dark:bg-[#25282c] border border-zinc-200 dark:border-zinc-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="p-3 sm:p-4 rounded-2xl bg-zinc-50 dark:bg-[#25282c] border border-zinc-200 dark:border-zinc-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex items-center gap-3 min-w-0">
                 <div className="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
                   <FileText className="w-5 h-5" />

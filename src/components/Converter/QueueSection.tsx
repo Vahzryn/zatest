@@ -236,7 +236,7 @@ export const QueueSection = React.memo<QueueSectionProps>(function QueueSection(
       />
 
       <div className="flex flex-col bg-white dark:bg-zinc-900 border rounded-2xl border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-xs">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-5 py-3.5 border-b border-zinc-100 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/60">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-3.5 sm:px-5 py-3 sm:py-3.5 border-b border-zinc-100 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/60">
           <div className="flex flex-wrap items-center gap-2">
             <span className="font-bold text-zinc-900 dark:text-white text-sm">Files ({files.length})</span>
             {successCount > 0 && (
@@ -256,7 +256,7 @@ export const QueueSection = React.memo<QueueSectionProps>(function QueueSection(
             )}
           </div>
 
-          <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
             <button
               onClick={() => fileInputRef.current?.click()}
               disabled={isProcessing}
@@ -280,7 +280,7 @@ export const QueueSection = React.memo<QueueSectionProps>(function QueueSection(
         </div>
 
         {selectedFileIds.size > 0 && (
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-6 py-3 border-b border-indigo-100 dark:border-indigo-900/30 bg-indigo-50/30 dark:bg-indigo-950/20 text-sm font-bold">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-3.5 sm:px-6 py-2.5 sm:py-3 border-b border-indigo-100 dark:border-indigo-900/30 bg-indigo-50/30 dark:bg-indigo-950/20 text-sm font-bold">
             <div className="flex items-center gap-2 text-indigo-800 dark:text-indigo-300">
               <span className="inline-flex items-center justify-center w-5 h-5 text-xs rounded-full bg-indigo-600 text-white dark:bg-indigo-500 dark:text-zinc-900">
                 {selectedFileIds.size}
@@ -322,7 +322,7 @@ export const QueueSection = React.memo<QueueSectionProps>(function QueueSection(
             : ''}
         </div>
 
-        <div className="p-4">
+        <div className="p-2 sm:p-4">
           <VirtualFileList
             files={files}
             selectedFileIds={selectedFileIds}

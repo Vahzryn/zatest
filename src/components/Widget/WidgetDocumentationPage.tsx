@@ -63,7 +63,7 @@ export default function WidgetDocumentationPage({ onNavigate }: { onNavigate: (p
       <div className="grid lg:grid-cols-12 gap-8 items-start mb-16">
         {/* Left Column: Embed Configurator & Instructions */}
         <div className="lg:col-span-7 space-y-6">
-          <section className="bg-white dark:bg-zinc-900 p-6 sm:p-7 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
+          <section className="bg-white dark:bg-zinc-900 p-4 sm:p-7 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg sm:text-xl font-bold text-zinc-900 dark:text-white flex items-center gap-2">
                 <Sliders className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
@@ -156,12 +156,12 @@ export default function WidgetDocumentationPage({ onNavigate }: { onNavigate: (p
 
             {/* Code Snippet Tabs */}
             <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <div className="flex bg-zinc-100 dark:bg-zinc-800 p-1 rounded-xl">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
+                <div className="flex bg-zinc-100 dark:bg-zinc-800 p-1 rounded-xl w-full sm:w-auto">
                   <button
                     type="button"
                     onClick={() => setActiveTab('html')}
-                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-smooth ${
+                    className={`flex-1 sm:flex-none text-center px-3 py-1.5 sm:py-1 rounded-lg text-xs font-bold transition-smooth ${
                       activeTab === 'html'
                         ? 'bg-white dark:bg-zinc-700 text-indigo-600 dark:text-indigo-300 shadow-xs'
                         : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
@@ -172,7 +172,7 @@ export default function WidgetDocumentationPage({ onNavigate }: { onNavigate: (p
                   <button
                     type="button"
                     onClick={() => setActiveTab('react')}
-                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-smooth ${
+                    className={`flex-1 sm:flex-none text-center px-3 py-1.5 sm:py-1 rounded-lg text-xs font-bold transition-smooth ${
                       activeTab === 'react'
                         ? 'bg-white dark:bg-zinc-700 text-indigo-600 dark:text-indigo-300 shadow-xs'
                         : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
@@ -185,7 +185,7 @@ export default function WidgetDocumentationPage({ onNavigate }: { onNavigate: (p
                 <button 
                   type="button"
                   onClick={copyToClipboard}
-                  className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-smooth flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95"
+                  className="w-full sm:w-auto justify-center px-3 py-2 sm:py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-smooth flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95"
                   aria-label="Copy snippet to clipboard"
                 >
                   {copied ? <Check className="w-3.5 h-3.5 text-emerald-300" /> : <Copy className="w-3.5 h-3.5" />}
