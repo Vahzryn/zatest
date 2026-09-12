@@ -1,0 +1,68 @@
+import { CategoryInfo, ArticleCategory } from './types';
+
+export const ARTICLE_CATEGORIES: Record<ArticleCategory, CategoryInfo> = {
+  formats: {
+    id: 'formats',
+    slug: 'formats',
+    title: 'Image Formats & Codec Guides',
+    shortTitle: 'Formats',
+    badge: 'Formats & Codecs',
+    description: 'Technical breakdowns of HEIC, AVIF, WebP, JPEG, PNG, and SVG compression characteristics, compatibility matrixes, and codec tradeoffs.',
+    metaTitle: 'Image Format Guides & Codec Comparisons — Zapixal',
+    metaDescription: 'Deep technical guides on HEIC, AVIF, WebP, PNG, and JPG formats. Compare compression ratios, browser support, and quality preservation.',
+    iconName: 'FileImage',
+    relatedTools: [
+      { path: '/convert-heic-to-jpg-locally', label: 'Convert HEIC to JPG Locally', description: 'Transform iOS HEIC photos to JPG in browser memory.' },
+      { path: '/convert-to-avif-online-free', label: 'Convert to Next-Gen AVIF', description: 'Achieve max compression with modern AVIF codecs.' },
+      { path: '/convert-png-to-webp-lossless', label: 'Convert PNG to Lossless WebP', description: 'Reduce web graphic size while retaining full transparency.' },
+    ],
+  },
+  privacy: {
+    id: 'privacy',
+    slug: 'privacy',
+    title: 'Privacy & EXIF Metadata Security',
+    shortTitle: 'Privacy',
+    badge: 'Privacy & Security',
+    description: 'Understanding metadata leaks, EXIF headers, GPS location security, and how local WebAssembly canvas processing supports data protection.',
+    metaTitle: 'Image Metadata & In-Browser Privacy Guides — Zapixal',
+    metaDescription: 'Learn how EXIF metadata leaks personal location data and how client-side WebAssembly processing strips sensitive tags without cloud servers.',
+    iconName: 'ShieldCheck',
+    relatedTools: [
+      { path: '/strip-exif-metadata-online-private', label: 'Strip EXIF Metadata Privately', description: 'Scrub GPS, camera serials, and timestamps locally.' },
+      { path: '/blur-sensitive-image-privacy-pixelator', label: 'Blur & Pixelate Sensitive Info', description: 'Redact sensitive details on canvas before sharing.' },
+      { path: '/client-side-private-image-compressor', label: 'Private Image Compressor', description: 'Compress files in browser RAM with local in-browser processing.' },
+    ],
+  },
+  workflows: {
+    id: 'workflows',
+    slug: 'workflows',
+    title: 'Optimization & File Size Workflows',
+    shortTitle: 'Workflows',
+    badge: 'Optimization Workflows',
+    description: 'Step-by-step optimization workflows for government portals, passport applications, e-commerce catalog image scaling, and email limits.',
+    metaTitle: 'Image Optimization & KB Target Workflows — Zapixal',
+    metaDescription: 'Practical workflows for meeting strict KB file limits (50KB, 100KB, 200KB), e-commerce catalog resizing, and digital form requirements.',
+    iconName: 'Sliders',
+    relatedTools: [
+      { path: '/compress-image-to-exact-size-kb', label: 'Compress Image to Exact KB', description: 'Binary search optimization loop for strict size caps.' },
+      { path: '/crop-image-to-exact-aspect-ratio', label: 'Crop & Resize Dimensions', description: 'Scale passport photos and ID uploads for strict requirements.' },
+      { path: '/bulk-image-compressor-offline', label: 'Bulk Image Compressor', description: 'Batch process photos locally in browser memory.' },
+    ],
+  },
+  performance: {
+    id: 'performance',
+    slug: 'performance',
+    title: 'Browser Engine & WASM Architecture',
+    shortTitle: 'Performance',
+    badge: 'Engine & WASM',
+    description: 'Under the hood of WebAssembly multithreading, Web Workers, client-side memory sandboxing, and browser Canvas rendering performance.',
+    metaTitle: 'WebAssembly & In-Browser Processing Guides — Zapixal',
+    metaDescription: 'Discover how WebAssembly (WASM), Web Workers, and HTML5 Canvas enable multi-threaded image compression entirely in browser RAM.',
+    iconName: 'Cpu',
+    relatedTools: [
+      { path: '/compress-png-images-online', label: 'Lossless WASM PNG Compressor', description: 'Quantize PNG palettes using WebAssembly imagequant.' },
+      { path: '/bulk-image-compressor-offline', label: 'Bulk Local Compressor', description: 'Multi-threaded worker pool processing hundreds of files.' },
+      { path: '/convert-png-to-webp-lossless', label: 'Convert PNG to WebP Lossless', description: 'Shrink PNG file size while preserving alpha transparency.' },
+    ],
+  },
+};

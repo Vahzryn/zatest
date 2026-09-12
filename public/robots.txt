@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://zapixal.com/sitemap.xml

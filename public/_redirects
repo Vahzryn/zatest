@@ -1,0 +1,70 @@
+# Direct Canonical Redirects
+/convert/heic-to-jpg-offline /convert-heic-to-jpg-locally 301
+/compress/image-under-100kb /compress-image-to-exact-size-kb 301
+/convert/batch-heic-to-jpg-mac /convert-heic-to-jpg-locally 301
+/compress/reduce-image-size-in-kb-offline /client-side-private-image-compressor 301
+/compress/image-to-50kb-for-form /compress-image-to-exact-size-kb 301
+/compress-image-to-20kb /compress-image-to-exact-size-kb 301
+/compress-image-to-50kb /compress-image-to-exact-size-kb 301
+/compress-image-to-100kb /compress-image-to-exact-size-kb 301
+/compress-image-to-200kb /compress-image-to-exact-size-kb 301
+/compress-image-to-500kb /compress-image-to-exact-size-kb 301
+/convert-heic-to-jpg-windows /convert-heic-to-jpg-locally 301
+/convert-heic-to-jpg-mac /convert-heic-to-jpg-locally 301
+/passport-photo-compressor-50kb /crop-image-to-exact-aspect-ratio 301
+/compress-image-under-100kb-for-government-form /compress-image-to-exact-size-kb 301
+/convert-heic-to-jpg-for-upload /convert-heic-to-jpg-locally 301
+/convert-avif-to-jpg-browser-fast /convert-avif-to-jpg-converter 301
+/convert-webp-to-png-lossless-transparent /convert-webp-to-png-transparent 301
+/remove-exif-geotag-location-from-photo /strip-exif-metadata-online-private 301
+/privacy-first-image-metadata-scrubber /strip-exif-metadata-online-private 301
+
+# Parked / Alias Route Direct Redirects
+/compress-image-under-50kb-government-portal /compress-image-to-exact-size-kb 301
+/compress-image-to-100kb-online /compress-image-to-exact-size-kb 301
+/compress-image-to-200kb-online /compress-image-to-exact-size-kb 301
+/reduce-image-size-to-1mb-online /compress-image-to-exact-size-kb 301
+/compress-image-for-email-attachment-limit /compress-image-to-exact-size-kb 301
+/secure-signature-compressor-pdf /secure-document-compressor-pdf 301
+/compress-pdf-scanned-document-images /secure-document-compressor-pdf 301
+/compress-png-lossless-webassembly /compress-png-images-online 301
+/compress-screenshot-png-size-fast /compress-png-images-online 301
+/bulk-image-resizer-ecommerce-catalog /bulk-image-compressor-offline 301
+/shopify-image-optimizer-bulk-free /bulk-image-compressor-offline 301
+/etsy-image-resizer-batch-optimize /bulk-image-compressor-offline 301
+/bulk-heic-to-jpg-converter-offline /convert-heic-to-jpg-locally 301
+/passport-photo-size-reducer-kb /crop-image-to-exact-aspect-ratio 301
+/discord-avatar-compressor-pfp-size /crop-image-to-exact-aspect-ratio 301
+/social-media-banner-resizer-linkedin-twitter /crop-image-to-exact-aspect-ratio 301
+/resize-image-for-job-application-form /crop-image-to-exact-aspect-ratio 301
+/convert-hdr-heic-to-png-transparency /convert-heic-to-jpg-locally 301
+/lossless-jpeg-optimizer-exif-preserve /client-side-private-image-compressor 301
+/high-res-image-resizer-client-side /client-side-private-image-compressor 301
+/ai-image-compressor-online-private /client-side-private-image-compressor 301
+/compress-animated-gif-size-online /client-side-private-image-compressor 301
+
+/grayscale-black-and-white-photo-converter /client-side-private-image-compressor 301
+/adjust-image-brightness-contrast-gamma-canvas /client-side-private-image-compressor 301
+/add-rounded-corners-border-radius-image /client-side-private-image-compressor 301
+/split-image-grid-instagram-banner /crop-image-to-exact-aspect-ratio 301
+/convert-animated-webp-to-gif /convert-webp-to-png-transparent 301
+/convert-eps-psd-preview-to-png /convert-svg-to-png-transparent 301
+
+# Clean Search Route Aliases
+/image-compressor /client-side-private-image-compressor 301
+/compress-pdf /secure-document-compressor-pdf 301
+/color-palette-extractor /palette-color-extractor-image-hex 301
+/blur-image /blur-sensitive-image-privacy-pixelator 301
+/pixelate-image /blur-sensitive-image-privacy-pixelator 301
+/strip-exif /strip-exif-metadata-online-private 301
+/remove-exif /strip-exif-metadata-online-private 301
+/jpg-to-pdf /convert-image-to-pdf 301
+/png-to-pdf /convert-image-to-pdf 301
+/heic-to-jpg /convert-heic-to-jpg-locally 301
+/webp-to-png /convert-webp-to-png-transparent 301
+/png-to-webp /convert-png-to-webp-lossless 301
+/svg-to-png /convert-svg-to-png-transparent 301
+/avif-to-jpg /convert-avif-to-jpg-converter 301
+
+# SPA HTML5 History API Fallback
+/* /index.html 200

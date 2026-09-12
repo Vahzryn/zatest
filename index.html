@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <base href="/" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Primary Meta Tags -->
+    <title>Free Local Image Converter & Compressor | Secure Processing | Zapixal</title>
+    <meta name="title" content="Free Local Image Converter & Compressor | Secure Processing | Zapixal" />
+    <meta name="description" content="Securely convert, compress, and optimize HEIC, PNG, JPG, WebP, AVIF, and PDF files directly in your browser. Zero cloud uploads for image conversions." />
+    <meta name="author" content="Zapixal" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://zapixal.com/" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://zapixal.com/" />
+    <meta property="og:title" content="Free Client-Side Batch Image Converter & Compressor — Zapixal" />
+    <meta property="og:description" content="Securely convert, compress, and optimize images directly in your browser with zero cloud uploads." />
+    <meta property="og:image" content="https://zapixal.com/icon-512.png" />
+    <meta property="og:site_name" content="Zapixal" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://zapixal.com/" />
+    <meta name="twitter:title" content="Free Client-Side Batch Image Converter & Compressor — Zapixal" />
+    <meta name="twitter:description" content="Securely convert, compress, and optimize images directly in your browser with zero cloud uploads." />
+    <meta name="twitter:image" content="https://zapixal.com/icon-512.png" />
+    <meta name="theme-color" content="#2563eb" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    <!-- Resource Hints & Preconnects for FCP / LCP Speedup -->
+    <link rel="preload" href="/fonts/plus-jakarta-sans-7.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!-- Critical Above-the-Fold Inline CSS (Prevents CLS, Zero Render Blocking, Speedup FCP/LCP) -->
+    <style>
+      :root {
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      *, ::before, ::after {
+        box-sizing: border-box;
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #fcfcfd;
+        color: #171717;
+        min-height: 100vh;
+      }
+      html.dark body, body.dark {
+        background-color: #202124;
+        color: #e8eaed;
+      }
+      /* Pre-render Hero Skeleton & Layout Guard */
+      .sk-container {
+        width: 100%;
+        max-width: 80rem;
+        margin: 0 auto;
+        padding: 1rem 1.25rem 3rem;
+      }
+      .sk-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 0;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid rgba(229, 231, 235, 0.6);
+      }
+      .sk-logo-group {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .sk-logo-icon {
+        width: 2.25rem;
+        height: 2.25rem;
+        background: #2563eb;
+        border-radius: 0.75rem;
+      }
+      .sk-logo-text {
+        height: 1.5rem;
+        width: 6rem;
+        background: #e5e7eb;
+        border-radius: 0.375rem;
+      }
+      .sk-hero {
+        text-align: center;
+        max-width: 48rem;
+        margin: 0 auto 2.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .sk-badge {
+        height: 1.75rem;
+        width: 14rem;
+        background: #eff6ff;
+        border: 1px solid #dbeafe;
+        border-radius: 9999px;
+        margin-bottom: 1.25rem;
+      }
+      .sk-title {
+        height: 2.75rem;
+        width: 85%;
+        max-width: 36rem;
+        background: #e5e7eb;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      .sk-subtitle {
+        height: 1.25rem;
+        width: 95%;
+        max-width: 30rem;
+        background: #f3f4f6;
+        border-radius: 0.375rem;
+      }
+      .sk-dropzone {
+        width: 100%;
+        max-width: 48rem;
+        height: 18rem;
+        margin: 0 auto;
+        background: #ffffff;
+        border: 2px dashed #cbd5e1;
+        border-radius: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+      }
+      .sk-dropzone-icon {
+        width: 4rem;
+        height: 4rem;
+        background: #eff6ff;
+        border-radius: 1rem;
+        margin-bottom: 1.25rem;
+      }
+      .sk-dropzone-text {
+        height: 1.25rem;
+        width: 16rem;
+        background: #e5e7eb;
+        border-radius: 0.375rem;
+        margin-bottom: 0.75rem;
+      }
+      .sk-dropzone-sub {
+        height: 1rem;
+        width: 22rem;
+        background: #f3f4f6;
+        border-radius: 0.375rem;
+      }
+      /* Dark mode skeleton overrides */
+      html.dark .sk-logo-text, html.dark .sk-title { background: #3c4043; }
+      html.dark .sk-subtitle, html.dark .sk-dropzone-sub { background: #303134; }
+      html.dark .sk-badge { background: #1e293b; border-color: #334155; }
+      html.dark .sk-dropzone { background: #202124; border-color: #3c4043; }
+      html.dark .sk-dropzone-icon { background: #1e293b; }
+      html.dark .sk-dropzone-text { background: #3c4043; }
+      html.dark .sk-header { border-bottom-color: #3c4043; }
+      
+      @keyframes skPulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.6; }
+      }
+      .sk-animate {
+        animation: skPulse 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+    </style>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": ["SoftwareApplication", "WebApplication"],
+      "name": "Zapixal - Client-Side Batch Image Converter & Compressor",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "All (Windows, macOS, Linux, iOS, Android)",
+      "browserRequirements": "Requires Modern Web Browser with WebAssembly (WASM) and Web Workers support",
+      "license": "Proprietary",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      "featureList": [
+        "Client-Side In-Browser Image Processing",
+        "Zero Cloud Server Uploads for conversion privacy",
+        "WebAssembly (WASM) & Web Worker Multithreading",
+        "HEIC to JPG/PNG Converter",
+        "PNG to WebP/AVIF Batch Compressor",
+        "PDF Document Export & Image Merging",
+        "Adaptive Batch Image Processing"
+      ],
+      "description": "Zapixal is a free, private client-side WebAssembly batch image converter and compressor. Converts HEIC, PNG, JPG, WebP, AVIF, and PDF locally in browser memory without uploading your files."
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is Zapixal free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Zapixal is a free utility and privacy-focused. All source code executes locally inside your web browser without hidden paywalls or subscription limits."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does Zapixal convert images privately without uploading to a server?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Zapixal utilizes WebAssembly (WASM) binaries and Web Worker multi-threading to decode, convert, and compress images directly inside your browser memory. Your image files are not uploaded to our servers for conversion or compression."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is Zapixal better than single-image tools like Squoosh or cloud converters?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Unlike single-file tools like Squoosh or privacy-invading cloud converters that require slow server uploads, Zapixal processes high-volume batch files concurrently with multi-threaded WASM speed, zero queue wait times, and local data privacy."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Zapixal work completely locally?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Zapixal processes all images directly in your browser using local WebAssembly. No image files are uploaded to our servers for conversion or compression."
+          }
+        }
+      ]
+    }
+    </script>
+    
+
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to Batch Convert and Compress Images Locally",
+      "description": "Learn how to easily convert HEIC, PNG, JPG, and WebP images locally in your browser using Zapixal's client-side converter without uploading any files to a server.",
+      "totalTime": "PT1M",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Drop Images",
+          "text": "Drag and drop your images or click the upload area to select files from your device."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Select Format and Quality",
+          "text": "Choose your desired target format (JPG, PNG, WebP, etc.) and adjust the compression quality slider to balance file size and visual fidelity."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Convert & Download",
+          "text": "Click 'Convert All' and watch the multi-threaded WASM engine process your files directly in your browser. Then download them individually or as a single ZIP archive."
+        }
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://zapixal.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Image Converter",
+          "item": "https://zapixal.com"
+        }
+      ]
+    }
+    </script>
+    <!-- Favicon & Apple Touch Icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  </head>
+  <body>
+    <noscript>
+      <div style="font-family: sans-serif; padding: 2rem; text-align: center; background: #fff3cd; color: #856404; border: 1px solid #ffeeba; border-radius: 8px; margin: 2rem;">
+        <h3>JavaScript is Required</h3>
+        <p>Zapixal is a client-side application. It requires JavaScript to process images securely in your browser without uploading them to a server. Please enable JavaScript to use this tool.</p>
+      </div>
+    </noscript>
+    <div id="root">
+      <div class="sk-container">
+        <header class="sk-header">
+          <div class="sk-logo-group">
+            <div class="sk-logo-icon"></div>
+            <div class="sk-logo-text sk-animate"></div>
+          </div>
+        </header>
+        <section class="sk-hero">
+          <div class="sk-badge sk-animate"></div>
+          <div class="sk-title sk-animate"></div>
+          <div class="sk-subtitle sk-animate"></div>
+        </section>
+        <div class="sk-dropzone sk-animate">
+          <div class="sk-dropzone-icon"></div>
+          <div class="sk-dropzone-text"></div>
+          <div class="sk-dropzone-sub"></div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

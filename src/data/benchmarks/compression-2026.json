@@ -1,0 +1,1032 @@
+{
+  "testDate": "2026-08-13T13:11:00.024Z",
+  "environment": "Node.js v22 with Zapixal WASM engine (@jsquash/jpeg, @jsquash/webp, @jsquash/avif, upng-js)",
+  "researchQuestion": "How do JPEG, WebP, and AVIF compression compare across a diverse real-world image dataset?",
+  "dataset": {
+    "type": "Real-world photography & high-density desktop screenshots/graphics",
+    "totalImagesProcessed": 20,
+    "photosCount": 13,
+    "graphicsCount": 7,
+    "width": 956,
+    "height": 845,
+    "uncompressedBytes": 6872527,
+    "baselinePngBytes": 6872527,
+    "pngTimeMs": 231
+  },
+  "formatSummaries": [
+    {
+      "format": "JPEG",
+      "codec": "MozJPEG (@jsquash/jpeg)",
+      "version": "1.6.0",
+      "settings": "Quality 80",
+      "totalOutputSizeBytes": 1509729,
+      "avgReductionPct": 62.79,
+      "medianReductionPct": 78.19,
+      "avgTimeMs": 172
+    },
+    {
+      "format": "WebP",
+      "codec": "libwebp (@jsquash/webp)",
+      "version": "1.5.0",
+      "settings": "Quality 80, Method 4",
+      "totalOutputSizeBytes": 1124972,
+      "avgReductionPct": 73.68,
+      "medianReductionPct": 84.49,
+      "avgTimeMs": 108
+    },
+    {
+      "format": "AVIF",
+      "codec": "libavif (@jsquash/avif)",
+      "version": "2.1.1",
+      "settings": "Quality 80",
+      "totalOutputSizeBytes": 1202775,
+      "avgReductionPct": 78.48,
+      "medianReductionPct": 79.78,
+      "avgTimeMs": 1247
+    },
+    {
+      "format": "PNG",
+      "codec": "UPNG (upng-js)",
+      "version": "2.1.0",
+      "settings": "256 Colors",
+      "totalOutputSizeBytes": 3830403,
+      "avgReductionPct": 38.45,
+      "medianReductionPct": 41.05,
+      "avgTimeMs": 231
+    }
+  ],
+  "results": [
+    {
+      "format": "JPEG (MozJPEG)",
+      "quality": "Quality 80",
+      "sizeBytes": 75486,
+      "timeMs": 172,
+      "reductionPct": "62.79"
+    },
+    {
+      "format": "WebP (libwebp)",
+      "quality": "Quality 80, Method 4",
+      "sizeBytes": 56249,
+      "timeMs": 108,
+      "reductionPct": "73.68"
+    },
+    {
+      "format": "AVIF (libavif)",
+      "quality": "Quality 80",
+      "sizeBytes": 60139,
+      "timeMs": 1247,
+      "reductionPct": "78.48"
+    },
+    {
+      "format": "PNG (UPNG)",
+      "quality": "256 Colors",
+      "sizeBytes": 191520,
+      "timeMs": 231,
+      "reductionPct": "38.45"
+    }
+  ],
+  "categoryBreakdown": {
+    "photos": {
+      "count": 13,
+      "originalBytes": 3739995,
+      "avgReductionPctByFormat": {
+        "JPEG": 78.61,
+        "WebP": 83.83,
+        "AVIF": 80.42,
+        "PNG": 30.41
+      }
+    },
+    "graphics": {
+      "count": 7,
+      "originalBytes": 3132532,
+      "avgReductionPctByFormat": {
+        "JPEG": 33.41,
+        "WebP": 54.82,
+        "AVIF": 74.87,
+        "PNG": 53.39
+      }
+    }
+  },
+  "imageBenchmarkItems": [
+    {
+      "filename": "Screenshot 2026-08-13 173140.png",
+      "category": "Graphic/Screenshot",
+      "originalFormat": "PNG",
+      "originalSizeBytes": 1395603,
+      "width": 1897,
+      "height": 927,
+      "conversions": [
+        {
+          "targetFormat": "JPEG",
+          "codec": "MozJPEG (@jsquash/jpeg)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 169496,
+          "byteReduction": 1226107,
+          "reductionPct": 87.85,
+          "timeMs": 484
+        },
+        {
+          "targetFormat": "WebP",
+          "codec": "libwebp (@jsquash/webp)",
+          "settings": "Quality 80, Method 4",
+          "outputSizeBytes": 94106,
+          "byteReduction": 1301497,
+          "reductionPct": 93.26,
+          "timeMs": 299
+        },
+        {
+          "targetFormat": "AVIF",
+          "codec": "libavif (@jsquash/avif)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 63530,
+          "byteReduction": 1332073,
+          "reductionPct": 95.45,
+          "timeMs": 3583
+        },
+        {
+          "targetFormat": "PNG",
+          "codec": "UPNG (upng-js)",
+          "settings": "256 Colors",
+          "outputSizeBytes": 775232,
+          "byteReduction": 620371,
+          "reductionPct": 44.45,
+          "timeMs": 817
+        }
+      ]
+    },
+    {
+      "filename": "Screenshot 2026-08-13 173213.png",
+      "category": "Graphic/Screenshot",
+      "originalFormat": "PNG",
+      "originalSizeBytes": 40050,
+      "width": 1220,
+      "height": 743,
+      "conversions": [
+        {
+          "targetFormat": "JPEG",
+          "codec": "MozJPEG (@jsquash/jpeg)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 51934,
+          "byteReduction": -11884,
+          "reductionPct": -29.67,
+          "timeMs": 156
+        },
+        {
+          "targetFormat": "WebP",
+          "codec": "libwebp (@jsquash/webp)",
+          "settings": "Quality 80, Method 4",
+          "outputSizeBytes": 34812,
+          "byteReduction": 5238,
+          "reductionPct": 13.08,
+          "timeMs": 98
+        },
+        {
+          "targetFormat": "AVIF",
+          "codec": "libavif (@jsquash/avif)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 10387,
+          "byteReduction": 29663,
+          "reductionPct": 74.06,
+          "timeMs": 2577
+        },
+        {
+          "targetFormat": "PNG",
+          "codec": "UPNG (upng-js)",
+          "settings": "256 Colors",
+          "outputSizeBytes": 18701,
+          "byteReduction": 21349,
+          "reductionPct": 53.31,
+          "timeMs": 247
+        }
+      ]
+    },
+    {
+      "filename": "Screenshot 2026-08-13 173306.png",
+      "category": "Graphic/Screenshot",
+      "originalFormat": "PNG",
+      "originalSizeBytes": 27357,
+      "width": 442,
+      "height": 820,
+      "conversions": [
+        {
+          "targetFormat": "JPEG",
+          "codec": "MozJPEG (@jsquash/jpeg)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 43763,
+          "byteReduction": -16406,
+          "reductionPct": -59.97,
+          "timeMs": 94
+        },
+        {
+          "targetFormat": "WebP",
+          "codec": "libwebp (@jsquash/webp)",
+          "settings": "Quality 80, Method 4",
+          "outputSizeBytes": 30024,
+          "byteReduction": -2667,
+          "reductionPct": -9.75,
+          "timeMs": 49
+        },
+        {
+          "targetFormat": "AVIF",
+          "codec": "libavif (@jsquash/avif)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 8558,
+          "byteReduction": 18799,
+          "reductionPct": 68.72,
+          "timeMs": 1247
+        },
+        {
+          "targetFormat": "PNG",
+          "codec": "UPNG (upng-js)",
+          "settings": "256 Colors",
+          "outputSizeBytes": 14610,
+          "byteReduction": 12747,
+          "reductionPct": 46.6,
+          "timeMs": 80
+        }
+      ]
+    },
+    {
+      "filename": "Untitled design (1).png",
+      "category": "Graphic/Screenshot",
+      "originalFormat": "PNG",
+      "originalSizeBytes": 759910,
+      "width": 1920,
+      "height": 1080,
+      "conversions": [
+        {
+          "targetFormat": "JPEG",
+          "codec": "MozJPEG (@jsquash/jpeg)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 120764,
+          "byteReduction": 639146,
+          "reductionPct": 84.11,
+          "timeMs": 375
+        },
+        {
+          "targetFormat": "WebP",
+          "codec": "libwebp (@jsquash/webp)",
+          "settings": "Quality 80, Method 4",
+          "outputSizeBytes": 86864,
+          "byteReduction": 673046,
+          "reductionPct": 88.57,
+          "timeMs": 220
+        },
+        {
+          "targetFormat": "AVIF",
+          "codec": "libavif (@jsquash/avif)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 93508,
+          "byteReduction": 666402,
+          "reductionPct": 87.69,
+          "timeMs": 1240
+        },
+        {
+          "targetFormat": "PNG",
+          "codec": "UPNG (upng-js)",
+          "settings": "256 Colors",
+          "outputSizeBytes": 203665,
+          "byteReduction": 556245,
+          "reductionPct": 73.2,
+          "timeMs": 416
+        }
+      ]
+    },
+    {
+      "filename": "Untitled design (2).png",
+      "category": "Graphic/Screenshot",
+      "originalFormat": "PNG",
+      "originalSizeBytes": 105974,
+      "width": 1920,
+      "height": 1080,
+      "conversions": [
+        {
+          "targetFormat": "JPEG",
+          "codec": "MozJPEG (@jsquash/jpeg)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 69609,
+          "byteReduction": 36365,
+          "reductionPct": 34.32,
+          "timeMs": 293
+        },
+        {
+          "targetFormat": "WebP",
+          "codec": "libwebp (@jsquash/webp)",
+          "settings": "Quality 80, Method 4",
+          "outputSizeBytes": 48618,
+          "byteReduction": 57356,
+          "reductionPct": 54.12,
+          "timeMs": 184
+        },
+        {
+          "targetFormat": "AVIF",
+          "codec": "libavif (@jsquash/avif)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 49951,
+          "byteReduction": 56023,
+          "reductionPct": 52.86,
+          "timeMs": 746
+        },
+        {
+          "targetFormat": "PNG",
+          "codec": "UPNG (upng-js)",
+          "settings": "256 Colors",
+          "outputSizeBytes": 58615,
+          "byteReduction": 47359,
+          "reductionPct": 44.69,
+          "timeMs": 312
+        }
+      ]
+    },
+    {
+      "filename": "Untitled design (3).png",
+      "category": "Graphic/Screenshot",
+      "originalFormat": "PNG",
+      "originalSizeBytes": 640324,
+      "width": 1920,
+      "height": 1080,
+      "conversions": [
+        {
+          "targetFormat": "JPEG",
+          "codec": "MozJPEG (@jsquash/jpeg)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 139141,
+          "byteReduction": 501183,
+          "reductionPct": 78.27,
+          "timeMs": 379
+        },
+        {
+          "targetFormat": "WebP",
+          "codec": "libwebp (@jsquash/webp)",
+          "settings": "Quality 80, Method 4",
+          "outputSizeBytes": 89564,
+          "byteReduction": 550760,
+          "reductionPct": 86.01,
+          "timeMs": 214
+        },
+        {
+          "targetFormat": "AVIF",
+          "codec": "libavif (@jsquash/avif)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 76259,
+          "byteReduction": 564065,
+          "reductionPct": 88.09,
+          "timeMs": 2577
+        },
+        {
+          "targetFormat": "PNG",
+          "codec": "UPNG (upng-js)",
+          "settings": "256 Colors",
+          "outputSizeBytes": 237137,
+          "byteReduction": 403187,
+          "reductionPct": 62.97,
+          "timeMs": 489
+        }
+      ]
+    },
+    {
+      "filename": "Untitled design.png",
+      "category": "Graphic/Screenshot",
+      "originalFormat": "PNG",
+      "originalSizeBytes": 163314,
+      "width": 1920,
+      "height": 1080,
+      "conversions": [
+        {
+          "targetFormat": "JPEG",
+          "codec": "MozJPEG (@jsquash/jpeg)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 99680,
+          "byteReduction": 63634,
+          "reductionPct": 38.96,
+          "timeMs": 309
+        },
+        {
+          "targetFormat": "WebP",
+          "codec": "libwebp (@jsquash/webp)",
+          "settings": "Quality 80, Method 4",
+          "outputSizeBytes": 67816,
+          "byteReduction": 95498,
+          "reductionPct": 58.48,
+          "timeMs": 196
+        },
+        {
+          "targetFormat": "AVIF",
+          "codec": "libavif (@jsquash/avif)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 69876,
+          "byteReduction": 93438,
+          "reductionPct": 57.21,
+          "timeMs": 948
+        },
+        {
+          "targetFormat": "PNG",
+          "codec": "UPNG (upng-js)",
+          "settings": "256 Colors",
+          "outputSizeBytes": 84128,
+          "byteReduction": 79186,
+          "reductionPct": 48.49,
+          "timeMs": 320
+        }
+      ]
+    },
+    {
+      "filename": "photo-1578924824780-b7c49930e310.jpg",
+      "category": "Photo",
+      "originalFormat": "JPG",
+      "originalSizeBytes": 418737,
+      "width": 600,
+      "height": 898,
+      "conversions": [
+        {
+          "targetFormat": "JPEG",
+          "codec": "MozJPEG (@jsquash/jpeg)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 104746,
+          "byteReduction": 313991,
+          "reductionPct": 74.99,
+          "timeMs": 146
+        },
+        {
+          "targetFormat": "WebP",
+          "codec": "libwebp (@jsquash/webp)",
+          "settings": "Quality 80, Method 4",
+          "outputSizeBytes": 95072,
+          "byteReduction": 323665,
+          "reductionPct": 77.3,
+          "timeMs": 100
+        },
+        {
+          "targetFormat": "AVIF",
+          "codec": "libavif (@jsquash/avif)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 115693,
+          "byteReduction": 303044,
+          "reductionPct": 72.37,
+          "timeMs": 1158
+        },
+        {
+          "targetFormat": "PNG",
+          "codec": "UPNG (upng-js)",
+          "settings": "256 Colors",
+          "outputSizeBytes": 372178,
+          "byteReduction": 46559,
+          "reductionPct": 11.12,
+          "timeMs": 200
+        }
+      ]
+    },
+    {
+      "filename": "photo-1597730945481-f35a5cf39021.jpg",
+      "category": "Photo",
+      "originalFormat": "JPG",
+      "originalSizeBytes": 436842,
+      "width": 600,
+      "height": 800,
+      "conversions": [
+        {
+          "targetFormat": "JPEG",
+          "codec": "MozJPEG (@jsquash/jpeg)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 99425,
+          "byteReduction": 337417,
+          "reductionPct": 77.24,
+          "timeMs": 141
+        },
+        {
+          "targetFormat": "WebP",
+          "codec": "libwebp (@jsquash/webp)",
+          "settings": "Quality 80, Method 4",
+          "outputSizeBytes": 72216,
+          "byteReduction": 364626,
+          "reductionPct": 83.47,
+          "timeMs": 78
+        },
+        {
+          "targetFormat": "AVIF",
+          "codec": "libavif (@jsquash/avif)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 81660,
+          "byteReduction": 355182,
+          "reductionPct": 81.31,
+          "timeMs": 803
+        },
+        {
+          "targetFormat": "PNG",
+          "codec": "UPNG (upng-js)",
+          "settings": "256 Colors",
+          "outputSizeBytes": 215443,
+          "byteReduction": 221399,
+          "reductionPct": 50.68,
+          "timeMs": 171
+        }
+      ]
+    },
+    {
+      "filename": "photo-1653332259098-037228b96c1f.jpg",
+      "category": "Photo",
+      "originalFormat": "JPG",
+      "originalSizeBytes": 139505,
+      "width": 600,
+      "height": 375,
+      "conversions": [
+        {
+          "targetFormat": "JPEG",
+          "codec": "MozJPEG (@jsquash/jpeg)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 28457,
+          "byteReduction": 111048,
+          "reductionPct": 79.6,
+          "timeMs": 51
+        },
+        {
+          "targetFormat": "WebP",
+          "codec": "libwebp (@jsquash/webp)",
+          "settings": "Quality 80, Method 4",
+          "outputSizeBytes": 20212,
+          "byteReduction": 119293,
+          "reductionPct": 85.51,
+          "timeMs": 28
+        },
+        {
+          "targetFormat": "AVIF",
+          "codec": "libavif (@jsquash/avif)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 26522,
+          "byteReduction": 112983,
+          "reductionPct": 80.99,
+          "timeMs": 291
+        },
+        {
+          "targetFormat": "PNG",
+          "codec": "UPNG (upng-js)",
+          "settings": "256 Colors",
+          "outputSizeBytes": 58047,
+          "byteReduction": 81458,
+          "reductionPct": 58.39,
+          "timeMs": 56
+        }
+      ]
+    },
+    {
+      "filename": "photo-1782064230154-ba47c8714d9e.jpg",
+      "category": "Photo",
+      "originalFormat": "JPG",
+      "originalSizeBytes": 127679,
+      "width": 600,
+      "height": 900,
+      "conversions": [
+        {
+          "targetFormat": "JPEG",
+          "codec": "MozJPEG (@jsquash/jpeg)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 23996,
+          "byteReduction": 103683,
+          "reductionPct": 81.21,
+          "timeMs": 70
+        },
+        {
+          "targetFormat": "WebP",
+          "codec": "libwebp (@jsquash/webp)",
+          "settings": "Quality 80, Method 4",
+          "outputSizeBytes": 13910,
+          "byteReduction": 113769,
+          "reductionPct": 89.11,
+          "timeMs": 58
+        },
+        {
+          "targetFormat": "AVIF",
+          "codec": "libavif (@jsquash/avif)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 19149,
+          "byteReduction": 108530,
+          "reductionPct": 85,
+          "timeMs": 641
+        },
+        {
+          "targetFormat": "PNG",
+          "codec": "UPNG (upng-js)",
+          "settings": "256 Colors",
+          "outputSizeBytes": 165503,
+          "byteReduction": -37824,
+          "reductionPct": -29.62,
+          "timeMs": 173
+        }
+      ]
+    },
+    {
+      "filename": "photo-1782541949788-4c6530b98013.jpg",
+      "category": "Photo",
+      "originalFormat": "JPG",
+      "originalSizeBytes": 170652,
+      "width": 600,
+      "height": 400,
+      "conversions": [
+        {
+          "targetFormat": "JPEG",
+          "codec": "MozJPEG (@jsquash/jpeg)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 41560,
+          "byteReduction": 129092,
+          "reductionPct": 75.65,
+          "timeMs": 65
+        },
+        {
+          "targetFormat": "WebP",
+          "codec": "libwebp (@jsquash/webp)",
+          "settings": "Quality 80, Method 4",
+          "outputSizeBytes": 31670,
+          "byteReduction": 138982,
+          "reductionPct": 81.44,
+          "timeMs": 36
+        },
+        {
+          "targetFormat": "AVIF",
+          "codec": "libavif (@jsquash/avif)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 36567,
+          "byteReduction": 134085,
+          "reductionPct": 78.57,
+          "timeMs": 983
+        },
+        {
+          "targetFormat": "PNG",
+          "codec": "UPNG (upng-js)",
+          "settings": "256 Colors",
+          "outputSizeBytes": 106377,
+          "byteReduction": 64275,
+          "reductionPct": 37.66,
+          "timeMs": 72
+        }
+      ]
+    },
+    {
+      "filename": "photo-1782576417426-4ae01da20440.jpg",
+      "category": "Photo",
+      "originalFormat": "JPG",
+      "originalSizeBytes": 751697,
+      "width": 600,
+      "height": 900,
+      "conversions": [
+        {
+          "targetFormat": "JPEG",
+          "codec": "MozJPEG (@jsquash/jpeg)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 151517,
+          "byteReduction": 600180,
+          "reductionPct": 79.84,
+          "timeMs": 200
+        },
+        {
+          "targetFormat": "WebP",
+          "codec": "libwebp (@jsquash/webp)",
+          "settings": "Quality 80, Method 4",
+          "outputSizeBytes": 141890,
+          "byteReduction": 609807,
+          "reductionPct": 81.12,
+          "timeMs": 115
+        },
+        {
+          "targetFormat": "AVIF",
+          "codec": "libavif (@jsquash/avif)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 185731,
+          "byteReduction": 565966,
+          "reductionPct": 75.29,
+          "timeMs": 1460
+        },
+        {
+          "targetFormat": "PNG",
+          "codec": "UPNG (upng-js)",
+          "settings": "256 Colors",
+          "outputSizeBytes": 363491,
+          "byteReduction": 388206,
+          "reductionPct": 51.64,
+          "timeMs": 198
+        }
+      ]
+    },
+    {
+      "filename": "photo-1782585911845-53e2e8335aaf.jpg",
+      "category": "Photo",
+      "originalFormat": "JPG",
+      "originalSizeBytes": 252047,
+      "width": 687,
+      "height": 1031,
+      "conversions": [
+        {
+          "targetFormat": "JPEG",
+          "codec": "MozJPEG (@jsquash/jpeg)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 51510,
+          "byteReduction": 200537,
+          "reductionPct": 79.56,
+          "timeMs": 116
+        },
+        {
+          "targetFormat": "WebP",
+          "codec": "libwebp (@jsquash/webp)",
+          "settings": "Quality 80, Method 4",
+          "outputSizeBytes": 25254,
+          "byteReduction": 226793,
+          "reductionPct": 89.98,
+          "timeMs": 81
+        },
+        {
+          "targetFormat": "AVIF",
+          "codec": "libavif (@jsquash/avif)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 24325,
+          "byteReduction": 227722,
+          "reductionPct": 90.35,
+          "timeMs": 1237
+        },
+        {
+          "targetFormat": "PNG",
+          "codec": "UPNG (upng-js)",
+          "settings": "256 Colors",
+          "outputSizeBytes": 159629,
+          "byteReduction": 92418,
+          "reductionPct": 36.67,
+          "timeMs": 187
+        }
+      ]
+    },
+    {
+      "filename": "photo-1782825955433-cce9fe38a62d.jpg",
+      "category": "Photo",
+      "originalFormat": "JPG",
+      "originalSizeBytes": 48223,
+      "width": 600,
+      "height": 900,
+      "conversions": [
+        {
+          "targetFormat": "JPEG",
+          "codec": "MozJPEG (@jsquash/jpeg)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 8692,
+          "byteReduction": 39531,
+          "reductionPct": 81.98,
+          "timeMs": 57
+        },
+        {
+          "targetFormat": "WebP",
+          "codec": "libwebp (@jsquash/webp)",
+          "settings": "Quality 80, Method 4",
+          "outputSizeBytes": 5214,
+          "byteReduction": 43009,
+          "reductionPct": 89.19,
+          "timeMs": 51
+        },
+        {
+          "targetFormat": "AVIF",
+          "codec": "libavif (@jsquash/avif)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 4781,
+          "byteReduction": 43442,
+          "reductionPct": 90.09,
+          "timeMs": 968
+        },
+        {
+          "targetFormat": "PNG",
+          "codec": "UPNG (upng-js)",
+          "settings": "256 Colors",
+          "outputSizeBytes": 33056,
+          "byteReduction": 15167,
+          "reductionPct": 31.45,
+          "timeMs": 112
+        }
+      ]
+    },
+    {
+      "filename": "photo-1783201033923-31d14804da1c.jpg",
+      "category": "Photo",
+      "originalFormat": "JPG",
+      "originalSizeBytes": 271150,
+      "width": 600,
+      "height": 895,
+      "conversions": [
+        {
+          "targetFormat": "JPEG",
+          "codec": "MozJPEG (@jsquash/jpeg)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 59331,
+          "byteReduction": 211819,
+          "reductionPct": 78.12,
+          "timeMs": 97
+        },
+        {
+          "targetFormat": "WebP",
+          "codec": "libwebp (@jsquash/webp)",
+          "settings": "Quality 80, Method 4",
+          "outputSizeBytes": 37654,
+          "byteReduction": 233496,
+          "reductionPct": 86.11,
+          "timeMs": 75
+        },
+        {
+          "targetFormat": "AVIF",
+          "codec": "libavif (@jsquash/avif)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 39740,
+          "byteReduction": 231410,
+          "reductionPct": 85.34,
+          "timeMs": 686
+        },
+        {
+          "targetFormat": "PNG",
+          "codec": "UPNG (upng-js)",
+          "settings": "256 Colors",
+          "outputSizeBytes": 187110,
+          "byteReduction": 84040,
+          "reductionPct": 30.99,
+          "timeMs": 165
+        }
+      ]
+    },
+    {
+      "filename": "photo-1783315943625-6c00dc4b265b.jpg",
+      "category": "Photo",
+      "originalFormat": "JPG",
+      "originalSizeBytes": 141572,
+      "width": 600,
+      "height": 338,
+      "conversions": [
+        {
+          "targetFormat": "JPEG",
+          "codec": "MozJPEG (@jsquash/jpeg)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 37020,
+          "byteReduction": 104552,
+          "reductionPct": 73.85,
+          "timeMs": 55
+        },
+        {
+          "targetFormat": "WebP",
+          "codec": "libwebp (@jsquash/webp)",
+          "settings": "Quality 80, Method 4",
+          "outputSizeBytes": 32690,
+          "byteReduction": 108882,
+          "reductionPct": 76.91,
+          "timeMs": 35
+        },
+        {
+          "targetFormat": "AVIF",
+          "codec": "libavif (@jsquash/avif)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 40141,
+          "byteReduction": 101431,
+          "reductionPct": 71.65,
+          "timeMs": 380
+        },
+        {
+          "targetFormat": "PNG",
+          "codec": "UPNG (upng-js)",
+          "settings": "256 Colors",
+          "outputSizeBytes": 120263,
+          "byteReduction": 21309,
+          "reductionPct": 15.05,
+          "timeMs": 73
+        }
+      ]
+    },
+    {
+      "filename": "photo-1783341257870-b87a4432304d.jpg",
+      "category": "Photo",
+      "originalFormat": "JPG",
+      "originalSizeBytes": 130448,
+      "width": 600,
+      "height": 900,
+      "conversions": [
+        {
+          "targetFormat": "JPEG",
+          "codec": "MozJPEG (@jsquash/jpeg)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 23327,
+          "byteReduction": 107121,
+          "reductionPct": 82.12,
+          "timeMs": 79
+        },
+        {
+          "targetFormat": "WebP",
+          "codec": "libwebp (@jsquash/webp)",
+          "settings": "Quality 80, Method 4",
+          "outputSizeBytes": 13308,
+          "byteReduction": 117140,
+          "reductionPct": 89.8,
+          "timeMs": 59
+        },
+        {
+          "targetFormat": "AVIF",
+          "codec": "libavif (@jsquash/avif)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 14067,
+          "byteReduction": 116381,
+          "reductionPct": 89.22,
+          "timeMs": 566
+        },
+        {
+          "targetFormat": "PNG",
+          "codec": "UPNG (upng-js)",
+          "settings": "256 Colors",
+          "outputSizeBytes": 85389,
+          "byteReduction": 45059,
+          "reductionPct": 34.54,
+          "timeMs": 146
+        }
+      ]
+    },
+    {
+      "filename": "photo-1783512528338-39681f25e27e.jpg",
+      "category": "Photo",
+      "originalFormat": "JPG",
+      "originalSizeBytes": 314112,
+      "width": 600,
+      "height": 960,
+      "conversions": [
+        {
+          "targetFormat": "JPEG",
+          "codec": "MozJPEG (@jsquash/jpeg)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 57764,
+          "byteReduction": 256348,
+          "reductionPct": 81.61,
+          "timeMs": 103
+        },
+        {
+          "targetFormat": "WebP",
+          "codec": "libwebp (@jsquash/webp)",
+          "settings": "Quality 80, Method 4",
+          "outputSizeBytes": 44262,
+          "byteReduction": 269850,
+          "reductionPct": 85.91,
+          "timeMs": 83
+        },
+        {
+          "targetFormat": "AVIF",
+          "codec": "libavif (@jsquash/avif)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 72718,
+          "byteReduction": 241394,
+          "reductionPct": 76.85,
+          "timeMs": 1569
+        },
+        {
+          "targetFormat": "PNG",
+          "codec": "UPNG (upng-js)",
+          "settings": "256 Colors",
+          "outputSizeBytes": 202502,
+          "byteReduction": 111610,
+          "reductionPct": 35.53,
+          "timeMs": 182
+        }
+      ]
+    },
+    {
+      "filename": "photo-1783581263007-41f4e70f49f2.jpg",
+      "category": "Photo",
+      "originalFormat": "JPG",
+      "originalSizeBytes": 537331,
+      "width": 600,
+      "height": 800,
+      "conversions": [
+        {
+          "targetFormat": "JPEG",
+          "codec": "MozJPEG (@jsquash/jpeg)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 127997,
+          "byteReduction": 409334,
+          "reductionPct": 76.18,
+          "timeMs": 170
+        },
+        {
+          "targetFormat": "WebP",
+          "codec": "libwebp (@jsquash/webp)",
+          "settings": "Quality 80, Method 4",
+          "outputSizeBytes": 139816,
+          "byteReduction": 397515,
+          "reductionPct": 73.98,
+          "timeMs": 98
+        },
+        {
+          "targetFormat": "AVIF",
+          "codec": "libavif (@jsquash/avif)",
+          "settings": "Quality 80",
+          "outputSizeBytes": 169612,
+          "byteReduction": 367719,
+          "reductionPct": 68.43,
+          "timeMs": 1270
+        },
+        {
+          "targetFormat": "PNG",
+          "codec": "UPNG (upng-js)",
+          "settings": "256 Colors",
+          "outputSizeBytes": 369327,
+          "byteReduction": 168004,
+          "reductionPct": 31.27,
+          "timeMs": 196
+        }
+      ]
+    }
+  ]
+}

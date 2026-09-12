@@ -1,0 +1,8 @@
+{
+  "name": "Zapixal",
+  "description": "Securely convert, compress, and optimize HEIC, PNG, JPG, WebP, AVIF, and PDF files directly in your browser with zero cloud uploads.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
