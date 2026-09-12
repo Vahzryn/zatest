@@ -24,7 +24,7 @@ export function LowTierWarningModal({
       id="low-tier-warning-overlay"
     >
       <div 
-        className="relative bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl sm:rounded-2xl shadow-xl max-w-md w-full mx-3 overflow-hidden animate-in zoom-in-95 duration-200"
+        className="relative bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl sm:rounded-2xl shadow-xl max-w-md w-full mx-2.5 sm:mx-3 overflow-hidden animate-in zoom-in-95 duration-200"
         id="low-tier-warning-card"
       >
         {/* Close Button */}
@@ -38,7 +38,7 @@ export function LowTierWarningModal({
         </button>
 
         {/* Content */}
-        <div className="p-5 sm:p-6 pt-6 sm:pt-8 flex flex-col items-center text-center">
+        <div className="p-4 sm:p-6 pt-6 sm:pt-8 flex flex-col items-center text-center">
           <div className="p-2.5 bg-indigo-50 dark:bg-[#1a2c42] text-indigo-600 dark:text-indigo-400 rounded-full mb-3 sm:mb-4">
             <FolderDown className="w-6 h-6 sm:w-8 sm:h-8" />
           </div>
@@ -55,10 +55,10 @@ export function LowTierWarningModal({
           <div className="flex flex-col gap-1.5 sm:gap-2 w-full">
             <button
               onClick={onSelectDirectoryAndConvert}
-              className="w-full py-2.5 sm:py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-sm transition-all text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-2.5 sm:py-3 px-3 sm:px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-sm transition-all text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer text-center leading-snug"
               id="btn-warning-folder-save"
             >
-              <FolderDown className="w-4 h-4" />
+              <FolderDown className="w-4 h-4 shrink-0" />
               <span>Save Directly to Folder (Recommended)</span>
             </button>
 

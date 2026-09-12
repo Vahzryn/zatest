@@ -198,10 +198,10 @@ export const ImageToPdfPage: React.FC<ImageToPdfPageProps> = ({ seoData, onNavig
           : ''}
       </div>
 
-      <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xl overflow-hidden p-6 sm:p-8 space-y-8">
+      <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xl overflow-hidden p-4 sm:p-8 space-y-6 sm:space-y-8">
         {!successResult && (
           <div 
-            className={`relative border-2 border-dashed rounded-2xl p-8 transition-colors flex flex-col items-center justify-center gap-3 ${
+            className={`relative border-2 border-dashed rounded-2xl p-6 sm:p-8 transition-colors flex flex-col items-center justify-center gap-3 ${
               dragActive 
                 ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20' 
                 : 'border-zinc-300 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800/50'

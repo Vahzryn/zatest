@@ -93,7 +93,7 @@ export const CompleteView = React.memo<CompleteViewProps>(function CompleteView(
       </div>
 
       {/* Main Result Card */}
-      <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xl overflow-hidden p-6 sm:p-8 space-y-6 text-center">
+      <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xl overflow-hidden p-4 sm:p-8 space-y-6 text-center">
         
         {/* Status Indicator & Main Headline */}
         <div className="flex flex-col items-center gap-3">
@@ -136,9 +136,9 @@ export const CompleteView = React.memo<CompleteViewProps>(function CompleteView(
                   <div className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">New Size</div>
                   <div className="text-sm font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">{formatBytes(totConv)}</div>
                 </div>
-                <div className="px-2">
-                  <div className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">Reduction</div>
-                  <div className="text-sm font-black text-emerald-600 dark:text-emerald-400 flex items-center justify-center gap-1 mt-0.5">
+                <div className="px-1 sm:px-2">
+                  <div className="text-[10px] sm:text-[11px] font-medium text-zinc-500 dark:text-zinc-400">Reduction</div>
+                  <div className="text-xs sm:text-sm font-black text-emerald-600 dark:text-emerald-400 flex items-center justify-center gap-0.5 sm:gap-1 mt-0.5 flex-wrap">
                     <Sparkles className="w-3 h-3 shrink-0" />
                     <span>{pct}% (-{formatBytes(netSaved)})</span>
                   </div>
@@ -215,14 +215,14 @@ export const CompleteView = React.memo<CompleteViewProps>(function CompleteView(
 
         {/* Failed items notice & retry */}
         {failedCount > 0 && onRetryFile && (
-          <div className="p-3.5 bg-rose-50 dark:bg-rose-950/30 border border-rose-200/80 dark:border-rose-900/60 rounded-2xl flex items-center justify-between gap-3 text-left">
+          <div className="p-3.5 bg-rose-50 dark:bg-rose-950/30 border border-rose-200/80 dark:border-rose-900/60 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-left">
             <div className="flex items-center gap-2 text-xs text-rose-800 dark:text-rose-300">
               <AlertCircle className="w-4 h-4 shrink-0 text-rose-500" />
               <span>{failedCount} {failedCount === 1 ? 'file failed' : 'files failed to convert'}</span>
             </div>
             <button
               onClick={() => failed.forEach(f => onRetryFile(f.id))}
-              className="inline-flex items-center gap-1 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer shrink-0"
             >
               <RotateCw className="w-3 h-3" />
               <span>Retry Failed</span>

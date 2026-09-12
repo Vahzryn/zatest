@@ -51,7 +51,7 @@ export function DonateModal({ isOpen, onClose }: DonateModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto">
-      <div className="relative w-full max-w-lg mx-2 p-5 sm:p-8 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl sm:rounded-3xl shadow-2xl animate-in zoom-in-95 duration-200 my-auto">
+      <div className="relative w-full max-w-lg mx-auto p-4 sm:p-8 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl sm:rounded-3xl shadow-2xl animate-in zoom-in-95 duration-200 my-auto">
         <button 
           onClick={onClose}
           className="absolute top-3 right-3 p-1.5 text-zinc-400 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors cursor-pointer"

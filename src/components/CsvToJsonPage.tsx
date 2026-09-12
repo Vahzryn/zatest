@@ -438,7 +438,7 @@ export default function CsvToJsonPage({ seoData, onNavigate }: CsvToJsonPageProp
               <span>Parse Nested JSON Cells</span>
             </label>
 
-            <div className="flex items-center gap-1.5 ml-auto">
+            <div className="flex items-center gap-1.5 sm:ml-auto">
               <label htmlFor="indent-select" className="text-zinc-500 dark:text-zinc-400">Indent:</label>
               <select
                 id="indent-select"
@@ -471,7 +471,7 @@ export default function CsvToJsonPage({ seoData, onNavigate }: CsvToJsonPageProp
               </select>
             </div>
 
-            <label className="inline-flex items-center gap-1.5 cursor-pointer text-zinc-700 dark:text-zinc-300 font-medium select-none ml-auto" title="Prefix =, @, +, - with single quote to prevent spreadsheet formula injection in Excel/Calc">
+            <label className="inline-flex items-center gap-1.5 cursor-pointer text-zinc-700 dark:text-zinc-300 font-medium select-none sm:ml-auto" title="Prefix =, @, +, - with single quote to prevent spreadsheet formula injection in Excel/Calc">
               <input
                 type="checkbox"
                 checked={sanitizeFormulas}

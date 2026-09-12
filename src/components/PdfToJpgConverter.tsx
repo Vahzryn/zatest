@@ -435,7 +435,7 @@ export function PdfToJpgConverter({ onNavigate }: PdfToJpgConverterProps) {
             </div>
 
             {/* Quick Range Selection */}
-            <div className="flex items-center gap-2 text-xs">
+            <div className="flex items-center gap-2 text-xs flex-wrap">
               <span className="font-semibold text-zinc-700 dark:text-zinc-300 shrink-0">Select Range:</span>
               <input
                 type="text"
@@ -443,11 +443,11 @@ export function PdfToJpgConverter({ onNavigate }: PdfToJpgConverterProps) {
                 value={rangeInput}
                 onChange={(e) => setRangeInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && applyRangeSelection()}
-                className="px-3 py-1.5 rounded-lg border border-zinc-300 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-white text-xs focus:ring-2 focus:ring-indigo-500 outline-none w-44"
+                className="px-3 py-1.5 rounded-lg border border-zinc-300 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-white text-xs focus:ring-2 focus:ring-indigo-500 outline-none w-full sm:w-44 flex-1 min-w-[120px]"
               />
               <button
                 onClick={applyRangeSelection}
-                className="px-3 py-1.5 bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 font-bold rounded-lg text-xs hover:bg-zinc-900 transition-colors cursor-pointer"
+                className="px-3 py-1.5 bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 font-bold rounded-lg text-xs hover:bg-zinc-900 transition-colors cursor-pointer shrink-0"
               >
                 Apply
               </button>
@@ -624,7 +624,7 @@ export function PdfToJpgConverter({ onNavigate }: PdfToJpgConverterProps) {
               </div>
 
               {/* Main Completion Banner */}
-              <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 p-6 sm:p-8 flex flex-col items-center text-center gap-5 shadow-lg">
+              <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 p-4 sm:p-8 flex flex-col items-center text-center gap-5 shadow-lg">
                 <div className="w-14 h-14 rounded-full bg-emerald-100 dark:bg-emerald-950/70 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-xs">
                   <CheckCircle2 className="w-8 h-8 stroke-[2.5]" />
                 </div>

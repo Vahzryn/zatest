@@ -156,7 +156,7 @@ export function PdfMergerPage({ seoData, onNavigate }: PdfMergerPageProps) {
       </div>
 
       {/* Main Workspace Card */}
-      <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xl overflow-hidden p-6 sm:p-8 space-y-6">
+      <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xl overflow-hidden p-4 sm:p-8 space-y-6">
         
         {/* Success Result View */}
         {successResult ? (
@@ -266,7 +266,7 @@ export function PdfMergerPage({ seoData, onNavigate }: PdfMergerPageProps) {
                   {items.map((item, index) => (
                     <div
                       key={item.id}
-                      className="p-4 rounded-xl bg-zinc-50 dark:bg-[#25282c] border border-zinc-200 dark:border-zinc-700/80 flex items-center justify-between gap-4 transition-all"
+                      className="p-3 sm:p-4 rounded-xl bg-zinc-50 dark:bg-[#25282c] border border-zinc-200 dark:border-zinc-700/80 flex items-center justify-between gap-2 sm:gap-4 transition-all"
                     >
                       <div className="flex items-center gap-3 min-w-0">
                         <div className="w-10 h-10 rounded-lg bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">

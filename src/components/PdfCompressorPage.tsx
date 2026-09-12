@@ -189,7 +189,7 @@ export function PdfCompressorPage({ seoData, onNavigate }: PdfCompressorPageProp
       </div>
 
       {/* Main Workspace Card */}
-      <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xl overflow-hidden p-6 sm:p-8 space-y-6">
+      <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xl overflow-hidden p-4 sm:p-8 space-y-6">
           
           {!file && !loadingPdf && (
             <div
@@ -198,7 +198,7 @@ export function PdfCompressorPage({ seoData, onNavigate }: PdfCompressorPageProp
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
               className={`
-                relative group flex flex-col items-center justify-center py-20 px-6
+                relative group flex flex-col items-center justify-center py-12 sm:py-20 px-4 sm:px-6
                 border-2 border-dashed rounded-2xl cursor-pointer transition-all duration-200
                 ${isDragActive 
                   ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10' 
@@ -237,19 +237,19 @@ export function PdfCompressorPage({ seoData, onNavigate }: PdfCompressorPageProp
 
           {file && !successResult && !loadingPdf && (
             <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl border border-zinc-200 dark:border-zinc-700">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 rounded-lg">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3.5 sm:p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl border border-zinc-200 dark:border-zinc-700 gap-3">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 rounded-lg shrink-0">
                     <FileText className="w-6 h-6" />
                   </div>
-                  <div>
-                    <h3 className="font-medium text-zinc-900 dark:text-zinc-100 truncate max-w-[200px] sm:max-w-xs">{file.name}</h3>
-                    <p className="text-sm text-zinc-500">{formatBytes(file.size)} • {numPages} pages</p>
+                  <div className="min-w-0">
+                    <h3 className="font-medium text-zinc-900 dark:text-zinc-100 truncate max-w-[180px] sm:max-w-xs">{file.name}</h3>
+                    <p className="text-xs sm:text-sm text-zinc-500">{formatBytes(file.size)} • {numPages} pages</p>
                   </div>
                 </div>
                 <button
                   onClick={handleReset}
-                  className="mt-3 sm:mt-0 px-3 py-1.5 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-red-600 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-sm hover:shadow transition-all"
+                  className="w-full sm:w-auto px-3 py-1.5 text-xs sm:text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-red-600 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-sm hover:shadow transition-all shrink-0 cursor-pointer"
                   disabled={isProcessing}
                 >
                   Change File

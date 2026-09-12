@@ -157,7 +157,7 @@ export function SvgToPngPage({ seoData, onNavigate }: SvgToPngPageProps) {
           : ''}
       </div>
 
-      <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xl overflow-hidden p-6 sm:p-8 space-y-6">
+      <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xl overflow-hidden p-4 sm:p-8 space-y-6">
         <canvas ref={canvasRef} className="hidden" />
         
         <div 

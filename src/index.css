@@ -218,6 +218,15 @@
   transform: scale(0.98);
 }
 
+/* Utility to hide scrollbars while allowing natural scrolling */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* Accessibility: Full Respect for Prefers-Reduced-Motion */
 @media (prefers-reduced-motion: reduce) {
   *,
