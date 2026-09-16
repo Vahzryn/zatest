@@ -32,17 +32,37 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const triggerElementRef = useRef<HTMLElement | null>(null);
 
-  // Focus input whenever modal opens
+  // Focus input on open, and restore focus to trigger element on close
   useEffect(() => {
     if (isOpen) {
+      // Capture the element that had focus before the palette opened
+      triggerElementRef.current = (document.activeElement as HTMLElement) || null;
       setQuery('');
       setSelectedIndex(0);
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         inputRef.current?.focus();
       }, 50);
+      return () => clearTimeout(timer);
+    } else if (triggerElementRef.current) {
+      // Restore focus to the trigger element when closed
+      const el = triggerElementRef.current;
+      triggerElementRef.current = null;
+      if (typeof el.focus === 'function' && document.contains(el)) {
+        el.focus();
+      }
     }
   }, [isOpen]);
+
+  // Clean up on unmount if modal was open
+  useEffect(() => {
+    return () => {
+      if (triggerElementRef.current && typeof triggerElementRef.current.focus === 'function' && document.contains(triggerElementRef.current)) {
+        triggerElementRef.current.focus();
+      }
+    };
+  }, []);
 
   // Filter tools and guides based on search query
   const filteredResults = useMemo(() => {

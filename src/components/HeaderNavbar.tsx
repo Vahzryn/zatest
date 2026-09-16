@@ -110,11 +110,11 @@ export function HeaderNavbar({
             Tools
           </button>
 
-          {/* Guides / Documentation (Visible on tablet & desktop) */}
+          {/* Guides / Articles */}
           <button
             onClick={() => onNavigate('/articles')}
             className={cn(
-              "hidden sm:inline-flex px-2.5 sm:px-3 py-1.5 text-xs font-medium rounded-lg transition-colors cursor-pointer shrink-0",
+              "px-2 sm:px-3 py-1.5 text-xs font-medium rounded-lg transition-colors cursor-pointer shrink-0",
               currentPath.startsWith('/articles')
                 ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900"
                 : "text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"

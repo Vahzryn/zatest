@@ -313,12 +313,16 @@ export function useAppRouting({ initialPath, initialSeoData, setSettings, touche
       }
       
       const targetPath = normalizedPath in REDIRECTS_MAP ? REDIRECTS_MAP[normalizedPath] : normalizedPath;
+      const currentWindowPath = window.location.pathname || '/';
+      const isInternalToolsSwitch = currentWindowPath.startsWith('/tools') && targetPath.startsWith('/tools');
+
       window.history.pushState(null, '', targetPath);
       setCurrentPath(targetPath);
-      // Only scroll to top if not an internal category transition within the Tools Directory
-      const isInternalToolsSwitch = currentPath.startsWith('/tools') && targetPath.startsWith('/tools');
+
+      // Normal route navigation scrolls to top; internal Tools Directory category changes do not trigger global scroll
       if (!isInternalToolsSwitch) {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
       }
     }
   }, []);

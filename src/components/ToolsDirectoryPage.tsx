@@ -131,24 +131,24 @@ export const ToolsDirectoryPage: React.FC<ToolsDirectoryPageProps> = ({ onNaviga
     return counts;
   }, []);
 
-  const scrollToToolList = useCallback((force: boolean = false) => {
+  const scrollToToolList = useCallback((options?: { force?: boolean }) => {
     if (typeof window === 'undefined' || !toolsSectionRef.current) return;
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const behavior: ScrollBehavior = prefersReducedMotion ? 'auto' : 'smooth';
 
-    // Header is h-14 (56px) on mobile, h-16 (64px) on sm+. Add buffer for comfortable visual breathing room.
-    const headerHeight = window.innerWidth < 640 ? 68 : 80;
+    // Header is h-14 (56px) on mobile (<640px), h-16 (64px) on sm+.
+    // Add clearance so section header is comfortably visible below the sticky header.
+    const headerOffset = window.innerWidth < 640 ? 64 : 76;
     const rect = toolsSectionRef.current.getBoundingClientRect();
 
-    // Check if the top of the tools section is already comfortably in view below the header
-    const isComfortablyVisible = rect.top >= headerHeight && rect.top <= window.innerHeight * 0.38;
-
-    if (!force && isComfortablyVisible) {
+    // Avoid jumping if results section is already positioned at target below the header
+    const isAlreadyAtTarget = Math.abs(rect.top - headerOffset) < 16;
+    if (!options?.force && isAlreadyAtTarget) {
       return;
     }
 
-    const targetY = window.scrollY + rect.top - headerHeight;
+    const targetY = window.scrollY + rect.top - headerOffset;
 
     window.scrollTo({
       top: Math.max(0, targetY),
@@ -165,7 +165,7 @@ export const ToolsDirectoryPage: React.FC<ToolsDirectoryPageProps> = ({ onNaviga
     }
     // Defer scrolling so state update & DOM re-render compute accurate coordinates
     requestAnimationFrame(() => {
-      scrollToToolList();
+      scrollToToolList({ force: true });
     });
   };
 
@@ -237,7 +237,12 @@ export const ToolsDirectoryPage: React.FC<ToolsDirectoryPageProps> = ({ onNaviga
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
-                scrollToToolList(true);
+                const rect = toolsSectionRef.current?.getBoundingClientRect();
+                const headerOffset = window.innerWidth < 640 ? 64 : 76;
+                const isVisibleInViewport = rect && rect.top >= headerOffset && rect.top <= window.innerHeight * 0.5;
+                if (!isVisibleInViewport) {
+                  scrollToToolList({ force: true });
+                }
               }
             }}
             placeholder="Search tools by name, format, or task (e.g. HEIC, PDF, JSON, Regex, Diff)..."
@@ -308,8 +313,10 @@ export const ToolsDirectoryPage: React.FC<ToolsDirectoryPageProps> = ({ onNaviga
               </h3>
               <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-md mx-auto">
                 {searchQuery && selectedCategory !== 'all'
-                  ? `No tools in "${activeCategoryMeta.title}" matched "${searchQuery}". Try clearing search or viewing all tools.`
-                  : 'Try searching for a different file format, task, or keyword.'}
+                  ? `Showing 0 tools matching "${searchQuery}" in ${activeCategoryMeta.title}. You can clear your search query, view all tools, or reset all filters.`
+                  : searchQuery
+                  ? `Showing 0 tools matching "${searchQuery}". Try searching for a different file format, task, or keyword.`
+                  : 'No tools match the current filter criteria.'}
               </p>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
@@ -322,13 +329,24 @@ export const ToolsDirectoryPage: React.FC<ToolsDirectoryPageProps> = ({ onNaviga
                   Clear Search
                 </button>
               )}
-              <button
-                type="button"
-                onClick={handleResetFilters}
-                className="px-3.5 py-1.5 text-xs font-bold bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-lg hover:opacity-90 transition-opacity cursor-pointer"
-              >
-                View All Tools
-              </button>
+              {selectedCategory !== 'all' && (
+                <button
+                  type="button"
+                  onClick={() => handleSelectCategory('all')}
+                  className="px-3.5 py-1.5 text-xs font-semibold bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 rounded-lg transition-colors cursor-pointer"
+                >
+                  View All Tools
+                </button>
+              )}
+              {(searchQuery && selectedCategory !== 'all') && (
+                <button
+                  type="button"
+                  onClick={handleResetFilters}
+                  className="px-3.5 py-1.5 text-xs font-bold bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-lg hover:opacity-90 transition-opacity cursor-pointer"
+                >
+                  Reset Filters
+                </button>
+              )}
             </div>
           </div>
         ) : (

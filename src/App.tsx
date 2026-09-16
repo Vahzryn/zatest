@@ -256,7 +256,7 @@ export default function App({ initialPath, initialSeoData }: AppProps) {
   }
 
   return (
-    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-zinc-50 dark:bg-black text-zinc-900 dark:text-zinc-200 font-sans transition-colors duration-200">
+    <div className="min-h-screen w-full max-w-full bg-zinc-50 dark:bg-black text-zinc-900 dark:text-zinc-200 font-sans transition-colors duration-200">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[100] focus:rounded-full focus:bg-indigo-600 focus:px-4 focus:py-2 focus:text-sm focus:font-bold focus:text-white"
@@ -276,7 +276,7 @@ export default function App({ initialPath, initialSeoData }: AppProps) {
         isCopiedShareLink={isCopiedShareLink}
       />
 
-      <main id="main-content" className="max-w-6xl px-3 sm:px-6 py-4 sm:py-6 mx-auto lg:py-8 overflow-x-hidden">
+      <main id="main-content" className="max-w-6xl px-3 sm:px-6 py-4 sm:py-6 mx-auto lg:py-8">
         {/* Hero Header Section */}
         {!isArticleOrStaticRoute && (
           <HeroHeader seoData={seoData} onNavigate={handleNavigate} />
