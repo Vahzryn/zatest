@@ -315,7 +315,11 @@ export function useAppRouting({ initialPath, initialSeoData, setSettings, touche
       const targetPath = normalizedPath in REDIRECTS_MAP ? REDIRECTS_MAP[normalizedPath] : normalizedPath;
       window.history.pushState(null, '', targetPath);
       setCurrentPath(targetPath);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Only scroll to top if not an internal category transition within the Tools Directory
+      const isInternalToolsSwitch = currentPath.startsWith('/tools') && targetPath.startsWith('/tools');
+      if (!isInternalToolsSwitch) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     }
   }, []);
 
