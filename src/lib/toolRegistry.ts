@@ -34,8 +34,8 @@ export const TOOL_REGISTRY: ToolDefinition[] = [
     route: '/convert-heic-to-jpg-locally',
     status: 'active',
     indexable: true,
-    capabilities: ['conversion', 'heic', 'batch'],
-    searchIntents: ['convert heic to jpg', 'heic viewer offline', 'apple heic converter'],
+    capabilities: ['conversion', 'heic', 'heif', 'batch'],
+    searchIntents: ['convert heic to jpg', 'convert heif to jpg', 'heic viewer offline', 'apple heic converter', 'heif to jpg'],
     relatedTools: ['client-side-private-image-compressor', 'bulk-image-compressor-offline', 'compress-image-to-exact-size-kb', 'convert-image-to-pdf'],
     featured: true
   },

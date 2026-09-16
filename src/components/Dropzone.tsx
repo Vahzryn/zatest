@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Upload } from 'lucide-react';
-import { cn } from '../lib/utils';
+import { cn, isSupportedImageFile, CONVERTER_FILE_ACCEPT } from '../lib/utils';
 
 interface DropzoneProps {
   onFilesAdded: (files: File[]) => void;
@@ -70,7 +70,7 @@ export function Dropzone({ onFilesAdded, fromFormat, variant = 'standard' }: Dro
           if (item.isFile) {
             await new Promise<void>((resolve, reject) => {
               item.file((file: File) => {
-                if (file.type.startsWith('image/') || file.name.toLowerCase().endsWith('.heic')) {
+                if (isSupportedImageFile(file)) {
                   files.push(file);
                 }
                 resolve();
@@ -97,7 +97,7 @@ export function Dropzone({ onFilesAdded, fromFormat, variant = 'standard' }: Dro
             await traverseFileTree(entry);
           } else if (item.kind === 'file') {
             const file = item.getAsFile();
-            if (file && (file.type.startsWith('image/') || file.name.toLowerCase().endsWith('.heic'))) {
+            if (file && isSupportedImageFile(file)) {
               files.push(file);
             }
           }
@@ -109,9 +109,7 @@ export function Dropzone({ onFilesAdded, fromFormat, variant = 'standard' }: Dro
       if (e.dataTransfer.items) {
         files = await getAllFilesFromEntries(e.dataTransfer.items);
       } else {
-        files = Array.from(e.dataTransfer.files).filter((file: File) => 
-          file.type.startsWith('image/') || file.name.toLowerCase().endsWith('.heic')
-        );
+        files = Array.from(e.dataTransfer.files).filter(isSupportedImageFile);
       }
       
       if (files.length > 0) {
@@ -124,9 +122,7 @@ export function Dropzone({ onFilesAdded, fromFormat, variant = 'standard' }: Dro
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.target.files) {
-        const files = Array.from(e.target.files).filter((file: File) => 
-          file.type.startsWith('image/') || file.name.toLowerCase().endsWith('.heic')
-        );
+        const files = Array.from(e.target.files).filter(isSupportedImageFile);
         if (files.length > 0) {
           processFileList(files);
         }
@@ -153,7 +149,7 @@ export function Dropzone({ onFilesAdded, fromFormat, variant = 'standard' }: Dro
           id="file-upload-input"
           aria-label="Upload files or drop them here"
           multiple
-          accept="image/*,.heic"
+          accept={CONVERTER_FILE_ACCEPT}
           onChange={handleChange}
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
         />
@@ -176,7 +172,7 @@ export function Dropzone({ onFilesAdded, fromFormat, variant = 'standard' }: Dro
 
           {/* Format Chips on Desktop */}
           <div className="hidden md:flex items-center gap-1 shrink-0">
-            {['HEIC', 'PNG', 'JPG', 'WEBP', 'AVIF', 'SVG'].map((fmt) => (
+            {['HEIC/HEIF', 'PNG', 'JPG', 'WEBP', 'AVIF', 'SVG'].map((fmt) => (
               <span key={fmt} className="px-1.5 py-0.5 text-[10px] font-semibold text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-700/60 rounded transition-smooth">
                 {fmt}
               </span>
@@ -222,7 +218,7 @@ export function Dropzone({ onFilesAdded, fromFormat, variant = 'standard' }: Dro
         id="file-upload-input"
         aria-label="Upload image files or drop them here"
         multiple
-        accept="image/*,.heic"
+        accept={CONVERTER_FILE_ACCEPT}
         onChange={handleChange}
         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
       />
@@ -259,7 +255,7 @@ export function Dropzone({ onFilesAdded, fromFormat, variant = 'standard' }: Dro
           
           {/* Format Badges */}
           <div className="flex flex-wrap justify-center gap-1.5 pt-1">
-            {(fromFormat ? [fromFormat.toUpperCase()] : ['HEIC', 'PNG', 'JPG', 'WEBP', 'AVIF', 'SVG']).map((fmt) => (
+            {(fromFormat ? [fromFormat.toUpperCase()] : ['HEIC/HEIF', 'PNG', 'JPG', 'WEBP', 'AVIF', 'SVG']).map((fmt) => (
               <span key={fmt} className="px-2.5 py-1 text-[10px] sm:text-xs font-bold text-zinc-600 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg tracking-wide shadow-xs">
                 {fmt}
               </span>

@@ -45,8 +45,18 @@ export function validateMagicBytes(buffer: ArrayBuffer): { valid: boolean; forma
   // HEIC / HEIF / AVIF: ftyp brand check at offset 4
   // 66 74 79 70 (ftyp)
   if (bytes[4] === 0x66 && bytes[5] === 0x74 && bytes[6] === 0x79 && bytes[7] === 0x70) {
-    const brand = String.fromCharCode(...bytes.slice(8, 12));
-    if (brand.includes('heic') || brand.includes('heix') || brand.includes('mif1') || brand.includes('msf1')) {
+    const brand = String.fromCharCode(...bytes.slice(8, 12)).toLowerCase();
+    if (
+      brand.includes('heic') ||
+      brand.includes('heix') ||
+      brand.includes('heif') ||
+      brand.includes('hevc') ||
+      brand.includes('hevx') ||
+      brand.includes('heim') ||
+      brand.includes('heis') ||
+      brand.includes('mif1') ||
+      brand.includes('msf1')
+    ) {
       return { valid: true, format: 'heic' };
     }
     if (brand.includes('avif') || brand.includes('avis')) {

@@ -1,5 +1,5 @@
 import { ImageFileItem, ConversionSettings, ImageDimensions, TargetFormat } from '../types';
-import { formatBytes } from './utils';
+import { formatBytes, isHeicOrHeifFile } from './utils';
 import { getWorkerPool, PooledWorker } from './workerPool';
 import { validateMagicBytes, encodeJpeg, encodePng, encodeWebp, encodeWebpAdaptive, encodeAvif, encodeBmp, encodeIco, injectDpiMetadata } from './codecs';
 import { detectHardwareCapabilities, getMaxPixels, getMaxMegapixels } from './hardwareCapabilities';
@@ -58,13 +58,13 @@ export async function loadImageElement(file: File): Promise<{
     console.warn(`Could not read magic bytes for ${file.name}:`, err);
   }
 
-  // HEIC decoding via worker pool
-  if (extension === 'heic' || extension === 'heif' || file.type.includes('heic')) {
+  // HEIC/HEIF decoding via worker pool
+  if (isHeicOrHeifFile(file)) {
     try {
       targetFile = await getWorkerPool().decodeHeic(file);
       objectUrl = URL.createObjectURL(targetFile);
     } catch (e: any) {
-      console.error('HEIC worker decoding failed:', e);
+      console.error('HEIC/HEIF worker decoding failed:', e);
       throw new Error(`Failed to decode HEIC/HEIF file. Ensure the file is not corrupted or try a different HEIC encoder.`);
     }
   } else {
@@ -73,6 +73,9 @@ export async function loadImageElement(file: File): Promise<{
 
   // Helper to construct highly informative error messages
   const getHelpfulError = (): Error => {
+    if (isHeicOrHeifFile(file)) {
+      return new Error(`Failed to decode HEIC/HEIF image. Ensure the file is valid and not corrupted.`);
+    }
     if (extension === 'avif') {
       return new Error(`Failed to decode AVIF. Your browser or operating system may not support AVIF image decoding.`);
     }
@@ -215,7 +218,7 @@ export function calculateTargetDimensions(
 
 
 export async function generateThumbnail(file: File, maxDim: number = 200): Promise<string> {
-  if (file.size < 100 * 1024) {
+  if (file.size < 100 * 1024 && !isHeicOrHeifFile(file)) {
     return URL.createObjectURL(file);
   }
   try {

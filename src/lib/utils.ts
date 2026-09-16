@@ -15,6 +15,70 @@ export function formatBytes(bytes: number, decimals = 2) {
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
 }
 
+/**
+ * Supported HEIC/HEIF file extensions and MIME types.
+ * Browsers and operating systems often report inconsistent or empty MIME types
+ * for HEIC and HEIF files, so extension-based detection is critical.
+ */
+export const HEIC_HEIF_EXTENSIONS = ['.heic', '.heif'] as const;
+
+export const HEIC_HEIF_MIME_TYPES = [
+  'image/heic',
+  'image/heif',
+  'image/heic-sequence',
+  'image/heif-sequence',
+] as const;
+
+export const IMAGE_FILE_ACCEPT =
+  'image/*,.heic,.heif,image/heic,image/heif,image/heic-sequence,image/heif-sequence';
+
+export const CONVERTER_FILE_ACCEPT =
+  'image/*,.heic,.heif,image/heic,image/heif,image/heic-sequence,image/heif-sequence,.webp,.avif,.bmp,.ico,.png,.jpg,.jpeg,.svg';
+
+/**
+ * Checks whether a file object or file-like descriptor represents a HEIC or HEIF image.
+ * Uses both MIME type checking and extension-based fallback.
+ */
+export function isHeicOrHeifFile(file?: { name?: string; type?: string } | null): boolean {
+  if (!file) return false;
+  const mime = (file.type || '').toLowerCase().trim();
+  if (
+    mime === 'image/heic' ||
+    mime === 'image/heif' ||
+    mime === 'image/heic-sequence' ||
+    mime === 'image/heif-sequence' ||
+    mime.includes('/heic') ||
+    mime.includes('/heif')
+  ) {
+    return true;
+  }
+
+  const name = (file.name || '').toLowerCase().trim();
+  return /\.(heic|heif)$/i.test(name);
+}
+
+/**
+ * Validates if a file is a supported image for Zapixal.
+ * Accepts all standard image MIME types plus HEIC/HEIF, with robust extension-based fallback
+ * for operating systems where MIME types are blank or generic.
+ * Excludes unrelated non-image files (.txt, .pdf, .exe, .zip, etc.).
+ */
+export function isSupportedImageFile(file?: { name?: string; type?: string } | null): boolean {
+  if (!file) return false;
+
+  if (isHeicOrHeifFile(file)) {
+    return true;
+  }
+
+  const mime = (file.type || '').toLowerCase().trim();
+  if (mime.startsWith('image/')) {
+    return true;
+  }
+
+  const name = (file.name || '').toLowerCase().trim();
+  return /\.(jpe?g|png|webp|avif|gif|bmp|ico|svg|tiff?)$/i.test(name);
+}
+
 export function getExtensionFromMime(mimeType: string): string {
   switch (mimeType) {
     case 'image/jpeg':
@@ -33,6 +97,12 @@ export function getExtensionFromMime(mimeType: string): string {
       return 'ico';
     case 'application/pdf':
       return 'pdf';
+    case 'image/heic':
+    case 'image/heic-sequence':
+      return 'heic';
+    case 'image/heif':
+    case 'image/heif-sequence':
+      return 'heif';
     default:
       return 'jpg';
   }

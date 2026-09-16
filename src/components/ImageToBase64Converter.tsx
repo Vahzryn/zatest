@@ -11,6 +11,7 @@ import {
   ArrowRight,
   ShieldAlert
 } from 'lucide-react';
+import { isSupportedImageFile, IMAGE_FILE_ACCEPT } from '../lib/utils';
 
 function formatBytes(bytes: number): string {
   if (bytes === 0) return '0 B';
@@ -38,8 +39,8 @@ export function ImageToBase64Converter({ onNavigate }: ImageToBase64ConverterPro
   const [isDragActive, setIsDragActive] = useState(false);
 
   const processImageFile = useCallback((selectedFile: File) => {
-    if (!selectedFile.type.startsWith('image/')) {
-      setErrorMessage('Please select a valid image file (PNG, JPG, WEBP, SVG, etc.).');
+    if (!isSupportedImageFile(selectedFile)) {
+      setErrorMessage('Please select a valid image file (PNG, JPG, WEBP, HEIC, HEIF, SVG, etc.).');
       return;
     }
 
@@ -175,7 +176,7 @@ export function ImageToBase64Converter({ onNavigate }: ImageToBase64ConverterPro
             <input
               id="base64-file-input"
               type="file"
-              accept="image/*"
+              accept={IMAGE_FILE_ACCEPT}
               className="hidden"
               onChange={handleFileInputChange}
             />

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { ImageFileItem, ConversionSettings, TargetFormat } from '../types';
 import { detectHardwareCapabilities, checkBatteryThrottling, getBatchThresholds, estimateDeviceMemoryBudget, estimateConversionMemoryCost, estimateProcessingWorkload } from '../lib/hardwareCapabilities';
-import { formatBytes, formatOutputFilename, getExtensionFromMime, getEffectiveTargetFormat } from '../lib/utils';
+import { formatBytes, formatOutputFilename, getExtensionFromMime, getEffectiveTargetFormat, isSupportedImageFile, isHeicOrHeifFile } from '../lib/utils';
 import { safeRandomUUID } from '../lib/capabilities';
 import { saveFilesToDirectory, downloadBlob } from '../lib/fileSystemAccess';
 import { terminateWorkers } from '../lib/imageProcessor';
@@ -447,14 +447,27 @@ export function useBatchConversion({ settings, setSettings }: UseBatchConversion
   useEffect(() => {
     const handlePaste = (e: ClipboardEvent) => {
       if (!e.clipboardData) return;
+
+      // Check direct clipboard files first (e.g. copied from desktop/finder)
+      if (e.clipboardData.files && e.clipboardData.files.length > 0) {
+        const files = Array.from(e.clipboardData.files).filter(isSupportedImageFile);
+        if (files.length > 0) {
+          handleFilesAdded(files);
+          return;
+        }
+      }
+
       const items = Array.from(e.clipboardData.items);
       const pastedFiles: File[] = [];
       for (const item of items) {
-        if (item.type.startsWith('image/')) {
+        if (item.type.startsWith('image/') || isHeicOrHeifFile({ type: item.type })) {
           const file = item.getAsFile();
-          if (file) {
-            const ext = file.type.split('/')[1] || 'png';
-            const name = `pasted-image-${Date.now()}.${ext}`;
+          if (file && isSupportedImageFile(file)) {
+            const isHeif = isHeicOrHeifFile(file);
+            const ext = isHeif
+              ? (file.type.includes('heif') ? 'heif' : 'heic')
+              : (file.type.split('/')[1] || 'png');
+            const name = file.name && file.name !== 'image.png' ? file.name : `pasted-image-${Date.now()}.${ext}`;
             pastedFiles.push(new File([file], name, { type: file.type }));
           }
         }

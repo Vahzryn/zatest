@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { UploadCloud, CheckCircle, AlertCircle, ExternalLink, Loader2, Download, Settings, Shield } from 'lucide-react';
 import { convertSingleImage } from '../../lib/conversionOrchestrator';
+import { isSupportedImageFile } from '../../lib/utils';
 import { ConversionSettings, TargetFormat } from '../../types';
 
 export default function EmbedWidget() {
@@ -72,8 +73,8 @@ export default function EmbedWidget() {
   };
 
   const handleFileSelection = async (selectedFile: File) => {
-    if (!selectedFile.type.startsWith('image/') && !selectedFile.name.toLowerCase().match(/\.(heic|heif|tif|tiff|bmp|ico)$/)) {
-      setError('Unsupported file type. Please upload a JPEG, PNG, WebP, HEIC, AVIF, TIFF, or BMP image.');
+    if (!isSupportedImageFile(selectedFile) && !selectedFile.name.toLowerCase().match(/\.(tif|tiff)$/)) {
+      setError('Unsupported file type. Please upload a JPEG, PNG, WebP, HEIC, HEIF, AVIF, TIFF, or BMP image.');
       return;
     }
     
@@ -256,13 +257,13 @@ export default function EmbedWidget() {
                 Drop image to compress
               </span>
               <span className="text-[10px] sm:text-[11px] text-zinc-500 font-medium px-1 leading-tight">
-                Supports JPEG, PNG, WebP, HEIC, AVIF
+                Supports JPEG, PNG, WebP, HEIC/HEIF, AVIF
               </span>
               <input 
                 id="zapixal-widget-input"
                 type="file" 
                 className="hidden" 
-                accept="image/*,.heic,.heif,.tif,.tiff,.bmp"
+                accept="image/*,.heic,.heif,image/heic,image/heif,image/heic-sequence,image/heif-sequence,.tif,.tiff,.bmp"
                 onChange={(e) => e.target.files && e.target.files[0] && handleFileSelection(e.target.files[0])}
               />
             </label>

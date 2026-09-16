@@ -4,7 +4,7 @@ import { GlobalControls } from '../GlobalControls';
 import { VirtualFileList } from '../VirtualFileList';
 import { ImageFileItem, ConversionSettings, TargetFormat } from '../../types';
 import { SeoRouteData } from '../../lib/seoEngine';
-import { cn, formatBytes } from '../../lib/utils';
+import { cn, formatBytes, isSupportedImageFile, CONVERTER_FILE_ACCEPT } from '../../lib/utils';
 
 interface QueueSectionProps {
   files: ImageFileItem[];
@@ -102,7 +102,7 @@ export const QueueSection = React.memo<QueueSectionProps>(function QueueSection(
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      const added = Array.from(e.target.files).filter(f => f.type.startsWith('image/') || /\.heic$/i.test(f.name));
+      const added = Array.from(e.target.files).filter(isSupportedImageFile);
       if (added.length > 0 && onFilesAdded) {
         onFilesAdded(added);
       }
@@ -117,7 +117,7 @@ export const QueueSection = React.memo<QueueSectionProps>(function QueueSection(
         ref={fileInputRef}
         onChange={handleFileInputChange}
         multiple
-        accept="image/*,.heic,.heif,.webp,.avif,.bmp,.ico,.png,.jpg,.jpeg,.svg"
+        accept={CONVERTER_FILE_ACCEPT}
         className="hidden"
         id="queue-add-files-input"
       />

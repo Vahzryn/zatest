@@ -1,3 +1,5 @@
+import { isSupportedImageFile } from './utils';
+
 /**
  * Zero-Copy File I/O & Direct Download System
  */
@@ -118,8 +120,8 @@ export function setupClipboardPasteListener(onFilesPasted: (files: File[]) => vo
     if (e.clipboardData && e.clipboardData.files.length > 0) {
       e.preventDefault();
       const files = Array.from(e.clipboardData.files);
-      // Filter for images only
-      const imageFiles = files.filter(f => f.type.startsWith('image/'));
+      // Filter for images only (including HEIC/HEIF)
+      const imageFiles = files.filter(isSupportedImageFile);
       if (imageFiles.length > 0) {
         onFilesPasted(imageFiles);
       }
