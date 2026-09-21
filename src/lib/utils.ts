@@ -79,6 +79,20 @@ export function isSupportedImageFile(file?: { name?: string; type?: string } | n
   return /\.(jpe?g|png|webp|avif|gif|bmp|ico|svg|tiff?)$/i.test(name);
 }
 
+/**
+ * Validates if a file represents a PDF document.
+ * Checks MIME types (application/pdf, application/x-pdf) and file extension (.pdf).
+ */
+export function isPdfFile(file?: { name?: string; type?: string } | null): boolean {
+  if (!file) return false;
+  const mime = (file.type || '').toLowerCase().trim();
+  if (mime === 'application/pdf' || mime === 'application/x-pdf') {
+    return true;
+  }
+  const name = (file.name || '').toLowerCase().trim();
+  return name.endsWith('.pdf');
+}
+
 export function getExtensionFromMime(mimeType: string): string {
   switch (mimeType) {
     case 'image/jpeg':

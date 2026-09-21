@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { 
   FileText, 
   Upload, 
@@ -17,6 +17,7 @@ import { Breadcrumbs } from './Breadcrumbs';
 import { SeoRouteData } from '../lib/seoEngine';
 import { splitPdfFile, parsePageRanges } from '../lib/pdfSplitMerge';
 import { loadPdfDocument, renderPdfPageThumbnail } from '../lib/pdfProcessor';
+import { isPdfFile } from '../lib/utils';
 
 import { SeoGuideContent } from './Converter/SeoGuideContent';
 
@@ -40,37 +41,74 @@ export function PdfSplitterPage({ seoData, onNavigate }: PdfSplitterPageProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragActive, setIsDragActive] = useState(false);
 
+  const activeRequestIdRef = useRef<number>(0);
+  const thumbnailsRef = useRef<Record<number, string>>({});
+  const successResultRef = useRef<{ url: string; filename: string; size: number; count: number } | null>(null);
+
+  const revokeThumbnails = useCallback(() => {
+    Object.values(thumbnailsRef.current).forEach((url) => {
+      if (url && url.startsWith('blob:')) {
+        try {
+          URL.revokeObjectURL(url);
+        } catch (e) {}
+      }
+    });
+    thumbnailsRef.current = {};
+    setThumbnails({});
+  }, []);
+
   const cleanupResults = useCallback(() => {
-    if (successResult?.url && successResult.url.startsWith('blob:')) {
-      URL.revokeObjectURL(successResult.url);
+    if (successResultRef.current?.url && successResultRef.current.url.startsWith('blob:')) {
+      try {
+        URL.revokeObjectURL(successResultRef.current.url);
+      } catch (e) {}
     }
+    successResultRef.current = null;
     setSuccessResult(null);
-  }, [successResult]);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      activeRequestIdRef.current += 1;
+      cleanupResults();
+      revokeThumbnails();
+    };
+  }, [cleanupResults, revokeThumbnails]);
 
   const handleReset = useCallback(() => {
+    activeRequestIdRef.current += 1;
     cleanupResults();
+    revokeThumbnails();
     setFile(null);
     setPdfDoc(null);
     setNumPages(0);
     setRangeInput('');
-    setThumbnails({});
     setErrorMessage(null);
-  }, [cleanupResults]);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  }, [cleanupResults, revokeThumbnails]);
 
   const processPdfFile = useCallback(async (selectedFile: File) => {
-    if (!selectedFile.type.includes('pdf') && !selectedFile.name.toLowerCase().endsWith('.pdf')) {
+    if (!isPdfFile(selectedFile)) {
       setErrorMessage('Please select a valid PDF file (.pdf).');
       return;
     }
 
+    const currentReqId = ++activeRequestIdRef.current;
     setLoadingPdf(true);
     setErrorMessage(null);
     cleanupResults();
+    revokeThumbnails();
     setFile(selectedFile);
 
     try {
       const buffer = await selectedFile.arrayBuffer();
+      if (activeRequestIdRef.current !== currentReqId) return;
+
       const doc = await loadPdfDocument(buffer);
+      if (activeRequestIdRef.current !== currentReqId) return;
+
       setPdfDoc(doc);
       setNumPages(doc.numPages);
       setRangeInput(`1-${Math.min(doc.numPages, 3)}`);
@@ -79,17 +117,29 @@ export function PdfSplitterPage({ seoData, onNavigate }: PdfSplitterPageProps) {
       const limit = Math.min(doc.numPages, 30);
       for (let i = 1; i <= limit; i++) {
         renderPdfPageThumbnail(doc, i, 160).then((url) => {
+          if (activeRequestIdRef.current !== currentReqId) {
+            if (url && url.startsWith('blob:')) {
+              try {
+                URL.revokeObjectURL(url);
+              } catch (e) {}
+            }
+            return;
+          }
+          thumbnailsRef.current[i] = url;
           setThumbnails((prev) => ({ ...prev, [i]: url }));
         }).catch(() => {});
       }
     } catch (err: any) {
+      if (activeRequestIdRef.current !== currentReqId) return;
       setErrorMessage(err.message || 'Failed to parse PDF document.');
       setFile(null);
       setPdfDoc(null);
     } finally {
-      setLoadingPdf(false);
+      if (activeRequestIdRef.current === currentReqId) {
+        setLoadingPdf(false);
+      }
     }
-  }, [cleanupResults]);
+  }, [cleanupResults, revokeThumbnails]);
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -110,27 +160,39 @@ export function PdfSplitterPage({ seoData, onNavigate }: PdfSplitterPageProps) {
   const handleSplit = async () => {
     if (!file || !pdfDoc) return;
 
+    const currentReqId = activeRequestIdRef.current;
     setIsProcessing(true);
     setErrorMessage(null);
-    setSuccessResult(null);
+    cleanupResults();
 
     try {
       const pageNumbers = parsePageRanges(rangeInput, numPages);
       const splitBytes = await splitPdfFile(file, pageNumbers);
+      if (activeRequestIdRef.current !== currentReqId) return;
+
       const blob = new Blob([splitBytes], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
+      if (activeRequestIdRef.current !== currentReqId) {
+        URL.revokeObjectURL(url);
+        return;
+      }
       const filename = `${file.name.replace(/\.[^/.]+$/, '')}-extracted-${pageNumbers.length}pages.pdf`;
 
-      setSuccessResult({
+      const result = {
         url,
         filename,
         size: blob.size,
         count: pageNumbers.length,
-      });
+      };
+      successResultRef.current = result;
+      setSuccessResult(result);
     } catch (err: any) {
+      if (activeRequestIdRef.current !== currentReqId) return;
       setErrorMessage(err.message || 'Failed to split PDF document.');
     } finally {
-      setIsProcessing(false);
+      if (activeRequestIdRef.current === currentReqId) {
+        setIsProcessing(false);
+      }
     }
   };
 
@@ -181,7 +243,7 @@ export function PdfSplitterPage({ seoData, onNavigate }: PdfSplitterPageProps) {
 
               <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 pt-1">
                 <button
-                  onClick={() => setSuccessResult(null)}
+                  onClick={cleanupResults}
                   className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors cursor-pointer"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />

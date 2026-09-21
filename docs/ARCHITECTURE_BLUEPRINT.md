@@ -14,8 +14,8 @@ Zapixal is a client-side, privacy-focused web utility for image compression and 
    The Cloudflare serverless function (`functions/api/feedback.ts`) proxies user rating submissions, text feedback, and optional diagnostics. The Discord webhook secret is strictly isolated on the Cloudflare server environment (`env.DISCORD_WEBHOOK_URL`) and is never sent to or exposed within browser client bundles or public assets.
 
 3. **EXTERNAL EMBEDS & INTEGRATION SURFACES**:
-   - `public/widget.js`: Lightweight standalone JavaScript helper snippet that renders a compact callout box with a direct link to open `https://zapixal.com`.
-   - `public/zapixal-web-component.js`: Standalone custom HTML element (`<zapixal-blog-tool>`) that provides a Shadow DOM drag-and-drop image optimizer for third-party blogs or site embeds without requiring iframes.
+   - `/embed`: Lightweight, sandboxed iframe widget endpoint (`src/components/Widget/EmbedWidget.tsx`) supporting URL parameters (`format`, `quality`, `theme`) for zero-dependency third-party embedding.
+   - `/widget`: Interactive Embed Configurator and live code generator (`src/components/Widget/WidgetDocumentationPage.tsx`).
 
 ## 1. Core WASM & Worker Pipeline (Zero GC Overhead)
 - **Dynamic Imports**: WASM-backed npm packages (e.g., `@jsquash/jpeg`, `@jsquash/avif`, `imagequant`, `upng-js`) are dynamically imported via JS `import()` on first use inside each worker.
@@ -36,7 +36,7 @@ Zapixal is a client-side, privacy-focused web utility for image compression and 
 - **Clipboard & DataTransfer**: Global paste listeners and recursive directory walking (`DataTransferItem.webkitGetAsEntry()`) allow seamless drag-and-drop of entire folders without freezing the UI.
 
 ## 4. Security Headers, Web Standards & UX Architecture
-- **Security Headers**: `vercel.json` and Cloudflare configuration apply `Cross-Origin-Opener-Policy: same-origin` and `Cross-Origin-Embedder-Policy: require-corp` to unlock `SharedArrayBuffer` for high-performance multithreading.
+- **Security Headers**: Cloudflare configuration (`public/_headers`) applies `Cross-Origin-Opener-Policy: same-origin` and `Cross-Origin-Embedder-Policy: require-corp` to unlock `SharedArrayBuffer` for high-performance multithreading.
 - **Client-Side Storage**: Local settings and conversion preferences are stored safely using standard browser `localStorage` and `IndexedDB`.
 - **Cloudflare Functions Backend**: Simple, serverless API endpoint (`functions/api/feedback.ts`) for user feedback submission with rate limiting, origin CORS enforcement, and Discord webhook integration.
 - **Web Standards & UX Architecture**: Application metadata and theme configurations are served via standard HTML head tags and web standards.

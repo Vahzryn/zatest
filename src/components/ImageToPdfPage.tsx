@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { 
   FileImage, 
   Upload, 
@@ -34,6 +34,15 @@ interface ImageItem {
   previewUrl: string;
 }
 
+const isSupportedImageForPdf = (file: File): boolean => {
+  const mime = (file.type || '').toLowerCase().trim();
+  if (mime === 'image/jpeg' || mime === 'image/jpg' || mime === 'image/png') {
+    return true;
+  }
+  const name = (file.name || '').toLowerCase().trim();
+  return /\.(jpe?g|png)$/i.test(name);
+};
+
 export const ImageToPdfPage: React.FC<ImageToPdfPageProps> = ({ seoData, onNavigate }) => {
   const [items, setItems] = useState<ImageItem[]>([]);
   const [dragActive, setDragActive] = useState(false);
@@ -42,17 +51,64 @@ export const ImageToPdfPage: React.FC<ImageToPdfPageProps> = ({ seoData, onNavig
   const [successResult, setSuccessResult] = useState<{ url: string, filename: string, size: number } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const itemsRef = useRef<ImageItem[]>([]);
+  const successResultRef = useRef<{ url: string, filename: string, size: number } | null>(null);
+  const activeProcessIdRef = useRef<number>(0);
+
   const [mergeMode, setMergeMode] = useState<'single' | 'multiple'>('single');
   const [pageSize, setPageSize] = useState<'fit' | 'a4'>('fit');
 
-  const handleFilesAdded = useCallback((newFiles: FileList | File[]) => {
-    setErrorMessage(null);
-    setSuccessResult(null);
+  const cleanupItems = useCallback(() => {
+    itemsRef.current.forEach(item => {
+      if (item.previewUrl && item.previewUrl.startsWith('blob:')) {
+        try {
+          URL.revokeObjectURL(item.previewUrl);
+        } catch (e) {}
+      }
+    });
+    itemsRef.current = [];
+    setItems([]);
+  }, []);
 
-    const validFiles = Array.from(newFiles).filter(f => f.type.startsWith('image/'));
-    
+  const cleanupSuccessResult = useCallback(() => {
+    if (successResultRef.current?.url && successResultRef.current.url.startsWith('blob:')) {
+      try {
+        URL.revokeObjectURL(successResultRef.current.url);
+      } catch (e) {}
+    }
+    successResultRef.current = null;
+    setSuccessResult(null);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      activeProcessIdRef.current += 1;
+      cleanupSuccessResult();
+      cleanupItems();
+    };
+  }, [cleanupSuccessResult, cleanupItems]);
+
+  const handleFilesAdded = useCallback((newFiles: FileList | File[]) => {
+    cleanupSuccessResult();
+
+    const incomingFiles = Array.from(newFiles);
+    const validFiles = incomingFiles.filter(isSupportedImageForPdf);
+    const rejectedFiles = incomingFiles.filter(f => !isSupportedImageForPdf(f));
+
+    if (rejectedFiles.length > 0) {
+      setErrorMessage(
+        rejectedFiles.length === 1
+          ? `"${rejectedFiles[0].name}" was skipped. Only JPG and PNG image files are supported for PDF conversion.`
+          : `${rejectedFiles.length} files were skipped because only JPG and PNG images are supported for PDF conversion.`
+      );
+    } else {
+      setErrorMessage(null);
+    }
+
     if (validFiles.length === 0) {
-      setErrorMessage('Please select valid image files (JPG, PNG, WebP, etc).');
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
       return;
     }
 
@@ -62,14 +118,28 @@ export const ImageToPdfPage: React.FC<ImageToPdfPageProps> = ({ seoData, onNavig
       previewUrl: URL.createObjectURL(file)
     }));
 
-    setItems(prev => [...prev, ...newItems]);
-  }, []);
+    setItems(prev => {
+      const updated = [...prev, ...newItems];
+      itemsRef.current = updated;
+      return updated;
+    });
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  }, [cleanupSuccessResult]);
 
   const removeItem = (id: string) => {
     setItems(prev => {
       const item = prev.find(i => i.id === id);
-      if (item) URL.revokeObjectURL(item.previewUrl);
-      return prev.filter(i => i.id !== id);
+      if (item?.previewUrl && item.previewUrl.startsWith('blob:')) {
+        try {
+          URL.revokeObjectURL(item.previewUrl);
+        } catch (e) {}
+      }
+      const updated = prev.filter(i => i.id !== id);
+      itemsRef.current = updated;
+      return updated;
     });
   };
 
@@ -80,29 +150,37 @@ export const ImageToPdfPage: React.FC<ImageToPdfPageProps> = ({ seoData, onNavig
     } else if (direction === 'down' && index < newItems.length - 1) {
       [newItems[index + 1], newItems[index]] = [newItems[index], newItems[index + 1]];
     }
+    itemsRef.current = newItems;
     setItems(newItems);
   };
 
   const processImagesToPdf = async () => {
     if (items.length === 0) return;
     
+    const currentProcessId = ++activeProcessIdRef.current;
     setIsProcessing(true);
     setErrorMessage(null);
+    cleanupSuccessResult();
 
     try {
       if (mergeMode === 'single') {
         const pdfDoc = await PDFDocument.create();
 
         for (const item of items) {
+          if (activeProcessIdRef.current !== currentProcessId) return;
           const imageBytes = await item.file.arrayBuffer();
           let image;
           
-          if (item.file.type === 'image/jpeg' || item.file.type === 'image/jpg') {
+          if (item.file.type === 'image/jpeg' || item.file.type === 'image/jpg' || /\.(jpe?g)$/i.test(item.file.name)) {
             image = await pdfDoc.embedJpg(imageBytes);
-          } else if (item.file.type === 'image/png') {
+          } else if (item.file.type === 'image/png' || /\.png$/i.test(item.file.name)) {
             image = await pdfDoc.embedPng(imageBytes);
           } else {
-            throw new Error(`Format not supported for direct PDF embedding: ${item.file.type}. Please convert to JPG/PNG first.`);
+            try {
+              image = await pdfDoc.embedJpg(imageBytes);
+            } catch {
+              image = await pdfDoc.embedPng(imageBytes);
+            }
           }
 
           const { width, height } = image.scale(1);
@@ -126,29 +204,42 @@ export const ImageToPdfPage: React.FC<ImageToPdfPageProps> = ({ seoData, onNavig
         }
 
         const pdfBytes = await pdfDoc.save();
+        if (activeProcessIdRef.current !== currentProcessId) return;
+
         const blob = new Blob([pdfBytes], { type: 'application/pdf' });
         const url = URL.createObjectURL(blob);
+        if (activeProcessIdRef.current !== currentProcessId) {
+          URL.revokeObjectURL(url);
+          return;
+        }
         
-        setSuccessResult({
+        const result = {
           url,
-          filename: items.length === 1 ? `${items[0].file.name.split('.')[0]}.pdf` : `Merged_Images_${Date.now()}.pdf`,
+          filename: items.length === 1 ? `${items[0].file.name.replace(/\.[^/.]+$/, '')}.pdf` : `Merged_Images_${Date.now()}.pdf`,
           size: blob.size
-        });
+        };
+        successResultRef.current = result;
+        setSuccessResult(result);
       } else {
         // Multiple PDFs (ZIP)
         const zip = new JSZip();
         
         for (const item of items) {
+          if (activeProcessIdRef.current !== currentProcessId) return;
           const pdfDoc = await PDFDocument.create();
           const imageBytes = await item.file.arrayBuffer();
           let image;
           
-          if (item.file.type === 'image/jpeg' || item.file.type === 'image/jpg') {
+          if (item.file.type === 'image/jpeg' || item.file.type === 'image/jpg' || /\.(jpe?g)$/i.test(item.file.name)) {
             image = await pdfDoc.embedJpg(imageBytes);
-          } else if (item.file.type === 'image/png') {
+          } else if (item.file.type === 'image/png' || /\.png$/i.test(item.file.name)) {
             image = await pdfDoc.embedPng(imageBytes);
           } else {
-            throw new Error(`Format not supported: ${item.file.type}. Please use JPG/PNG.`);
+            try {
+              image = await pdfDoc.embedJpg(imageBytes);
+            } catch {
+              image = await pdfDoc.embedPng(imageBytes);
+            }
           }
 
           const { width, height } = image.scale(1);
@@ -168,24 +259,35 @@ export const ImageToPdfPage: React.FC<ImageToPdfPageProps> = ({ seoData, onNavig
           }
 
           const pdfBytes = await pdfDoc.save();
-          const filename = `${item.file.name.split('.')[0]}.pdf`;
+          const filename = `${item.file.name.replace(/\.[^/.]+$/, '')}.pdf`;
           zip.file(filename, pdfBytes);
         }
         
         const zipBlob = await zip.generateAsync({ type: 'blob' });
+        if (activeProcessIdRef.current !== currentProcessId) return;
+
         const url = URL.createObjectURL(zipBlob);
+        if (activeProcessIdRef.current !== currentProcessId) {
+          URL.revokeObjectURL(url);
+          return;
+        }
         
-        setSuccessResult({
+        const result = {
           url,
           filename: `Converted_PDFs_${Date.now()}.zip`,
           size: zipBlob.size
-        });
+        };
+        successResultRef.current = result;
+        setSuccessResult(result);
       }
     } catch (err: any) {
+      if (activeProcessIdRef.current !== currentProcessId) return;
       console.error(err);
       setErrorMessage(err.message || 'Failed to convert images to PDF. Make sure they are standard JPG or PNG files.');
     } finally {
-      setIsProcessing(false);
+      if (activeProcessIdRef.current === currentProcessId) {
+        setIsProcessing(false);
+      }
     }
   };
 
@@ -381,8 +483,13 @@ export const ImageToPdfPage: React.FC<ImageToPdfPageProps> = ({ seoData, onNavig
               <div className="flex items-center justify-center gap-4 pt-1">
                 <button
                   onClick={() => {
-                    setSuccessResult(null);
-                    setItems([]);
+                    activeProcessIdRef.current += 1;
+                    cleanupSuccessResult();
+                    cleanupItems();
+                    setErrorMessage(null);
+                    if (fileInputRef.current) {
+                      fileInputRef.current.value = '';
+                    }
                   }}
                   className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors cursor-pointer"
                 >

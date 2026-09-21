@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { 
   FileText, 
   Upload, 
@@ -18,6 +18,7 @@ import { Breadcrumbs } from './Breadcrumbs';
 import { SeoRouteData } from '../lib/seoEngine';
 import { mergePdfFiles } from '../lib/pdfSplitMerge';
 import { loadPdfDocument } from '../lib/pdfProcessor';
+import { isPdfFile } from '../lib/utils';
 import { SeoGuideContent } from './Converter/SeoGuideContent';
 
 interface PdfMergerPageProps {
@@ -40,15 +41,34 @@ export function PdfMergerPage({ seoData, onNavigate }: PdfMergerPageProps) {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragActive, setIsDragActive] = useState(false);
+  const successResultRef = useRef<{ url: string; filename: string; size: number } | null>(null);
+  const activeMergeIdRef = useRef<number>(0);
+
+  const cleanupSuccessResult = useCallback(() => {
+    if (successResultRef.current?.url && successResultRef.current.url.startsWith('blob:')) {
+      try {
+        URL.revokeObjectURL(successResultRef.current.url);
+      } catch (e) {}
+    }
+    successResultRef.current = null;
+    setSuccessResult(null);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      activeMergeIdRef.current += 1;
+      cleanupSuccessResult();
+    };
+  }, [cleanupSuccessResult]);
 
   const handleFilesAdded = useCallback(async (newFiles: FileList | File[]) => {
     setErrorMessage(null);
-    setSuccessResult(null);
+    cleanupSuccessResult();
 
     const validFiles: PdfItem[] = [];
     for (let i = 0; i < newFiles.length; i++) {
       const f = newFiles[i];
-      if (!f.type.includes('pdf') && !f.name.toLowerCase().endsWith('.pdf')) {
+      if (!isPdfFile(f)) {
         setErrorMessage(`File "${f.name}" is not a valid PDF file.`);
         continue;
       }
@@ -57,6 +77,10 @@ export function PdfMergerPage({ seoData, onNavigate }: PdfMergerPageProps) {
         file: f,
         loadingInfo: true,
       });
+    }
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
 
     if (validFiles.length === 0) return;
@@ -78,7 +102,7 @@ export function PdfMergerPage({ seoData, onNavigate }: PdfMergerPageProps) {
         );
       }
     });
-  }, []);
+  }, [cleanupSuccessResult]);
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -108,7 +132,7 @@ export function PdfMergerPage({ seoData, onNavigate }: PdfMergerPageProps) {
 
   const removeItem = (id: string) => {
     setItems((prev) => prev.filter((item) => item.id !== id));
-    setSuccessResult(null);
+    cleanupSuccessResult();
   };
 
   const handleMerge = async () => {
@@ -117,26 +141,38 @@ export function PdfMergerPage({ seoData, onNavigate }: PdfMergerPageProps) {
       return;
     }
 
+    const currentMergeId = ++activeMergeIdRef.current;
     setIsProcessing(true);
     setErrorMessage(null);
-    setSuccessResult(null);
+    cleanupSuccessResult();
 
     try {
       const filesToMerge = items.map((it) => it.file);
       const mergedBytes = await mergePdfFiles(filesToMerge);
+      if (activeMergeIdRef.current !== currentMergeId) return;
+
       const blob = new Blob([mergedBytes], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
+      if (activeMergeIdRef.current !== currentMergeId) {
+        URL.revokeObjectURL(url);
+        return;
+      }
       const filename = `merged-${Date.now()}.pdf`;
 
-      setSuccessResult({
+      const result = {
         url,
         filename,
         size: blob.size,
-      });
+      };
+      successResultRef.current = result;
+      setSuccessResult(result);
     } catch (err: any) {
+      if (activeMergeIdRef.current !== currentMergeId) return;
       setErrorMessage(err.message || 'Failed to merge PDF files.');
     } finally {
-      setIsProcessing(false);
+      if (activeMergeIdRef.current === currentMergeId) {
+        setIsProcessing(false);
+      }
     }
   };
 
@@ -188,8 +224,13 @@ export function PdfMergerPage({ seoData, onNavigate }: PdfMergerPageProps) {
               <div className="flex items-center justify-center gap-4 pt-1">
                 <button
                   onClick={() => {
-                    setSuccessResult(null);
+                    activeMergeIdRef.current += 1;
+                    cleanupSuccessResult();
                     setItems([]);
+                    setErrorMessage(null);
+                    if (fileInputRef.current) {
+                      fileInputRef.current.value = '';
+                    }
                   }}
                   className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors cursor-pointer"
                 >

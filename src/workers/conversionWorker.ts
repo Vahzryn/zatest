@@ -23,7 +23,23 @@ function isSameFormat(mime?: string, name?: string, targetFormat?: string): bool
 }
 
 self.onmessage = async (e: MessageEvent) => {
-  const { id, imageBitmap, settings, targetDim, rotation = 0, originalSize = 0, originalFileName, originalFileType, blurRegions, blurMode } = e.data;
+  const { 
+    id, 
+    imageBitmap, 
+    settings, 
+    targetDim, 
+    rotation = 0, 
+    originalSize = 0, 
+    originalFileName, 
+    originalFileType, 
+    isJpegSource: explicitIsJpegSource,
+    blurRegions, 
+    blurMode 
+  } = e.data;
+
+  const isJpegSource = typeof explicitIsJpegSource === 'boolean'
+    ? explicitIsJpegSource
+    : ((originalFileType && originalFileType.toLowerCase() === 'image/jpeg') || (originalFileName && /\.jpe?g$/i.test(originalFileName)));
 
   try {
     const { targetFormat, quality } = settings;
@@ -120,7 +136,7 @@ self.onmessage = async (e: MessageEvent) => {
         const adaptiveRes = await encodeWebpAdaptive(canvas, {
           initialQuality: quality,
           originalSize,
-          isJpegSource: true,
+          isJpegSource: !!isJpegSource,
         });
         blob = adaptiveRes.blob;
       } else {

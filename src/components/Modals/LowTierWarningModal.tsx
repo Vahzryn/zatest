@@ -16,14 +16,27 @@ export function LowTierWarningModal({
   onSelectDirectoryAndConvert,
   hasDirectoryPicker = true,
 }: LowTierWarningModalProps) {
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
     <div 
+      onClick={onClose}
       className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-xs animate-in fade-in duration-200"
       id="low-tier-warning-overlay"
     >
       <div 
+        onClick={(e) => e.stopPropagation()}
         className="relative bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl sm:rounded-2xl shadow-xl max-w-md w-full mx-2.5 sm:mx-3 overflow-hidden animate-in zoom-in-95 duration-200"
         id="low-tier-warning-card"
       >

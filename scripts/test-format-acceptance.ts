@@ -7,9 +7,11 @@ import {
   HEIC_HEIF_MIME_TYPES,
 } from '../src/lib/utils';
 import { validateMagicBytes } from '../src/lib/codecs';
+import rawBenchmarkData from '../src/data/benchmarks/compression-2026.json';
+import { validateBenchmarkData } from '../src/data/benchmarks/validation';
 
 console.log('====================================================');
-console.log(' Zapixal: HEIF / HEIC Format Acceptance Test Suite ');
+console.log(' Zapixal: Format Acceptance & Benchmark Test Suite  ');
 console.log('====================================================\n');
 
 let passedTests = 0;
@@ -164,6 +166,14 @@ runTest('Correctly recognizes binary ISO Base Media File Format brands for HEIC/
   const hevcResult = validateMagicBytes(createFtypHeader('hevc'));
   assert.equal(hevcResult.valid, true);
   assert.equal(hevcResult.format, 'heic');
+});
+
+// 13. Compression benchmark dataset schema and metrics validation
+runTest('Validates compression benchmark dataset schema and deterministic metrics', () => {
+  assert.equal(validateBenchmarkData(rawBenchmarkData as any), true);
+  assert.equal(rawBenchmarkData.results.length > 0, true);
+  assert.equal(rawBenchmarkData.dataset.width, 956);
+  assert.equal(rawBenchmarkData.dataset.height, 845);
 });
 
 console.log(`\n====================================================`);

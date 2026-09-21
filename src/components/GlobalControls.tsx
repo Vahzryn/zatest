@@ -33,6 +33,11 @@ function GlobalControlsComponent({
 }: GlobalControlsProps) {
   const [localQuality, setLocalQuality] = React.useState(settings.quality);
   const [localMaxKB, setLocalMaxKB] = React.useState(settings.targetMaxKB?.toString() || '');
+  const [compressionStrategy, setCompressionStrategy] = React.useState<'quality' | 'target' | 'lossless'>(() => {
+    if (settings.targetMaxKB !== undefined && settings.targetMaxKB > 0) return 'target';
+    if (settings.quality > 0.95) return 'lossless';
+    return 'quality';
+  });
   const [showAdvanced, setShowAdvanced] = React.useState(false);
   const debounceTimerRef = React.useRef<NodeJS.Timeout | null>(null);
 
@@ -51,7 +56,10 @@ function GlobalControlsComponent({
   }, [settings.quality]);
 
   React.useEffect(() => {
-    setLocalMaxKB(settings.targetMaxKB?.toString() || '');
+    if (settings.targetMaxKB !== undefined && settings.targetMaxKB > 0) {
+      setLocalMaxKB(settings.targetMaxKB.toString());
+      setCompressionStrategy('target');
+    }
   }, [settings.targetMaxKB]);
 
   React.useEffect(() => {
@@ -88,7 +96,16 @@ function GlobalControlsComponent({
     }
     debounceTimerRef.current = setTimeout(() => {
       onChange({ ...settings, targetMaxKB: !isNaN(parsed) && parsed > 0 ? parsed : undefined });
-    }, 500);
+    }, 400);
+  };
+
+  const handleMaxKBBlur = () => {
+    const parsed = parseInt(localMaxKB, 10);
+    if (isNaN(parsed) || parsed <= 0) {
+      const fallback = 200;
+      setLocalMaxKB(String(fallback));
+      onChange({ ...settings, targetMaxKB: fallback });
+    }
   };
 
   const handleQualityCommit = (val: number) => {
@@ -110,6 +127,13 @@ function GlobalControlsComponent({
     setMode(newMode);
     if (newMode === 'convert') {
       onChange({ ...settings, targetMaxKB: undefined });
+    } else {
+      if (compressionStrategy === 'target') {
+        const parsed = parseInt(localMaxKB, 10);
+        const kb = !isNaN(parsed) && parsed > 0 ? parsed : 200;
+        setLocalMaxKB(String(kb));
+        onChange({ ...settings, targetMaxKB: kb });
+      }
     }
   };
 
@@ -514,11 +538,15 @@ function GlobalControlsComponent({
                 <div className="relative inline-block min-w-[140px] w-full sm:w-auto">
                   <select
                     disabled={disabled}
-                    value={settings.targetMaxKB ? 'target' : (localQuality > 0.95 ? 'lossless' : 'quality')}
+                    value={compressionStrategy}
                     onChange={(e) => {
-                      const val = e.target.value;
+                      const val = e.target.value as 'quality' | 'target' | 'lossless';
+                      setCompressionStrategy(val);
                       if (val === 'target') {
-                        handleMaxKBChange(localMaxKB || '200');
+                        const parsed = parseInt(localMaxKB, 10);
+                        const kb = !isNaN(parsed) && parsed > 0 ? parsed : 200;
+                        setLocalMaxKB(String(kb));
+                        onChange({ ...settings, targetMaxKB: kb });
                       } else if (val === 'lossless') {
                         handleQualityChange(1);
                         onChange({ ...settings, targetMaxKB: undefined, quality: 1 });
@@ -539,7 +567,7 @@ function GlobalControlsComponent({
                 </div>
               </div>
 
-              {settings.targetMaxKB !== undefined ? (
+              {compressionStrategy === 'target' ? (
                 <div className="flex flex-col gap-1 flex-1 w-full">
                   <label className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
                     Max File Size Limit
@@ -552,6 +580,7 @@ function GlobalControlsComponent({
                       disabled={disabled}
                       value={localMaxKB}
                       onChange={(e) => handleMaxKBChange(e.target.value)}
+                      onBlur={handleMaxKBBlur}
                       className="w-full sm:w-28 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white text-sm font-medium rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     />
                     <span className="text-xs font-semibold text-zinc-500">KB</span>

@@ -291,7 +291,7 @@ export function useAppRouting({ initialPath, initialSeoData, setSettings, touche
         window.history.replaceState(null, '', target);
         setCurrentPath(target);
       } else {
-        setCurrentPath(path);
+        setCurrentPath(normalizedPath);
       }
     };
     

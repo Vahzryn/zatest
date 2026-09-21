@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { 
   FileText, 
   Upload, 
@@ -15,6 +15,7 @@ import {
 import { Breadcrumbs } from './Breadcrumbs';
 import { SeoRouteData } from '../lib/seoEngine';
 import { loadPdfDocument, renderPdfPageToJpg } from '../lib/pdfProcessor';
+import { isPdfFile } from '../lib/utils';
 import { SeoGuideContent } from './Converter/SeoGuideContent';
 
 function formatBytes(bytes: number): string {
@@ -47,29 +48,57 @@ export function PdfCompressorPage({ seoData, onNavigate }: PdfCompressorPageProp
   
   const [isDragActive, setIsDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const successResultRef = useRef<{ url: string; filename: string; originalSize: number; newSize: number } | null>(null);
+  const activeCompressIdRef = useRef<number>(0);
+
+  const cleanupSuccessResult = useCallback(() => {
+    if (successResultRef.current?.url && successResultRef.current.url.startsWith('blob:')) {
+      try {
+        URL.revokeObjectURL(successResultRef.current.url);
+      } catch (e) {}
+    }
+    successResultRef.current = null;
+    setSuccessResult(null);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      activeCompressIdRef.current += 1;
+      cleanupSuccessResult();
+    };
+  }, [cleanupSuccessResult]);
 
   const handleFile = async (selectedFile: File) => {
-    if (selectedFile.type !== 'application/pdf') {
-      setErrorMessage('Please upload a valid PDF file.');
+    if (!isPdfFile(selectedFile)) {
+      setErrorMessage('Please upload a valid PDF file (.pdf).');
+      if (fileInputRef.current) fileInputRef.current.value = '';
       return;
     }
 
+    const currentId = ++activeCompressIdRef.current;
+    cleanupSuccessResult();
     setErrorMessage(null);
-    setSuccessResult(null);
     setFile(selectedFile);
     setLoadingPdf(true);
 
     try {
       const arrayBuffer = await selectedFile.arrayBuffer();
+      if (activeCompressIdRef.current !== currentId) return;
+
       const doc = await loadPdfDocument(arrayBuffer);
+      if (activeCompressIdRef.current !== currentId) return;
+
       setPdfDoc(doc);
       setNumPages(doc.numPages);
     } catch (err: any) {
+      if (activeCompressIdRef.current !== currentId) return;
       setErrorMessage(err.message || 'Failed to load PDF.');
       setFile(null);
       setPdfDoc(null);
     } finally {
-      setLoadingPdf(false);
+      if (activeCompressIdRef.current === currentId) {
+        setLoadingPdf(false);
+      }
     }
   };
 
@@ -141,19 +170,28 @@ export function PdfCompressorPage({ seoData, onNavigate }: PdfCompressorPageProp
         setProgressPercent(Math.round((i / numPages) * 100));
       }
 
+      const currentId = activeCompressIdRef.current;
       const compressedBlob = pdf.output('blob');
+      if (activeCompressIdRef.current !== currentId) return;
+
       const url = URL.createObjectURL(compressedBlob);
+      if (activeCompressIdRef.current !== currentId) {
+        URL.revokeObjectURL(url);
+        return;
+      }
       
       const dotIdx = file.name.lastIndexOf('.');
       const baseName = dotIdx >= 0 ? file.name.substring(0, dotIdx) : file.name;
       const newFilename = `${baseName}_compressed.pdf`;
 
-      setSuccessResult({
+      const result = {
         url,
         filename: newFilename,
         originalSize: file.size,
         newSize: compressedBlob.size
-      });
+      };
+      successResultRef.current = result;
+      setSuccessResult(result);
       
     } catch (err: any) {
       setErrorMessage(err.message || 'An error occurred during compression.');
@@ -163,13 +201,16 @@ export function PdfCompressorPage({ seoData, onNavigate }: PdfCompressorPageProp
   };
 
   const handleReset = () => {
+    activeCompressIdRef.current += 1;
+    cleanupSuccessResult();
     setFile(null);
     setPdfDoc(null);
     setNumPages(0);
     setErrorMessage(null);
-    if (successResult?.url) URL.revokeObjectURL(successResult.url);
-    setSuccessResult(null);
     setProgressPercent(0);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   return (
@@ -218,7 +259,7 @@ export function PdfCompressorPage({ seoData, onNavigate }: PdfCompressorPageProp
               <input
                 ref={fileInputRef}
                 type="file"
-                accept="application/pdf"
+                accept="application/pdf,.pdf"
                 className="hidden"
                 onChange={(e) => {
                   const f = e.target.files?.[0];

@@ -24,7 +24,7 @@ export default function BenchmarkPage({ onNavigate }: { onNavigate: (path: strin
   };
 
   const handleCopyCli = () => {
-    navigator.clipboard.writeText('npx tsx scripts/run-benchmarks.ts');
+    navigator.clipboard.writeText('npm test');
     setCopiedCli(true);
     setTimeout(() => setCopiedCli(false), 2000);
   };
@@ -294,10 +294,10 @@ export default function BenchmarkPage({ onNavigate }: { onNavigate: (path: strin
                 Reproducibility
               </h3>
               <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mb-4 leading-relaxed">
-                These benchmarks are fully deterministic. Developers can verify these exact numbers by running the benchmark CLI locally in any Node.js runtime:
+                These benchmarks and codec validation tests are fully deterministic. Developers can verify the benchmark dataset schema and codec acceptance test suite locally:
               </p>
               <div className="bg-zinc-950 text-zinc-200 p-3.5 rounded-xl text-xs font-mono flex items-center justify-between border border-zinc-800">
-                <code>npx tsx scripts/run-benchmarks.ts</code>
+                <code>npm test</code>
                 <button
                   type="button"
                   onClick={handleCopyCli}

@@ -23,6 +23,16 @@ export function CompareModal({ item, onClose }: CompareModalProps) {
     };
   }, [item.file]);
 
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   const handleMove = (clientX: number) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
@@ -48,8 +58,14 @@ export function CompareModal({ item, onClose }: CompareModalProps) {
     : 0;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative flex flex-col w-full max-w-4xl h-[95vh] sm:h-auto max-h-[95vh] sm:max-h-[90vh] bg-white dark:bg-zinc-950 rounded-2xl sm:rounded-3xl shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
+    <div 
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+    >
+      <div 
+        onClick={(e) => e.stopPropagation()}
+        className="relative flex flex-col w-full max-w-4xl h-[95vh] sm:h-auto max-h-[95vh] sm:max-h-[90vh] bg-white dark:bg-zinc-950 rounded-2xl sm:rounded-3xl shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden"
+      >
         
         {/* Header */}
         <div className="flex items-center justify-between p-4 sm:p-6 border-b border-zinc-200 dark:border-zinc-800">
@@ -66,6 +82,7 @@ export function CompareModal({ item, onClose }: CompareModalProps) {
           </div>
           <button
             onClick={onClose}
+            aria-label="Close comparison inspector"
             className="p-1.5 sm:p-2.5 transition-all text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full cursor-pointer"
           >
             <X className="w-4.5 h-4.5 sm:w-5 sm:h-5" />

@@ -41,9 +41,25 @@ export function FileEditModal({
   const rotation = item.rotation || 0;
   const isComplete = item.status === 'success';
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative flex flex-col w-full max-w-lg bg-white dark:bg-zinc-950 rounded-2xl sm:rounded-3xl shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
+    <div 
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+    >
+      <div 
+        onClick={(e) => e.stopPropagation()}
+        className="relative flex flex-col w-full max-w-lg bg-white dark:bg-zinc-950 rounded-2xl sm:rounded-3xl shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden"
+      >
         
         {/* Header */}
         <div className="flex items-center justify-between p-3.5 sm:p-5 border-b border-zinc-200 dark:border-zinc-800">

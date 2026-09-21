@@ -1,9 +1,9 @@
 {
   "name": "zapixal",
   "version": "1.0.0",
+  "private": true,
   "description": "Zapixal - Free Private Image Converter & Compressor. Client-Side local processing.",
   "type": "module",
-  "main": "public/zapixal-web-component.js",
   "keywords": [
     "image-converter",
     "image-compressor",

@@ -44,7 +44,7 @@ export function HeaderNavbar({
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-zinc-200/80 dark:border-zinc-800 bg-white/80 dark:bg-black/70 backdrop-blur-xl transition-all duration-300 shadow-sm dark:shadow-none">
-      <div className="flex h-14 sm:h-16 items-center justify-between px-3 sm:px-6 max-w-6xl mx-auto gap-2">
+      <div className="flex h-14 sm:h-16 items-center justify-between px-2 sm:px-6 max-w-6xl mx-auto gap-1.5 sm:gap-2">
         {/* Left: Brand Identity + In-Browser/Offline Badge */}
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <button 
@@ -128,8 +128,9 @@ export function HeaderNavbar({
           {onOpenDonate && (
             <button
               onClick={onOpenDonate}
-              className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium text-pink-600 dark:text-pink-400 hover:bg-pink-50 dark:hover:bg-pink-950/40 rounded-lg transition-colors cursor-pointer shrink-0"
+              className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-1.5 text-xs font-medium text-pink-600 dark:text-pink-400 hover:bg-pink-50 dark:hover:bg-pink-950/40 rounded-lg transition-colors cursor-pointer shrink-0"
               title="Support Zapixal development"
+              aria-label="Support Zapixal development"
             >
               <Heart className="w-3.5 h-3.5 fill-pink-500/20" />
               <span className="hidden md:inline">Support</span>

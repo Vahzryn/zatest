@@ -61,25 +61,26 @@ Run TypeScript checks:
 npm run lint
 ```
 
-##Embeds
+## Embeds
 
-Zapixal provides optional public integrations for websites and blogs.
+Zapixal provides an embeddable client-side image compression widget for websites and blogs.
 
-### Web Component
-
-```html
-<script src="https://zapixal.com/zapixal-web-component.js" defer></script>
-<zapixal-blog-tool></zapixal-blog-tool>
-```
-
-### Widget
+### Iframe Embed
 
 ```html
-<div id="zapixal-widget"></div>
-<script src="https://zapixal.com/widget.js" defer></script>
+<iframe 
+  src="https://zapixal.com/embed?format=webp&quality=80" 
+  width="100%" 
+  height="420" 
+  style="border: none; border-radius: 16px; max-width: 400px; width: 100%;" 
+  title="Zapixal In-Browser Image Compressor"
+  loading="lazy"
+  sandbox="allow-scripts allow-downloads allow-same-origin"
+></iframe>
 ```
 
-These integrations are provided free of charge and process supported images locally in the user's browser.
+Full configuration presets and embed code generator can be found at `/widget`.
+All image processing within the widget runs locally in the user's browser via WebAssembly.
 
 ##Privacy
 

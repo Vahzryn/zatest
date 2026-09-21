@@ -545,6 +545,7 @@ export async function convertSingleImage(
               originalSize: item.originalSize,
               originalFileName: item.file.name,
               originalFileType: item.file.type,
+              isJpegSource: /jpe?g$/i.test(item.file.name) || item.file.type === 'image/jpeg',
               blurRegions: item.blurRegions,
               blurMode: item.blurMode,
             },

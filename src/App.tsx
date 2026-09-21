@@ -26,14 +26,15 @@ import { FeedbackWidget } from './components/FeedbackWidget';
 import { CategoryWorkspaceSwitcher } from './components/CategoryWorkspaceSwitcher';
 import { CommandPalette } from './components/CommandPalette';
 import { getCategoryInfo, getArticleBySlug } from './content/articles';
+import { ArticlesHubPage } from './components/Articles/ArticlesHubPage';
+import { ArticleCategoryPage } from './components/Articles/ArticleCategoryPage';
+import { ArticleViewPage } from './components/Articles/ArticleViewPage';
+import BenchmarkPage from './components/Articles/BenchmarkPage';
 
 const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy').then(module => ({ default: module.PrivacyPolicy })));
 const TermsOfService = lazy(() => import('./components/TermsOfService').then(module => ({ default: module.TermsOfService })));
 const AboutPage = lazy(() => import('./components/AboutPage').then(module => ({ default: module.AboutPage })));
 const ToolsDirectoryPage = lazy(() => import('./components/ToolsDirectoryPage').then(module => ({ default: module.ToolsDirectoryPage })));
-const ArticlesHubPage = lazy(() => import('./components/Articles/ArticlesHubPage').then(module => ({ default: module.ArticlesHubPage })));
-const ArticleCategoryPage = lazy(() => import('./components/Articles/ArticleCategoryPage').then(module => ({ default: module.ArticleCategoryPage })));
-const ArticleViewPage = lazy(() => import('./components/Articles/ArticleViewPage').then(module => ({ default: module.ArticleViewPage })));
 const PdfToJpgConverter = lazy(() => import('./components/PdfToJpgConverter').then(module => ({ default: module.PdfToJpgConverter })));
 const SvgToPngPage = lazy(() => import('./components/SvgToPngPage').then(module => ({ default: module.SvgToPngPage })));
 const PdfCompressorPage = lazy(() => import('./components/PdfCompressorPage').then(module => ({ default: module.PdfCompressorPage })));
@@ -53,7 +54,11 @@ const MarkdownLivePreviewPage = lazy(() => import('./components/MarkdownLivePrev
 const TextDiffPage = lazy(() => import('./components/TextDiffPage').then(module => ({ default: module.TextDiffPage })));
 const EmbedWidget = lazy(() => import('./components/Widget/EmbedWidget'));
 const WidgetDocumentationPage = lazy(() => import('./components/Widget/WidgetDocumentationPage'));
-const BenchmarkPage = lazy(() => import('./components/Articles/BenchmarkPage'));
+
+const normalizeRoutePath = (p?: string) => {
+  if (!p) return '/';
+  return p.length > 1 && p.endsWith('/') ? p.slice(0, -1) : p;
+};
 
 const PageLoadingFallback = () => (
   <div className="flex flex-col items-center justify-center py-20 min-h-[400px] gap-3 text-zinc-500 dark:text-[#9aa0a6] animate-in fade-in duration-300">
@@ -310,7 +315,7 @@ export default function App({ initialPath, initialSeoData }: AppProps) {
 
         {/* Main Content Router */}
         <Suspense fallback={<PageLoadingFallback />}>
-          {seoData.path !== currentPath ? (
+          {normalizeRoutePath(seoData.path) !== normalizeRoutePath(currentPath) ? (
           <PageLoadingFallback />
         ) : seoData.isNotFound ? (
           <div className="flex flex-col items-center justify-center gap-6 py-20 min-h-[400px]">
