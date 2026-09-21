@@ -30,6 +30,18 @@ function isSameFormat(file: File, targetFormat: TargetFormat): boolean {
   return false;
 }
 
+export function isJpegSourceFile(file?: { name?: string; type?: string } | null): boolean {
+  if (!file) return false;
+  const mime = (file.type || '').toLowerCase().trim();
+  const name = (file.name || '').toLowerCase().trim();
+  return (
+    mime === 'image/jpeg' ||
+    mime === 'image/jpg' ||
+    mime === 'image/pjpeg' ||
+    /\.(jpe?g|jfif|pjpeg)$/i.test(name)
+  );
+}
+
 export async function loadImageElement(file: File): Promise<{
   img: ImageBitmap | HTMLImageElement;
   dimensions: ImageDimensions;
@@ -545,7 +557,7 @@ export async function convertSingleImage(
               originalSize: item.originalSize,
               originalFileName: item.file.name,
               originalFileType: item.file.type,
-              isJpegSource: /jpe?g$/i.test(item.file.name) || item.file.type === 'image/jpeg',
+              isJpegSource: isJpegSourceFile(item.file),
               blurRegions: item.blurRegions,
               blurMode: item.blurMode,
             },
@@ -658,7 +670,7 @@ export async function convertSingleImage(
         const adaptiveRes = await encodeWebpAdaptive(canvas, {
           initialQuality: quality,
           originalSize: item.originalSize,
-          isJpegSource: /jpe?g$/i.test(item.file.name) || item.file.type === 'image/jpeg',
+          isJpegSource: isJpegSourceFile(item.file),
         });
         convertedBlob = adaptiveRes.blob;
       } else {

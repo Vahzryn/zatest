@@ -39,7 +39,10 @@ self.onmessage = async (e: MessageEvent) => {
 
   const isJpegSource = typeof explicitIsJpegSource === 'boolean'
     ? explicitIsJpegSource
-    : ((originalFileType && originalFileType.toLowerCase() === 'image/jpeg') || (originalFileName && /\.jpe?g$/i.test(originalFileName)));
+    : Boolean(
+        (originalFileType && /^(image\/jpeg|image\/jpg|image\/pjpeg)$/i.test(originalFileType.trim())) ||
+        (originalFileName && /\.(jpe?g|jfif|pjpeg)$/i.test(originalFileName.trim()))
+      );
 
   try {
     const { targetFormat, quality } = settings;

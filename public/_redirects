@@ -66,5 +66,8 @@
 /svg-to-png /convert-svg-to-png-transparent 301
 /avif-to-jpg /convert-avif-to-jpg-converter 301
 
+# Prevent stale script chunk 404s from returning HTML
+/assets/* /404.html 404
+
 # SPA HTML5 History API Fallback
 /* /index.html 200

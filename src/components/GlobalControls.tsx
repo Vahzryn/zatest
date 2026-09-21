@@ -32,7 +32,7 @@ function GlobalControlsComponent({
   onContinueToDownload
 }: GlobalControlsProps) {
   const [localQuality, setLocalQuality] = React.useState(settings.quality);
-  const [localMaxKB, setLocalMaxKB] = React.useState(settings.targetMaxKB?.toString() || '');
+  const [localMaxKB, setLocalMaxKB] = React.useState(settings.targetMaxKB ? String(settings.targetMaxKB) : '');
   const [compressionStrategy, setCompressionStrategy] = React.useState<'quality' | 'target' | 'lossless'>(() => {
     if (settings.targetMaxKB !== undefined && settings.targetMaxKB > 0) return 'target';
     if (settings.quality > 0.95) return 'lossless';
@@ -40,6 +40,13 @@ function GlobalControlsComponent({
   });
   const [showAdvanced, setShowAdvanced] = React.useState(false);
   const debounceTimerRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  const [localResizeWidth, setLocalResizeWidth] = React.useState<string>(
+    settings.resize.maxWidth ? String(settings.resize.maxWidth) : ''
+  );
+  const [localResizeHeight, setLocalResizeHeight] = React.useState<string>(
+    settings.resize.maxHeight ? String(settings.resize.maxHeight) : ''
+  );
 
   const [customCropWidth, setCustomCropWidth] = React.useState<string>(
     settings.cropAspectRatio ? String(settings.cropAspectRatio.width) : '16'
@@ -61,6 +68,27 @@ function GlobalControlsComponent({
       setCompressionStrategy('target');
     }
   }, [settings.targetMaxKB]);
+
+  React.useEffect(() => {
+    setLocalResizeWidth(settings.resize.maxWidth ? String(settings.resize.maxWidth) : '');
+  }, [settings.resize.maxWidth]);
+
+  React.useEffect(() => {
+    setLocalResizeHeight(settings.resize.maxHeight ? String(settings.resize.maxHeight) : '');
+  }, [settings.resize.maxHeight]);
+
+  React.useEffect(() => {
+    if (settings.cropAspectRatio) {
+      setCustomCropWidth(String(settings.cropAspectRatio.width));
+      setCustomCropHeight(String(settings.cropAspectRatio.height));
+    }
+  }, [settings.cropAspectRatio]);
+
+  React.useEffect(() => {
+    if (settings.targetDPI) {
+      setCustomDpiInput(String(settings.targetDPI));
+    }
+  }, [settings.targetDPI]);
 
   React.useEffect(() => {
     return () => {
@@ -90,21 +118,149 @@ function GlobalControlsComponent({
 
   const handleMaxKBChange = (val: string) => {
     setLocalMaxKB(val);
-    const parsed = parseInt(val, 10);
+    const cleaned = val.trim();
+    const parsed = parseInt(cleaned, 10);
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
     }
     debounceTimerRef.current = setTimeout(() => {
-      onChange({ ...settings, targetMaxKB: !isNaN(parsed) && parsed > 0 ? parsed : undefined });
+      const validVal = !isNaN(parsed) && parsed > 0 && /^\d+$/.test(cleaned) ? Math.min(parsed, 1000000) : undefined;
+      onChange({ ...settings, targetMaxKB: validVal });
     }, 400);
   };
 
   const handleMaxKBBlur = () => {
-    const parsed = parseInt(localMaxKB, 10);
+    const cleaned = localMaxKB.trim();
+    if (!cleaned) {
+      setLocalMaxKB('');
+      onChange({ ...settings, targetMaxKB: undefined });
+      return;
+    }
+    const parsed = parseInt(cleaned, 10);
+    if (isNaN(parsed) || parsed <= 0 || !/^\d+$/.test(cleaned)) {
+      setLocalMaxKB('');
+      onChange({ ...settings, targetMaxKB: undefined });
+    } else {
+      const sanitized = Math.min(parsed, 1000000);
+      setLocalMaxKB(String(sanitized));
+      onChange({ ...settings, targetMaxKB: sanitized });
+    }
+  };
+
+  const handleResizeWidthChange = (val: string) => {
+    setLocalResizeWidth(val);
+    const cleaned = val.trim();
+    const parsed = parseInt(cleaned, 10);
+    if (!cleaned || isNaN(parsed) || parsed <= 0 || !/^\d+$/.test(cleaned)) {
+      updateResize({ maxWidth: undefined });
+    } else {
+      updateResize({ maxWidth: Math.min(parsed, 50000) });
+    }
+  };
+
+  const handleResizeWidthBlur = () => {
+    const cleaned = localResizeWidth.trim();
+    if (!cleaned) {
+      setLocalResizeWidth('');
+      updateResize({ maxWidth: undefined });
+      return;
+    }
+    const parsed = parseInt(cleaned, 10);
+    if (isNaN(parsed) || parsed <= 0 || !/^\d+$/.test(cleaned)) {
+      setLocalResizeWidth('');
+      updateResize({ maxWidth: undefined });
+    } else {
+      const sanitized = Math.min(parsed, 50000);
+      setLocalResizeWidth(String(sanitized));
+      updateResize({ maxWidth: sanitized });
+    }
+  };
+
+  const handleResizeHeightChange = (val: string) => {
+    setLocalResizeHeight(val);
+    const cleaned = val.trim();
+    const parsed = parseInt(cleaned, 10);
+    if (!cleaned || isNaN(parsed) || parsed <= 0 || !/^\d+$/.test(cleaned)) {
+      updateResize({ maxHeight: undefined });
+    } else {
+      updateResize({ maxHeight: Math.min(parsed, 50000) });
+    }
+  };
+
+  const handleResizeHeightBlur = () => {
+    const cleaned = localResizeHeight.trim();
+    if (!cleaned) {
+      setLocalResizeHeight('');
+      updateResize({ maxHeight: undefined });
+      return;
+    }
+    const parsed = parseInt(cleaned, 10);
+    if (isNaN(parsed) || parsed <= 0 || !/^\d+$/.test(cleaned)) {
+      setLocalResizeHeight('');
+      updateResize({ maxHeight: undefined });
+    } else {
+      const sanitized = Math.min(parsed, 50000);
+      setLocalResizeHeight(String(sanitized));
+      updateResize({ maxHeight: sanitized });
+    }
+  };
+
+  const handleCropWidthBlur = () => {
+    const cleaned = customCropWidth.trim();
+    const parsed = parseFloat(cleaned);
     if (isNaN(parsed) || parsed <= 0) {
-      const fallback = 200;
-      setLocalMaxKB(String(fallback));
-      onChange({ ...settings, targetMaxKB: fallback });
+      setCustomCropWidth('1');
+      const h = parseFloat(customCropHeight) || 1;
+      updateSettings({ cropAspectRatio: { width: 1, height: h } });
+    } else {
+      const sanitized = Math.min(parsed, 10000);
+      setCustomCropWidth(String(sanitized));
+      const h = parseFloat(customCropHeight) || 1;
+      updateSettings({ cropAspectRatio: { width: sanitized, height: h } });
+    }
+  };
+
+  const handleCropHeightBlur = () => {
+    const cleaned = customCropHeight.trim();
+    const parsed = parseFloat(cleaned);
+    if (isNaN(parsed) || parsed <= 0) {
+      setCustomCropHeight('1');
+      const w = parseFloat(customCropWidth) || 1;
+      updateSettings({ cropAspectRatio: { width: w, height: 1 } });
+    } else {
+      const sanitized = Math.min(parsed, 10000);
+      setCustomCropHeight(String(sanitized));
+      const w = parseFloat(customCropWidth) || 1;
+      updateSettings({ cropAspectRatio: { width: w, height: sanitized } });
+    }
+  };
+
+  const handleDpiChange = (val: string) => {
+    setCustomDpiInput(val);
+    const cleaned = val.trim();
+    const parsed = parseInt(cleaned, 10);
+    if (!cleaned || isNaN(parsed) || parsed <= 0 || !/^\d+$/.test(cleaned)) {
+      updateSettings({ targetDPI: null });
+    } else {
+      updateSettings({ targetDPI: Math.min(parsed, 4800) });
+    }
+  };
+
+  const handleDpiBlur = () => {
+    const cleaned = customDpiInput.trim();
+    if (!cleaned) {
+      setCustomDpiInput('');
+      updateSettings({ targetDPI: null });
+      return;
+    }
+    const parsed = parseInt(cleaned, 10);
+    if (isNaN(parsed) || parsed <= 0 || !/^\d+$/.test(cleaned)) {
+      setCustomDpiInput('');
+      updateSettings({ targetDPI: null });
+    } else {
+      const sanitized = Math.min(parsed, 4800);
+      setCustomDpiInput(String(sanitized));
+      updateSettings({ targetDPI: sanitized });
     }
   };
 
@@ -129,10 +285,12 @@ function GlobalControlsComponent({
       onChange({ ...settings, targetMaxKB: undefined });
     } else {
       if (compressionStrategy === 'target') {
-        const parsed = parseInt(localMaxKB, 10);
-        const kb = !isNaN(parsed) && parsed > 0 ? parsed : 200;
-        setLocalMaxKB(String(kb));
-        onChange({ ...settings, targetMaxKB: kb });
+        const parsed = parseInt(localMaxKB.trim(), 10);
+        if (!isNaN(parsed) && parsed > 0 && /^\d+$/.test(localMaxKB.trim())) {
+          onChange({ ...settings, targetMaxKB: parsed });
+        } else {
+          onChange({ ...settings, targetMaxKB: undefined });
+        }
       }
     }
   };
@@ -173,8 +331,11 @@ function GlobalControlsComponent({
             <label className="block mb-1 text-[10px] sm:text-xs font-bold text-zinc-600 dark:text-zinc-400">Max Width (px)</label>
             <input
               type="number"
-              value={settings.resize.maxWidth || ''}
-              onChange={(e) => updateResize({ maxWidth: e.target.value ? parseInt(e.target.value) : undefined })}
+              min="1"
+              max="50000"
+              value={localResizeWidth}
+              onChange={(e) => handleResizeWidthChange(e.target.value)}
+              onBlur={handleResizeWidthBlur}
               placeholder="e.g. 1920"
               disabled={disabled}
               className="w-full px-2 py-1 sm:px-3 sm:py-1.5 text-xs font-semibold border-2 rounded-lg sm:rounded-xl bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 focus:border-emerald-500 focus:outline-none transition-colors shadow-2xs"
@@ -184,8 +345,11 @@ function GlobalControlsComponent({
             <label className="block mb-1 text-[10px] sm:text-xs font-bold text-zinc-600 dark:text-zinc-400">Max Height (px)</label>
             <input
               type="number"
-              value={settings.resize.maxHeight || ''}
-              onChange={(e) => updateResize({ maxHeight: e.target.value ? parseInt(e.target.value) : undefined })}
+              min="1"
+              max="50000"
+              value={localResizeHeight}
+              onChange={(e) => handleResizeHeightChange(e.target.value)}
+              onBlur={handleResizeHeightBlur}
               placeholder="e.g. 1080"
               disabled={disabled}
               className="w-full px-2 py-1 sm:px-3 sm:py-1.5 text-xs font-semibold border-2 rounded-lg sm:rounded-xl bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 focus:border-emerald-500 focus:outline-none transition-colors shadow-2xs"
@@ -280,6 +444,7 @@ function GlobalControlsComponent({
                 updateSettings({ cropAspectRatio: { width: w, height: h } });
               }
             }}
+            onBlur={handleCropWidthBlur}
             className="w-16 sm:w-20 px-2 py-1 sm:px-3 sm:py-1.5 text-xs font-semibold border-2 rounded-lg sm:rounded-xl bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 focus:border-indigo-500 focus:outline-none transition-colors"
           />
           <span className="text-xs font-bold text-zinc-500 dark:text-zinc-400">:</span>
@@ -298,6 +463,7 @@ function GlobalControlsComponent({
                 updateSettings({ cropAspectRatio: { width: w, height: h } });
               }
             }}
+            onBlur={handleCropHeightBlur}
             className="w-16 sm:w-20 px-2 py-1 sm:px-3 sm:py-1.5 text-xs font-semibold border-2 rounded-lg sm:rounded-xl bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 focus:border-indigo-500 focus:outline-none transition-colors"
           />
         </div>
@@ -363,17 +529,12 @@ function GlobalControlsComponent({
           <input
             type="number"
             min="1"
-            max="2400"
+            max="4800"
             disabled={disabled}
             value={customDpiInput}
-            onChange={(e) => {
-              const val = e.target.value;
-              setCustomDpiInput(val);
-              const num = parseInt(val, 10);
-              if (!isNaN(num) && num > 0) {
-                updateSettings({ targetDPI: num });
-              }
-            }}
+            onChange={(e) => handleDpiChange(e.target.value)}
+            onBlur={handleDpiBlur}
+            placeholder="300"
             className="w-20 sm:w-24 px-2 py-1 sm:px-3 sm:py-1.5 text-xs font-semibold border-2 rounded-lg sm:rounded-xl bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 focus:border-indigo-500 focus:outline-none transition-colors"
           />
         </div>
@@ -688,21 +849,31 @@ function GlobalControlsComponent({
             <>
               <button
                 disabled={disabled}
-                onClick={() => onChange({ ...settings, targetFormat: 'webp', quality: 0.8, targetMaxKB: undefined })}
+                onClick={() => {
+                  setCompressionStrategy('quality');
+                  onChange({ ...settings, targetFormat: 'webp', quality: 0.8, targetMaxKB: undefined });
+                }}
                 className="px-2.5 py-1 text-xs font-medium text-zinc-600 dark:text-zinc-300 bg-zinc-100 hover:bg-zinc-200/70 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-md transition-colors cursor-pointer disabled:opacity-50"
               >
                 WebP Standard
               </button>
               <button
                 disabled={disabled}
-                onClick={() => onChange({ ...settings, targetFormat: 'jpg', quality: 0.85, targetMaxKB: undefined })}
+                onClick={() => {
+                  setCompressionStrategy('quality');
+                  onChange({ ...settings, targetFormat: 'jpg', quality: 0.85, targetMaxKB: undefined });
+                }}
                 className="px-2.5 py-1 text-xs font-medium text-zinc-600 dark:text-zinc-300 bg-zinc-100 hover:bg-zinc-200/70 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-md transition-colors cursor-pointer disabled:opacity-50"
               >
                 JPG Standard
               </button>
               <button
                 disabled={disabled}
-                onClick={() => onChange({ ...settings, targetFormat: 'webp', quality: 0.6, targetMaxKB: 100 })}
+                onClick={() => {
+                  setCompressionStrategy('target');
+                  setLocalMaxKB('100');
+                  onChange({ ...settings, targetFormat: 'webp', quality: 0.6, targetMaxKB: 100 });
+                }}
                 className="px-2.5 py-1 text-xs font-medium text-zinc-600 dark:text-zinc-300 bg-zinc-100 hover:bg-zinc-200/70 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-md transition-colors cursor-pointer disabled:opacity-50"
               >
                 Max Compression

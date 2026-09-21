@@ -120,9 +120,11 @@ export function PdfCompressorPage({ seoData, onNavigate }: PdfCompressorPageProp
   }, []);
 
   const handleCompress = async () => {
-    if (!file || !pdfDoc || numPages === 0) return;
+    if (!file || !pdfDoc || numPages === 0 || isProcessing) return;
     
+    const currentId = ++activeCompressIdRef.current;
     setIsProcessing(true);
+    cleanupSuccessResult();
     setErrorMessage(null);
     setProgressPercent(0);
     
@@ -156,7 +158,9 @@ export function PdfCompressorPage({ seoData, onNavigate }: PdfCompressorPageProp
       pdf.deletePage(1); // Remove default empty page
 
       for (let i = 1; i <= numPages; i++) {
+        if (activeCompressIdRef.current !== currentId) return;
         const rendered = await renderPdfPageToJpg(pdfDoc, i, scale, quality);
+        if (activeCompressIdRef.current !== currentId) return;
         const { blob, width, height } = rendered;
         
         const orientation = width > height ? 'l' : 'p';
@@ -167,10 +171,12 @@ export function PdfCompressorPage({ seoData, onNavigate }: PdfCompressorPageProp
         
         pdf.addImage(uint8Array, 'JPEG', 0, 0, width, height);
         
-        setProgressPercent(Math.round((i / numPages) * 100));
+        if (activeCompressIdRef.current === currentId) {
+          setProgressPercent(Math.round((i / numPages) * 100));
+        }
       }
 
-      const currentId = activeCompressIdRef.current;
+      if (activeCompressIdRef.current !== currentId) return;
       const compressedBlob = pdf.output('blob');
       if (activeCompressIdRef.current !== currentId) return;
 
@@ -194,9 +200,13 @@ export function PdfCompressorPage({ seoData, onNavigate }: PdfCompressorPageProp
       setSuccessResult(result);
       
     } catch (err: any) {
-      setErrorMessage(err.message || 'An error occurred during compression.');
+      if (activeCompressIdRef.current === currentId) {
+        setErrorMessage(err.message || 'An error occurred during compression.');
+      }
     } finally {
-      setIsProcessing(false);
+      if (activeCompressIdRef.current === currentId) {
+        setIsProcessing(false);
+      }
     }
   };
 

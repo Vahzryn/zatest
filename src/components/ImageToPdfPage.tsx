@@ -155,7 +155,7 @@ export const ImageToPdfPage: React.FC<ImageToPdfPageProps> = ({ seoData, onNavig
   };
 
   const processImagesToPdf = async () => {
-    if (items.length === 0) return;
+    if (items.length === 0 || isProcessing) return;
     
     const currentProcessId = ++activeProcessIdRef.current;
     setIsProcessing(true);

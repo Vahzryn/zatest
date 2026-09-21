@@ -260,7 +260,7 @@ export async function encodeWebpAdaptive(
   options: AdaptiveWebpOptions = {}
 ): Promise<AdaptiveWebpResult> {
   const originalSize = options.originalSize || 0;
-  const isJpeg = options.isJpegSource !== false;
+  const isJpeg = options.isJpegSource === true;
   const minQ = options.minQuality !== undefined
     ? (options.minQuality <= 1 ? Math.round(options.minQuality * 100) : Math.round(options.minQuality))
     : 48;

@@ -31,6 +31,7 @@ interface PdfItem {
   file: File;
   pageCount?: number;
   loadingInfo?: boolean;
+  error?: string;
 }
 
 export function PdfMergerPage({ seoData, onNavigate }: PdfMergerPageProps) {
@@ -94,11 +95,11 @@ export function PdfMergerPage({ seoData, onNavigate }: PdfMergerPageProps) {
         const doc = await loadPdfDocument(buffer);
         const count = doc.numPages;
         setItems((current) =>
-          current.map((it) => (it.id === item.id ? { ...it, pageCount: count, loadingInfo: false } : it))
+          current.map((it) => (it.id === item.id ? { ...it, pageCount: count, loadingInfo: false, error: undefined } : it))
         );
-      } catch (e) {
+      } catch (e: any) {
         setItems((current) =>
-          current.map((it) => (it.id === item.id ? { ...it, loadingInfo: false } : it))
+          current.map((it) => (it.id === item.id ? { ...it, loadingInfo: false, error: e?.message || 'Corrupt or unreadable PDF document' } : it))
         );
       }
     });
@@ -136,8 +137,14 @@ export function PdfMergerPage({ seoData, onNavigate }: PdfMergerPageProps) {
   };
 
   const handleMerge = async () => {
-    if (items.length < 2) {
+    if (items.length < 2 || isProcessing) {
       setErrorMessage('Please add at least 2 PDF files to merge.');
+      return;
+    }
+
+    const corruptItem = items.find((it) => it.error);
+    if (corruptItem) {
+      setErrorMessage(`Cannot merge: "${corruptItem.file.name}" is invalid or corrupt. Please remove it first.`);
       return;
     }
 
@@ -213,7 +220,7 @@ export function PdfMergerPage({ seoData, onNavigate }: PdfMergerPageProps) {
             <div className="w-full space-y-3 pt-2">
               <a
                 href={successResult.url}
-                download="merged-document.pdf"
+                download={successResult.filename}
                 className="w-full flex items-center justify-center gap-2.5 py-3.5 px-6 text-sm sm:text-base font-bold text-white bg-indigo-600 hover:bg-indigo-700 active:scale-[0.99] rounded-2xl shadow-lg shadow-indigo-600/25 transition-all cursor-pointer"
                 id="btn-download-merged-pdf"
               >
@@ -323,6 +330,10 @@ export function PdfMergerPage({ seoData, onNavigate }: PdfMergerPageProps) {
                             {item.loadingInfo ? (
                               <span className="inline-flex items-center gap-1 text-indigo-500">
                                 <Loader2 className="w-3 h-3 animate-spin" /> Counting pages...
+                              </span>
+                            ) : item.error ? (
+                              <span className="inline-flex items-center gap-1 text-red-500 font-medium">
+                                <AlertTriangle className="w-3 h-3 shrink-0" /> {item.error}
                               </span>
                             ) : (
                               <span>{item.pageCount !== undefined ? `${item.pageCount} pages` : 'PDF Document'}</span>

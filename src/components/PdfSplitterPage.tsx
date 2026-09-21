@@ -158,9 +158,9 @@ export function PdfSplitterPage({ seoData, onNavigate }: PdfSplitterPageProps) {
   };
 
   const handleSplit = async () => {
-    if (!file || !pdfDoc) return;
+    if (!file || !pdfDoc || isProcessing) return;
 
-    const currentReqId = activeRequestIdRef.current;
+    const currentReqId = ++activeRequestIdRef.current;
     setIsProcessing(true);
     setErrorMessage(null);
     cleanupResults();

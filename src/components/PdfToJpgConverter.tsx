@@ -25,6 +25,7 @@ import {
   sanitizeFilenameForPage,
   RenderedPdfPage
 } from '../lib/pdfProcessor';
+import { isPdfFile } from '../lib/utils';
 
 function formatBytes(bytes: number): string {
   if (bytes === 0) return '0 B';
@@ -63,18 +64,33 @@ export function PdfToJpgConverter({ onNavigate }: PdfToJpgConverterProps) {
   const [zipProgress, setZipProgress] = useState<number>(0);
 
   const abortControllerRef = useRef<boolean>(false);
+  const activeDocIdRef = useRef<number>(0);
+  const resultsRef = useRef<RenderedPdfPage[]>([]);
 
   // Clean up object URLs when resetting or unmounting
   const cleanupResults = useCallback(() => {
-    processedResults.forEach((res) => {
+    resultsRef.current.forEach((res) => {
       if (res.dataUrl && res.dataUrl.startsWith('blob:')) {
-        URL.revokeObjectURL(res.dataUrl);
+        try {
+          URL.revokeObjectURL(res.dataUrl);
+        } catch (e) {}
       }
     });
+    resultsRef.current = [];
     setProcessedResults([]);
-  }, [processedResults]);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      activeDocIdRef.current += 1;
+      abortControllerRef.current = true;
+      cleanupResults();
+    };
+  }, [cleanupResults]);
 
   const handleReset = useCallback(() => {
+    activeDocIdRef.current += 1;
+    abortControllerRef.current = true;
     cleanupResults();
     setFile(null);
     setPdfDoc(null);
@@ -89,11 +105,13 @@ export function PdfToJpgConverter({ onNavigate }: PdfToJpgConverterProps) {
 
   // Load PDF when file is selected
   const processPdfFile = useCallback(async (selectedFile: File) => {
-    if (!selectedFile.type.includes('pdf') && !selectedFile.name.toLowerCase().endsWith('.pdf')) {
+    if (!isPdfFile(selectedFile)) {
       setErrorMessage('Please select a valid PDF file (.pdf).');
       return;
     }
 
+    const currentDocId = ++activeDocIdRef.current;
+    abortControllerRef.current = true;
     setLoadingPdf(true);
     setErrorMessage(null);
     setFile(selectedFile);
@@ -101,7 +119,11 @@ export function PdfToJpgConverter({ onNavigate }: PdfToJpgConverterProps) {
 
     try {
       const buffer = await selectedFile.arrayBuffer();
+      if (activeDocIdRef.current !== currentDocId) return;
+
       const doc = await loadPdfDocument(buffer);
+      if (activeDocIdRef.current !== currentDocId) return;
+
       setPdfDoc(doc);
       setNumPages(doc.numPages);
 
@@ -113,23 +135,28 @@ export function PdfToJpgConverter({ onNavigate }: PdfToJpgConverterProps) {
       setSelectedPages(allPages);
 
       // Lazily load thumbnails with bounded concurrency
-      loadThumbnailsInBatches(doc, doc.numPages);
+      loadThumbnailsInBatches(doc, doc.numPages, currentDocId);
     } catch (err: any) {
+      if (activeDocIdRef.current !== currentDocId) return;
       setErrorMessage(err.message || 'Failed to parse PDF document.');
       setFile(null);
       setPdfDoc(null);
     } finally {
-      setLoadingPdf(false);
+      if (activeDocIdRef.current === currentDocId) {
+        setLoadingPdf(false);
+      }
     }
   }, [cleanupResults]);
 
   // Generate page thumbnails in small background batches
-  const loadThumbnailsInBatches = async (doc: any, pageCount: number) => {
+  const loadThumbnailsInBatches = async (doc: any, pageCount: number, docId: number) => {
     // Only render thumbnails for up to 50 pages to prevent memory spike
     const pagesToRender = Math.min(pageCount, 50);
     for (let i = 1; i <= pagesToRender; i++) {
+      if (activeDocIdRef.current !== docId) return;
       try {
         const thumbUrl = await renderPdfPageThumbnail(doc, i, 180);
+        if (activeDocIdRef.current !== docId) return;
         setThumbnails((prev) => ({ ...prev, [i]: thumbUrl }));
       } catch (e) {
         console.warn(`Failed to generate thumbnail for page ${i}:`, e);
@@ -219,8 +246,9 @@ export function PdfToJpgConverter({ onNavigate }: PdfToJpgConverterProps) {
 
   // Convert selected pages sequentially
   const handleConvertPages = async () => {
-    if (!pdfDoc || !file || selectedPages.size === 0) return;
+    if (!pdfDoc || !file || selectedPages.size === 0 || isProcessing) return;
 
+    const currentDocId = activeDocIdRef.current;
     setIsProcessing(true);
     setErrorMessage(null);
     cleanupResults();
@@ -231,13 +259,21 @@ export function PdfToJpgConverter({ onNavigate }: PdfToJpgConverterProps) {
 
     try {
       for (let index = 0; index < pagesToProcess.length; index++) {
-        if (abortControllerRef.current) break;
+        if (abortControllerRef.current || activeDocIdRef.current !== currentDocId) break;
 
         const pageNum = pagesToProcess[index];
         setCurrentProcessingPage(pageNum);
 
         const { blob, width, height } = await renderPdfPageToJpg(pdfDoc, pageNum, scale, quality);
+        if (abortControllerRef.current || activeDocIdRef.current !== currentDocId) break;
+
         const dataUrl = URL.createObjectURL(blob);
+        if (abortControllerRef.current || activeDocIdRef.current !== currentDocId) {
+          try {
+            URL.revokeObjectURL(dataUrl);
+          } catch (e) {}
+          break;
+        }
         const filename = sanitizeFilenameForPage(file.name, pageNum, 'jpg');
 
         results.push({
@@ -251,12 +287,27 @@ export function PdfToJpgConverter({ onNavigate }: PdfToJpgConverterProps) {
         });
       }
 
-      setProcessedResults(results);
+      if (activeDocIdRef.current === currentDocId && !abortControllerRef.current) {
+        resultsRef.current = results;
+        setProcessedResults(results);
+      } else {
+        results.forEach((r) => {
+          if (r.dataUrl && r.dataUrl.startsWith('blob:')) {
+            try {
+              URL.revokeObjectURL(r.dataUrl);
+            } catch (e) {}
+          }
+        });
+      }
     } catch (err: any) {
-      setErrorMessage(err.message || 'An error occurred during page rendering.');
+      if (activeDocIdRef.current === currentDocId) {
+        setErrorMessage(err.message || 'An error occurred during page rendering.');
+      }
     } finally {
-      setIsProcessing(false);
-      setCurrentProcessingPage(0);
+      if (activeDocIdRef.current === currentDocId) {
+        setIsProcessing(false);
+        setCurrentProcessingPage(0);
+      }
     }
   };
 

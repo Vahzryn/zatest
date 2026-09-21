@@ -86,7 +86,13 @@ export function isSupportedImageFile(file?: { name?: string; type?: string } | n
 export function isPdfFile(file?: { name?: string; type?: string } | null): boolean {
   if (!file) return false;
   const mime = (file.type || '').toLowerCase().trim();
-  if (mime === 'application/pdf' || mime === 'application/x-pdf') {
+  if (
+    mime === 'application/pdf' ||
+    mime === 'application/x-pdf' ||
+    mime === 'application/acrobat' ||
+    mime === 'applications/vnd.pdf' ||
+    mime === 'text/pdf'
+  ) {
     return true;
   }
   const name = (file.name || '').toLowerCase().trim();
