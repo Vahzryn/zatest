@@ -145,24 +145,24 @@ export const PopularToolsSection: React.FC<PopularToolsSectionProps> = ({ onNavi
       </div>
 
       {/* Featured Tools Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-2.5 sm:gap-3">
         {displayedTools.map((tool) => (
           <a
             key={tool.path}
             href={tool.path}
             onClick={(e) => handleClick(e, tool.path)}
-            className="group flex flex-col justify-between p-3.5 rounded-xl border border-zinc-200/80 dark:border-[#32353a] bg-white dark:bg-zinc-950 hover:border-zinc-400 dark:hover:border-zinc-500 transition-all text-left"
+            className="group flex flex-col justify-between p-3.5 rounded-xl border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-xs hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 motion-reduce:transition-none motion-reduce:transform-none"
           >
             <div>
               <div className="flex items-center justify-between gap-2 mb-1">
-                <span className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                <span className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-200">
                   {tool.name}
                 </span>
-                <span className="text-[10px] font-semibold text-zinc-600 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded shrink-0">
+                <span className="text-[10px] font-semibold text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800/80 px-2 py-0.5 rounded shrink-0 group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors duration-200">
                   {tool.badge}
                 </span>
               </div>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-snug">
+              <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-snug line-clamp-2">
                 {tool.desc}
               </p>
             </div>
@@ -175,10 +175,10 @@ export const PopularToolsSection: React.FC<PopularToolsSectionProps> = ({ onNavi
         <button
           type="button"
           onClick={() => setIsExpanded(!isExpanded)}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 text-xs font-bold hover:bg-zinc-50 dark:hover:bg-[#282a2e] hover:border-indigo-300 dark:hover:border-indigo-600 transition-all shadow-2xs group"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 text-xs font-bold hover:bg-zinc-50 dark:hover:bg-zinc-800/80 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-zinc-300 dark:hover:border-zinc-700 active:scale-[0.98] transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-2xs group cursor-pointer"
         >
           <span>{isExpanded ? 'Show Fewer Featured Tools' : `Show More Featured Tools (${FEATURED_HOMEPAGE_TOOLS.length} Total)`}</span>
-          <ChevronDown className={`w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-3.5 h-3.5 text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} />
         </button>
       </div>
     </section>

@@ -48,6 +48,7 @@ import * as widgetPage from './pages/widget';
 import * as toolsPage from './pages/tools';
 import * as articlesPage from './pages/articles';
 import * as articleBenchmarksPage from './pages/articles/benchmarks';
+import * as backgroundRemoverPage from './pages/background-remover';
 
 export { applySeoToHead };
 
@@ -74,6 +75,7 @@ function getArticleCategorySeo(subPath: string, fullUrl: string): SeoRouteData |
 
 export const PAGE_IMPORTS: Record<string, () => Promise<{ getPageSeo: (url: string, path: string) => SeoRouteData }>> = {
   'home': () => Promise.resolve(homePage),
+  'background-remover': () => Promise.resolve(backgroundRemoverPage),
   'privacy': () => Promise.resolve(privacyPage),
   'terms': () => Promise.resolve(termsPage),
   'about': () => Promise.resolve(aboutPage),

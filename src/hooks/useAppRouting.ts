@@ -19,6 +19,7 @@ interface UseAppRoutingOptions {
 
 const STATIC_KNOWN_ROUTES = new Set([
   '/',
+  '/background-remover',
   '/tools',
   '/tools/images',
   '/tools/documents',
