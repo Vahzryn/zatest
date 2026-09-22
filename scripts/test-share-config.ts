@@ -145,6 +145,46 @@ test('University workflow: Preconfigured 30 KB target link', () => {
   assert.strictEqual(parsedFromUrl.targetMaxKB, 30);
 });
 
+// 10. Homepage sharing test
+test('Homepage workflow: Share settings configured on root path (/)', () => {
+  // Target Max KB workflow on homepage
+  const settingsKB: ConversionSettings = {
+    targetFormat: 'webp',
+    quality: 0.8,
+    targetMaxKB: 50,
+    stripExif: true,
+    resize: { enabled: false, keepAspectRatio: true },
+    cropAspectRatio: null,
+    filenamePrefix: '',
+    filenameSuffix: ''
+  };
+
+  const shareUrlKB = generateShareUrl('/', settingsKB);
+  assert.ok(shareUrlKB.startsWith('https://www.zapixal.com/?') || shareUrlKB.startsWith('https://www.zapixal.com/'));
+  const urlObjKB = new URL(shareUrlKB);
+  const parsedKB = parseConfigFromQuery(urlObjKB.search);
+  assert.strictEqual(parsedKB.targetMaxKB, 50);
+  assert.strictEqual(parsedKB.targetFormat, 'webp');
+
+  // Custom quality convert workflow on homepage
+  const settingsQuality: ConversionSettings = {
+    targetFormat: 'jpg',
+    quality: 0.65,
+    targetMaxKB: undefined,
+    stripExif: true,
+    resize: { enabled: false, keepAspectRatio: true },
+    cropAspectRatio: null,
+    filenamePrefix: '',
+    filenameSuffix: ''
+  };
+
+  const shareUrlQ = generateShareUrl('/', settingsQuality);
+  const urlObjQ = new URL(shareUrlQ);
+  const parsedQ = parseConfigFromQuery(urlObjQ.search);
+  assert.strictEqual(parsedQ.targetFormat, 'jpg');
+  assert.strictEqual(parsedQ.quality, 0.65);
+});
+
 console.log('\n====================================================');
-console.log(` Results: ${passed} / 9 share configuration tests passed.`);
+console.log(` Results: ${passed} / 10 share configuration tests passed.`);
 console.log('====================================================\n');

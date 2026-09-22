@@ -20,7 +20,9 @@ import { useAppRouting } from './hooks/useAppRouting';
 import { useShareActions } from './hooks/useShareActions';
 import { useDarkMode } from './hooks/useDarkMode';
 import { useBatchConversion } from './hooks/useBatchConversion';
-import { Loader2, AlertTriangle, X } from 'lucide-react';
+import { Loader2, AlertTriangle, X, ChevronDown, SlidersHorizontal } from 'lucide-react';
+import { cn } from './lib/utils';
+import { parseConfigFromQuery } from './lib/shareConfig';
 
 import { FooterLinkHub } from './components/FooterLinkHub';
 import { FeedbackWidget } from './components/FeedbackWidget';
@@ -153,9 +155,27 @@ export default function App({ initialPath, initialSeoData }: AppProps) {
   const [redactingFileId, setRedactingFileId] = useState<string | null>(null);
   const [showCompleteView, setShowCompleteView] = useState<boolean>(false);
 
+  const [hasSharedUrlSettings, setHasSharedUrlSettings] = useState<boolean>(() => {
+    if (typeof window !== 'undefined' && window.location.search) {
+      const parsed = parseConfigFromQuery(window.location.search);
+      return Object.keys(parsed).length > 0;
+    }
+    return false;
+  });
+
+  const [isHomeSettingsExpanded, setIsHomeSettingsExpanded] = useState<boolean>(() => {
+    if (typeof window !== 'undefined' && window.location.search) {
+      const parsed = parseConfigFromQuery(window.location.search);
+      return Object.keys(parsed).length > 0;
+    }
+    return false;
+  });
+
   // Callback when URL settings are applied so touchedKeys are updated
   const handleApplyUrlSettings = useCallback((appliedKeys: string[]) => {
     if (appliedKeys.length === 0) return;
+    setHasSharedUrlSettings(true);
+    setIsHomeSettingsExpanded(true);
     setTouchedKeys(old => {
       const updated = new Set(old);
       let changed = false;
@@ -235,7 +255,6 @@ export default function App({ initialPath, initialSeoData }: AppProps) {
   }, [isProcessing, hasConvertedInSession, totalCount, processedCount, successCount]);
 
   const { isCopiedShareLink, isCopiedSettingsLink, handleShareApp, handleShareSettings } = useShareActions({ files });
-  const hasUrlSettings = typeof window !== 'undefined' && Boolean(window.location.search && window.location.search.length > 1);
 
   // Derive current modal target items live from files array
   const editItem = files.find((f) => f.id === editingFileId) || null;
@@ -438,10 +457,70 @@ export default function App({ initialPath, initialSeoData }: AppProps) {
             {files.length === 0 ? (
               /* STATE 1: IDLE / WORKSPACE READY */
               <div className="flex flex-col gap-5 mb-12 animate-in fade-in zoom-in-95 duration-300 min-h-[400px]">
-                {seoData.pageCategory === 'home' && !hasUrlSettings ? (
+                {seoData.pageCategory === 'home' ? (
                   <React.Fragment>
                     <HomeTaskDiscovery onNavigate={handleNavigate} />
-                    <Dropzone onFilesAdded={handleFilesAdded} fromFormat={seoData.fromFormat} variant="compact" />
+
+                    <Dropzone
+                      onFilesAdded={handleFilesAdded}
+                      fromFormat={seoData.fromFormat}
+                      variant="compact"
+                    />
+
+                    {/* Compact indicator when shared URL settings are active */}
+                    {hasSharedUrlSettings && (
+                      <div className="flex flex-wrap items-center justify-between gap-2.5 px-3.5 py-2.5 bg-indigo-50/80 dark:bg-indigo-950/40 border border-indigo-200/80 dark:border-indigo-800/60 rounded-xl text-xs animate-in fade-in duration-200">
+                        <div className="flex flex-wrap items-center gap-2 text-indigo-950 dark:text-indigo-200">
+                          <span className="font-semibold text-indigo-700 dark:text-indigo-400">Shared settings applied:</span>
+                          <span className="font-medium text-zinc-700 dark:text-zinc-300">
+                            {[
+                              settings.targetMaxKB ? `Target size: ${settings.targetMaxKB} KB` : null,
+                              settings.targetFormat && settings.targetFormat !== 'auto' ? `Format: ${settings.targetFormat.toUpperCase()}` : null,
+                              settings.quality && !settings.targetMaxKB && Math.round(settings.quality * 100) !== 80 ? `Quality: ${Math.round(settings.quality * 100)}%` : null,
+                              settings.resize?.enabled ? `Resize: ${settings.resize.maxWidth || 'auto'}×${settings.resize.maxHeight || 'auto'}` : null,
+                              settings.stripExif ? 'Strip EXIF' : null,
+                            ].filter(Boolean).join(' • ') || 'Custom configuration'}
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setIsHomeSettingsExpanded(prev => !prev)}
+                          className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer ml-auto"
+                        >
+                          {isHomeSettingsExpanded ? 'Hide settings' : 'Edit settings'}
+                        </button>
+                      </div>
+                    )}
+
+                    {/* Subtle collapsed entry point */}
+                    <div className="w-full flex flex-col items-center pt-1">
+                      <button
+                        type="button"
+                        onClick={() => setIsHomeSettingsExpanded(prev => !prev)}
+                        className="inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors cursor-pointer rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800/60"
+                        aria-expanded={isHomeSettingsExpanded}
+                        id="btn-toggle-home-settings"
+                      >
+                        <SlidersHorizontal className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400" />
+                        <span>Advanced settings & sharing</span>
+                        <ChevronDown className={cn("w-3.5 h-3.5 transition-transform duration-200", isHomeSettingsExpanded && "rotate-180")} />
+                      </button>
+
+                      {isHomeSettingsExpanded && (
+                        <div className="w-full mt-3 animate-in fade-in slide-in-from-top-1 duration-200">
+                          <GlobalControls
+                            settings={settings}
+                            onChange={handleUserSetSettings}
+                            seoData={seoData}
+                            disabled={isProcessing}
+                            onShareSettings={() => handleShareSettings(currentPath, settings, seoData)}
+                            isCopiedSettingsLink={isCopiedSettingsLink}
+                          />
+                        </div>
+                      )}
+                    </div>
+
+                    <PopularToolsSection onNavigate={handleNavigate} />
                     <ValuePropsSection />
                   </React.Fragment>
                 ) : (
@@ -454,7 +533,12 @@ export default function App({ initialPath, initialSeoData }: AppProps) {
                       onShareSettings={() => handleShareSettings(currentPath, settings, seoData)}
                       isCopiedSettingsLink={isCopiedSettingsLink}
                     />
-                    <Dropzone onFilesAdded={handleFilesAdded} fromFormat={seoData.fromFormat} />
+
+                    <Dropzone
+                      onFilesAdded={handleFilesAdded}
+                      fromFormat={seoData.fromFormat}
+                    />
+
                     <SeoGuideContent seoData={seoData} onNavigate={handleNavigate} />
                     <PopularToolsSection onNavigate={handleNavigate} />
                     <ValuePropsSection />

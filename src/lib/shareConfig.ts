@@ -228,8 +228,10 @@ export function generateShareUrl(
 
   // Deterministic sorting of query keys
   const sortedKeys = Object.keys(queryParams).sort();
+  const normalizedPath = cleanPath.startsWith('/') ? cleanPath : `/${cleanPath}`;
+
   if (sortedKeys.length === 0) {
-    return `${origin}${cleanPath === '/' ? '' : cleanPath}`;
+    return `${origin}${normalizedPath}`;
   }
 
   const searchParams = new URLSearchParams();
@@ -237,5 +239,5 @@ export function generateShareUrl(
     searchParams.set(key, queryParams[key]);
   }
 
-  return `${origin}${cleanPath === '/' ? '' : cleanPath}?${searchParams.toString()}`;
+  return `${origin}${normalizedPath}?${searchParams.toString()}`;
 }
