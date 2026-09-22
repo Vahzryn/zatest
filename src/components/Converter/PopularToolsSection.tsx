@@ -121,15 +121,15 @@ export const PopularToolsSection: React.FC<PopularToolsSectionProps> = ({ onNavi
   return (
     <section 
       aria-label="Popular Image Tools and Specialized Workflows"
-      className="w-full max-w-5xl mx-auto my-10 space-y-6 font-sans"
+      className="w-full max-w-5xl mx-auto my-6 sm:my-7 space-y-3.5 font-sans"
     >
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-3 border-b border-zinc-200 dark:border-zinc-800">
-        <div className="space-y-1">
-          <h2 className="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-2.5 pb-2.5 border-b border-zinc-200 dark:border-zinc-800">
+        <div className="space-y-0.5">
+          <h2 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
             Popular Utilities
           </h2>
-          <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed">
+          <p className="text-xs text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed">
             Fast, client-side utilities for format conversions, document editing, and developer workflows.
           </p>
         </div>
@@ -151,20 +151,25 @@ export const PopularToolsSection: React.FC<PopularToolsSectionProps> = ({ onNavi
             key={tool.path}
             href={tool.path}
             onClick={(e) => handleClick(e, tool.path)}
-            className="group flex flex-col justify-between p-3.5 rounded-xl border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-xs hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 motion-reduce:transition-none motion-reduce:transform-none"
+            className="group flex flex-col justify-between p-3.5 sm:p-4 rounded-xl border border-zinc-200/90 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 motion-reduce:transition-none motion-reduce:transform-none"
           >
             <div>
-              <div className="flex items-center justify-between gap-2 mb-1">
-                <span className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-200">
+              <div className="flex items-center justify-between gap-2 mb-1.5">
+                <span className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-200">
                   {tool.name}
                 </span>
-                <span className="text-[10px] font-semibold text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800/80 px-2 py-0.5 rounded shrink-0 group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors duration-200">
+                <span className="text-[10px] font-semibold text-zinc-600 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-700/50 px-2 py-0.5 rounded shrink-0 group-hover:text-indigo-600 dark:group-hover:text-indigo-300 group-hover:border-indigo-200/50 dark:group-hover:border-indigo-800/50 transition-colors duration-200">
                   {tool.badge}
                 </span>
               </div>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-snug line-clamp-2">
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed line-clamp-2">
                 {tool.desc}
               </p>
+            </div>
+
+            <div className="pt-2.5 mt-3 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between text-[11px] font-semibold text-zinc-400 dark:text-zinc-500 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-200">
+              <span>Open tool</span>
+              <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform duration-200" />
             </div>
           </a>
         ))}

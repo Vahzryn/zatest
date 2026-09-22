@@ -118,18 +118,18 @@ export const CategoryWorkspaceSwitcher: React.FC<CategoryWorkspaceSwitcherProps>
   const GroupIcon = activeGroup.icon;
 
   return (
-    <div className="w-full mb-6 animate-in fade-in duration-200" id="category-workspace-switcher">
-      <div className="bg-white dark:bg-zinc-900 border border-zinc-200/90 dark:border-zinc-800 rounded-2xl p-2 sm:p-2.5 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-2.5">
+    <div className="w-full mb-3.5 sm:mb-4 animate-in fade-in duration-200" id="category-workspace-switcher">
+      <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-1.5 sm:p-2 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-2">
         {/* Left: Suite Badge & Label */}
         <div className="flex items-center gap-2 px-2 shrink-0">
-          <div className="p-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
+          <div className="p-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/70 dark:border-zinc-700/60 text-zinc-700 dark:text-zinc-300">
             <GroupIcon className="w-4 h-4" />
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-zinc-900 dark:text-white">
+            <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
               {activeGroup.label}
             </span>
-            <span className="hidden sm:inline-flex px-1.5 py-0.5 text-[10px] font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 rounded-md">
+            <span className="hidden sm:inline-flex px-1.5 py-0.5 text-[10px] font-semibold bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-700/50 text-zinc-600 dark:text-zinc-400 rounded-md">
               {activeGroup.badge}
             </span>
           </div>
@@ -147,14 +147,17 @@ export const CategoryWorkspaceSwitcher: React.FC<CategoryWorkspaceSwitcherProps>
                 type="button"
                 onClick={() => onNavigate(tool.path)}
                 className={cn(
-                  "flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-semibold rounded-xl whitespace-nowrap transition-all cursor-pointer select-none active:scale-95 shrink-0",
+                  "group flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-medium rounded-xl whitespace-nowrap transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer select-none active:scale-[0.98] shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 motion-reduce:transition-none motion-reduce:transform-none",
                   isActive
-                    ? "bg-indigo-600 text-white shadow-xs font-bold"
-                    : "text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 hover:text-zinc-900 dark:hover:text-white"
+                    ? "bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800/70 shadow-2xs font-bold"
+                    : "text-zinc-700 dark:text-zinc-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700 hover:-translate-y-px"
                 )}
                 title={tool.name}
               >
-                <ToolIcon className={cn("w-3.5 h-3.5", isActive ? "text-white" : "text-zinc-400")} />
+                <ToolIcon className={cn(
+                  "w-3.5 h-3.5 transition-colors duration-200", 
+                  isActive ? "text-indigo-600 dark:text-indigo-300" : "text-zinc-500 dark:text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400"
+                )} />
                 <span>{tool.shortName}</span>
               </button>
             );

@@ -93,12 +93,12 @@ export const CompleteView = React.memo<CompleteViewProps>(function CompleteView(
       </div>
 
       {/* Main Result Card */}
-      <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xl overflow-hidden p-4 sm:p-8 space-y-6 text-center">
+      <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden p-4 sm:p-7 space-y-5 text-center">
         
         {/* Status Indicator & Main Headline */}
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-14 h-14 rounded-full bg-emerald-100 dark:bg-emerald-950/70 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-xs">
-            <Check className="w-7 h-7 stroke-[2.5]" />
+        <div className="flex flex-col items-center gap-2.5">
+          <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-950/70 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-xs">
+            <Check className="w-6 h-6 stroke-[2.5]" />
           </div>
 
           <div className="space-y-1">
@@ -116,7 +116,7 @@ export const CompleteView = React.memo<CompleteViewProps>(function CompleteView(
                 <span>{failedCount} {failedCount === 1 ? 'file' : 'files'} could not be processed</span>
               </p>
             ) : (
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-zinc-600 dark:text-zinc-400">
                 Processed locally with zero data loss or quality compromise.
               </p>
             )}
@@ -125,7 +125,7 @@ export const CompleteView = React.memo<CompleteViewProps>(function CompleteView(
 
         {/* Compression / Format Summary Metrics */}
         {successCount > 0 && (
-          <div className="bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/70 dark:border-zinc-800/80 rounded-2xl p-4">
+          <div className="bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3.5">
             {netSaved > 0 ? (
               <div className="grid grid-cols-3 divide-x divide-zinc-200 dark:divide-zinc-800 text-center">
                 <div className="px-2">
@@ -300,6 +300,18 @@ export const CompleteView = React.memo<CompleteViewProps>(function CompleteView(
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Process More Files</span>
+          </button>
+        </div>
+
+        {/* Contextual Feedback link */}
+        <div className="pt-1 text-center">
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new CustomEvent('zapixal-open-feedback'))}
+            className="inline-flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer"
+          >
+            <span>Having trouble with this result?</span>
+            <span className="font-semibold underline underline-offset-2">Report a problem</span>
           </button>
         </div>
 

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { SeoRouteData } from '../lib/seoEngine';
-import { Breadcrumbs } from './Breadcrumbs';
 import { SeoGuideContent } from './Converter/SeoGuideContent';
 import {
   Code,

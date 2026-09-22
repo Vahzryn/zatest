@@ -3,6 +3,7 @@ import { TargetFormat, ConversionSettings } from '../types';
 import { Globe, Smartphone, Minimize2, Zap, Loader2, Maximize, Crop, Settings2, ShieldCheck, Printer, RotateCw, Check, FolderDown, Archive, Share2, ChevronDown, SlidersHorizontal } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { SeoRouteData } from '../lib/seoEngine';
+import { InfoTooltip } from './InfoTooltip';
 
 interface GlobalControlsProps {
   settings: ConversionSettings;
@@ -310,13 +311,14 @@ function GlobalControlsComponent({
   const isPrivacyPrimary = path.includes('exif') || path.includes('metadata');
 
   const renderResizeControls = () => (
-    <div className="flex flex-col gap-2.5 p-3 sm:p-4 bg-white dark:bg-zinc-950 border border-emerald-100 dark:border-[#2d523c] rounded-xl">
+    <div className="flex flex-col gap-2.5 p-3 sm:p-3.5 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl">
       <div className="flex items-center justify-between mb-0.5">
         <div className="flex items-center gap-1.5">
-          <div className="p-1 bg-emerald-100 dark:bg-[#1e3427] text-emerald-600 dark:text-emerald-400 rounded-lg">
+          <div className="p-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-lg">
             <Maximize className="w-3.5 h-3.5" />
           </div>
-          <h4 className="text-xs sm:text-sm font-bold text-zinc-800 dark:text-zinc-200">Dimension Resizing</h4>
+          <h4 className="text-xs sm:text-sm font-semibold text-zinc-800 dark:text-zinc-200">Resize</h4>
+          <InfoTooltip text="Scales the pixel dimensions of your image. Keeps proportions when aspect ratio is locked." />
         </div>
         <label className="relative inline-flex items-center cursor-pointer">
           <input
@@ -326,14 +328,14 @@ function GlobalControlsComponent({
             onChange={(e) => updateResize({ enabled: e.target.checked })}
             disabled={disabled}
           />
-          <div className="w-8 h-5 sm:w-10 sm:h-6 bg-zinc-300 dark:bg-zinc-900 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white dark:after:bg-zinc-200 after:border-zinc-300 dark:after:border-zinc-800 after:border after:rounded-full after:h-4 after:w-4 sm:after:h-5 sm:after:w-5 after:transition-all peer-checked:bg-emerald-500 dark:peer-checked:bg-emerald-400"></div>
+          <div className="w-8 h-5 sm:w-9 sm:h-5 bg-zinc-300 dark:bg-zinc-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white dark:after:bg-zinc-200 after:border-zinc-300 dark:after:border-zinc-700 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600 dark:peer-checked:bg-indigo-500"></div>
         </label>
       </div>
 
       {settings.resize.enabled && (
-        <div className="grid grid-cols-2 gap-2 sm:gap-3 animate-in fade-in slide-in-from-top-1">
+        <div className="grid grid-cols-2 gap-2 sm:gap-2.5 animate-in fade-in slide-in-from-top-1 pt-1">
           <div>
-            <label className="block mb-1 text-[10px] sm:text-xs font-bold text-zinc-600 dark:text-zinc-400">Max Width (px)</label>
+            <label className="block mb-1 text-[10px] sm:text-xs font-medium text-zinc-600 dark:text-zinc-400">Max Width (px)</label>
             <input
               type="number"
               min="1"
@@ -343,11 +345,11 @@ function GlobalControlsComponent({
               onBlur={handleResizeWidthBlur}
               placeholder="e.g. 1920"
               disabled={disabled}
-              className="w-full px-2 py-1 sm:px-3 sm:py-1.5 text-xs font-semibold border-2 rounded-lg sm:rounded-xl bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 focus:border-emerald-500 focus:outline-none transition-colors shadow-2xs"
+              className="w-full px-2.5 py-1.5 text-xs font-semibold border rounded-lg bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 focus:border-indigo-500 focus:outline-none transition-colors"
             />
           </div>
           <div>
-            <label className="block mb-1 text-[10px] sm:text-xs font-bold text-zinc-600 dark:text-zinc-400">Max Height (px)</label>
+            <label className="block mb-1 text-[10px] sm:text-xs font-medium text-zinc-600 dark:text-zinc-400">Max Height (px)</label>
             <input
               type="number"
               min="1"
@@ -357,7 +359,7 @@ function GlobalControlsComponent({
               onBlur={handleResizeHeightBlur}
               placeholder="e.g. 1080"
               disabled={disabled}
-              className="w-full px-2 py-1 sm:px-3 sm:py-1.5 text-xs font-semibold border-2 rounded-lg sm:rounded-xl bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 focus:border-emerald-500 focus:outline-none transition-colors shadow-2xs"
+              className="w-full px-2.5 py-1.5 text-xs font-semibold border rounded-lg bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 focus:border-indigo-500 focus:outline-none transition-colors"
             />
           </div>
           <label className="flex items-center gap-1.5 cursor-pointer mt-0.5 col-span-2">
@@ -366,9 +368,9 @@ function GlobalControlsComponent({
               checked={settings.resize.keepAspectRatio}
               onChange={(e) => updateResize({ keepAspectRatio: e.target.checked })}
               disabled={disabled}
-              className="w-3.5 h-3.5 rounded text-emerald-500 border-zinc-300 focus:ring-emerald-500"
+              className="w-3.5 h-3.5 rounded text-indigo-600 border-zinc-300 dark:border-zinc-700 focus:ring-indigo-500 cursor-pointer"
             />
-            <span className="text-[11px] sm:text-xs font-semibold text-zinc-700 dark:text-zinc-200">Keep aspect ratio</span>
+            <span className="text-[11px] sm:text-xs font-medium text-zinc-700 dark:text-zinc-300">Keep aspect ratio</span>
           </label>
         </div>
       )}
@@ -376,32 +378,33 @@ function GlobalControlsComponent({
   );
 
   const renderCropControls = () => (
-    <div className="flex flex-col gap-2.5 p-3 sm:p-4 bg-white dark:bg-zinc-950 border border-indigo-100 dark:border-[#282d4a] rounded-xl">
+    <div className="flex flex-col gap-2.5 p-3 sm:p-3.5 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl">
       <div className="flex items-center justify-between mb-0.5">
         <div className="flex items-center gap-1.5">
-          <div className="p-1 bg-indigo-100 dark:bg-[#1e2338] text-indigo-600 dark:text-indigo-300 rounded-lg">
+          <div className="p-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-lg">
             <Crop className="w-3.5 h-3.5" />
           </div>
-          <h4 className="text-xs sm:text-sm font-bold text-zinc-800 dark:text-zinc-200">Crop Aspect Ratio</h4>
+          <h4 className="text-xs sm:text-sm font-semibold text-zinc-800 dark:text-zinc-200">Crop</h4>
+          <InfoTooltip text="Trims image edges to a fixed aspect ratio." />
         </div>
         {settings.cropAspectRatio && (
           <button
             type="button"
             onClick={() => updateSettings({ cropAspectRatio: null })}
             disabled={disabled}
-            className="text-[10px] sm:text-[11px] font-bold text-indigo-600 dark:text-indigo-300 hover:underline cursor-pointer"
+            className="text-[10px] sm:text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
           >
-            Clear Crop
+            Clear
           </button>
         )}
       </div>
       
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-1">
         {[
-          { label: '1:1 (Square)', value: { width: 1, height: 1 } },
-          { label: '4:3 (Classic)', value: { width: 4, height: 3 } },
-          { label: '16:9 (Widescreen)', value: { width: 16, height: 9 } },
-          { label: '9:16 (Story)', value: { width: 9, height: 16 } },
+          { label: '1:1 Square', value: { width: 1, height: 1 } },
+          { label: '4:3 Standard', value: { width: 4, height: 3 } },
+          { label: '16:9 Wide', value: { width: 16, height: 9 } },
+          { label: '9:16 Vertical', value: { width: 9, height: 16 } },
         ].map((preset) => {
           const isActive = settings.cropAspectRatio?.width === preset.value.width && settings.cropAspectRatio?.height === preset.value.height;
           return (
@@ -417,9 +420,9 @@ function GlobalControlsComponent({
                 }
               }}
               className={cn(
-                "px-1.5 py-1 text-[10px] sm:text-[11px] font-bold rounded-lg border transition-all text-center truncate cursor-pointer",
+                "px-1.5 py-1 text-[10px] sm:text-[11px] font-medium rounded-lg border transition-all text-center truncate cursor-pointer",
                 isActive
-                  ? "bg-indigo-600 text-white border-indigo-600 dark:bg-indigo-500 dark:text-[#202124] dark:border-indigo-400"
+                  ? "bg-indigo-600 text-white border-indigo-600 dark:bg-indigo-500 dark:text-white dark:border-indigo-400"
                   : "bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-200 border-zinc-200 dark:border-zinc-800 hover:border-indigo-400"
               )}
             >
@@ -430,7 +433,7 @@ function GlobalControlsComponent({
       </div>
       
       <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800">
-        <label className="block mb-1 text-[10px] sm:text-xs font-bold text-zinc-600 dark:text-zinc-400">
+        <label className="block mb-1 text-[10px] sm:text-xs font-medium text-zinc-600 dark:text-zinc-400">
           Custom Ratio (W : H)
         </label>
         <div className="flex items-center gap-1.5">
@@ -450,7 +453,7 @@ function GlobalControlsComponent({
               }
             }}
             onBlur={handleCropWidthBlur}
-            className="w-16 sm:w-20 px-2 py-1 sm:px-3 sm:py-1.5 text-xs font-semibold border-2 rounded-lg sm:rounded-xl bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 focus:border-indigo-500 focus:outline-none transition-colors"
+            className="w-16 sm:w-20 px-2 py-1 text-xs font-semibold border rounded-lg bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 focus:border-indigo-500 focus:outline-none transition-colors"
           />
           <span className="text-xs font-bold text-zinc-500 dark:text-zinc-400">:</span>
           <input
@@ -469,7 +472,7 @@ function GlobalControlsComponent({
               }
             }}
             onBlur={handleCropHeightBlur}
-            className="w-16 sm:w-20 px-2 py-1 sm:px-3 sm:py-1.5 text-xs font-semibold border-2 rounded-lg sm:rounded-xl bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 focus:border-indigo-500 focus:outline-none transition-colors"
+            className="w-16 sm:w-20 px-2 py-1 text-xs font-semibold border rounded-lg bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 focus:border-indigo-500 focus:outline-none transition-colors"
           />
         </div>
       </div>
@@ -477,22 +480,23 @@ function GlobalControlsComponent({
   );
 
   const renderDpiControls = () => (
-    <div className="flex flex-col gap-2.5 p-3 sm:p-4 bg-white dark:bg-zinc-950 border border-indigo-100 dark:border-[#2d3a4e] rounded-xl">
+    <div className="flex flex-col gap-2.5 p-3 sm:p-3.5 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl">
       <div className="flex items-center justify-between mb-0.5">
         <div className="flex items-center gap-1.5">
-          <div className="p-1 bg-indigo-100 dark:bg-zinc-800 text-indigo-600 dark:text-indigo-400 rounded-lg">
+          <div className="p-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-lg">
             <Printer className="w-3.5 h-3.5" />
           </div>
-          <h4 className="text-xs sm:text-sm font-bold text-zinc-800 dark:text-zinc-200">Target DPI</h4>
+          <h4 className="text-xs sm:text-sm font-semibold text-zinc-800 dark:text-zinc-200">DPI</h4>
+          <InfoTooltip text="Sets print resolution metadata (dots per inch). Does not alter on-screen pixel count." />
         </div>
         {settings.targetDPI !== null && settings.targetDPI !== undefined && (
           <button
             type="button"
             disabled={disabled}
             onClick={() => updateSettings({ targetDPI: null })}
-            className="text-[10px] sm:text-[11px] font-bold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
+            className="text-[10px] sm:text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
           >
-            Clear DPI
+            Clear
           </button>
         )}
       </div>
@@ -514,9 +518,9 @@ function GlobalControlsComponent({
                 if (preset.value) setCustomDpiInput(String(preset.value));
               }}
               className={cn(
-                "px-1.5 py-1 text-[10px] sm:text-[11px] font-bold rounded-lg border transition-all text-center truncate cursor-pointer",
+                "px-1.5 py-1 text-[10px] sm:text-[11px] font-medium rounded-lg border transition-all text-center truncate cursor-pointer",
                 isActive
-                  ? "bg-indigo-600 text-white border-indigo-600 dark:bg-indigo-500 dark:text-[#202124] dark:border-indigo-400"
+                  ? "bg-indigo-600 text-white border-indigo-600 dark:bg-indigo-500 dark:text-white dark:border-indigo-400"
                   : "bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-200 border-zinc-200 dark:border-zinc-800 hover:border-indigo-400"
               )}
             >
@@ -527,7 +531,7 @@ function GlobalControlsComponent({
       </div>
       
       <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
-        <label className="text-[11px] sm:text-xs font-bold text-zinc-600 dark:text-zinc-400">
+        <label className="text-[11px] sm:text-xs font-medium text-zinc-600 dark:text-zinc-400">
           Custom DPI
         </label>
         <div className="flex items-center gap-2">
@@ -540,7 +544,7 @@ function GlobalControlsComponent({
             onChange={(e) => handleDpiChange(e.target.value)}
             onBlur={handleDpiBlur}
             placeholder="300"
-            className="w-20 sm:w-24 px-2 py-1 sm:px-3 sm:py-1.5 text-xs font-semibold border-2 rounded-lg sm:rounded-xl bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 focus:border-indigo-500 focus:outline-none transition-colors"
+            className="w-20 sm:w-24 px-2 py-1 text-xs font-semibold border rounded-lg bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 focus:border-indigo-500 focus:outline-none transition-colors"
           />
         </div>
       </div>
@@ -548,13 +552,14 @@ function GlobalControlsComponent({
   );
 
   const renderRotationControls = () => (
-    <div className="flex flex-col gap-2.5 p-3 sm:p-4 bg-white dark:bg-zinc-950 border border-amber-100 dark:border-[#3a2818] rounded-xl">
+    <div className="flex flex-col gap-2.5 p-3 sm:p-3.5 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl">
       <div className="flex items-center justify-between mb-0.5">
         <div className="flex items-center gap-1.5">
-          <div className="p-1 bg-amber-100 dark:bg-[#3a2818] text-amber-600 dark:text-[#fdd663] rounded-lg">
+          <div className="p-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-lg">
             <RotateCw className="w-3.5 h-3.5" />
           </div>
-          <h4 className="text-xs sm:text-sm font-bold text-zinc-800 dark:text-zinc-200">Batch Rotation</h4>
+          <h4 className="text-xs sm:text-sm font-semibold text-zinc-800 dark:text-zinc-200">Rotate</h4>
+          <InfoTooltip text="Rotates all batch images clockwise by the chosen angle." />
         </div>
       </div>
       
@@ -571,10 +576,10 @@ function GlobalControlsComponent({
             disabled={disabled}
             onClick={() => updateSettings({ rotation: preset.value })}
             className={cn(
-              "px-1.5 py-1 text-[10px] sm:text-[11px] font-bold rounded-lg border transition-all text-center cursor-pointer",
+              "px-1.5 py-1 text-[10px] sm:text-[11px] font-medium rounded-lg border transition-all text-center cursor-pointer",
               settings.rotation === preset.value || (preset.value === 0 && !settings.rotation)
-                ? "bg-amber-500 text-white border-amber-500 dark:bg-[#fdd663] dark:text-[#202124] dark:border-[#fdd663]"
-                : "bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-200 border-zinc-200 dark:border-zinc-800 hover:border-amber-400"
+                ? "bg-indigo-600 text-white border-indigo-600 dark:bg-indigo-500 dark:text-white dark:border-indigo-400"
+                : "bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-200 border-zinc-200 dark:border-zinc-800 hover:border-indigo-400"
             )}
           >
             {preset.label}
@@ -585,34 +590,25 @@ function GlobalControlsComponent({
   );
 
   const renderPrivacyControls = () => (
-    <div className="flex flex-col gap-2.5 p-3 sm:p-4 bg-white dark:bg-zinc-950 border border-rose-100 dark:border-[#381e26] rounded-xl">
-      <div className="flex items-center justify-between mb-0.5">
-        <div className="flex items-center gap-1.5">
-          <div className="p-1 bg-rose-100 dark:bg-[#381e26] text-rose-600 dark:text-[#f28b82] rounded-lg">
-            <ShieldCheck className="w-3.5 h-3.5" />
-          </div>
-          <h4 className="text-xs sm:text-sm font-bold text-zinc-800 dark:text-zinc-200">Metadata & Privacy</h4>
-        </div>
-      </div>
-      
-      <label className="flex items-start gap-2.5 p-2.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl cursor-pointer hover:border-rose-300 dark:hover:border-rose-800 transition-colors">
+    <label className="flex items-center justify-between gap-3 px-3 py-2.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl cursor-pointer hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors w-full">
+      <div className="flex items-center gap-2.5 min-w-0">
         <input
           type="checkbox"
           checked={settings.stripExif !== false}
           onChange={(e) => updateSettings({ stripExif: e.target.checked })}
           disabled={disabled}
-          className="mt-0.5 w-3.5 h-3.5 text-rose-500 rounded border-zinc-300 dark:border-zinc-700 dark:bg-zinc-950 focus:ring-rose-500 cursor-pointer"
+          className="w-4 h-4 text-indigo-600 rounded border-zinc-300 dark:border-zinc-700 dark:bg-zinc-950 focus:ring-indigo-500 cursor-pointer shrink-0"
         />
-        <div>
-          <span className="block text-[11px] sm:text-xs font-bold text-zinc-800 dark:text-zinc-200">
-            Strip EXIF & Location Data
-          </span>
-          <span className="block text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5 leading-normal">
-            Removes camera metadata, GPS location, and other identifiable info.
-          </span>
-        </div>
-      </label>
-    </div>
+        <span className="text-xs sm:text-sm font-medium text-zinc-800 dark:text-zinc-200 truncate">
+          Remove photo metadata
+        </span>
+      </div>
+      <InfoTooltip
+        title="Photo Metadata"
+        text="Removes embedded camera details, GPS/location information, and other EXIF metadata from the output."
+        align="right"
+      />
+    </label>
   );
 
   // Filter which secondary controls to display based on what is already primary
@@ -667,9 +663,12 @@ function GlobalControlsComponent({
           {/* Format Selection */}
           {!isLockedFormat && (
             <div className="flex flex-col gap-1 w-full sm:w-auto">
-              <label className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
-                Output Format
-              </label>
+              <div className="flex items-center gap-1">
+                <label className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
+                  Format
+                </label>
+                <InfoTooltip text="Target file type for exported images." />
+              </div>
               <div className="relative inline-block min-w-[150px] w-full sm:w-auto">
                 <select
                   disabled={disabled}
@@ -698,9 +697,11 @@ function GlobalControlsComponent({
           {mode === 'compress' ? (
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full flex-1">
               <div className="flex flex-col gap-1 w-full sm:w-auto">
-                <label className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
-                  Compression Mode
-                </label>
+                <div className="flex items-center gap-1">
+                  <label className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
+                    Quality
+                  </label>
+                </div>
                 <div className="relative inline-block min-w-[140px] w-full sm:w-auto">
                   <select
                     disabled={disabled}
@@ -723,8 +724,8 @@ function GlobalControlsComponent({
                     }}
                     className="w-full appearance-none bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-800 dark:hover:bg-zinc-700/80 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white text-xs sm:text-sm font-medium rounded-lg px-3 py-2 pr-8 cursor-pointer focus:outline-none transition-colors"
                   >
-                    <option value="quality">Quality Slider</option>
-                    <option value="target">Target Max KB</option>
+                    <option value="quality">Quality slider</option>
+                    <option value="target">Target file size</option>
                     <option value="lossless">Lossless</option>
                   </select>
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-zinc-400">
@@ -735,9 +736,12 @@ function GlobalControlsComponent({
 
               {compressionStrategy === 'target' ? (
                 <div className="flex flex-col gap-1 flex-1 w-full">
-                  <label className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
-                    Max File Size Limit
-                  </label>
+                  <div className="flex items-center gap-1">
+                    <label className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
+                      Max file size
+                    </label>
+                    <InfoTooltip text="Automatically calculates optimal compression to stay below this limit." />
+                  </div>
                   <div className="flex items-center gap-2">
                     <input
                       type="number"

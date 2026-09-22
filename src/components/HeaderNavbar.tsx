@@ -43,8 +43,8 @@ export function HeaderNavbar({
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-zinc-200/80 dark:border-zinc-800 bg-white/80 dark:bg-black/70 backdrop-blur-xl transition-all duration-300 shadow-sm dark:shadow-none">
-      <div className="flex h-14 sm:h-16 items-center justify-between px-2 sm:px-6 max-w-6xl mx-auto gap-1.5 sm:gap-2">
+    <header className="sticky top-0 z-50 w-full max-w-full overflow-x-clip border-b border-zinc-200 dark:border-zinc-800 bg-white/90 dark:bg-black/80 backdrop-blur-xl transition-all duration-200 shadow-2xs dark:shadow-none">
+      <div className="flex h-13 sm:h-14 items-center justify-between px-2.5 sm:px-6 max-w-6xl mx-auto gap-1.5 sm:gap-2">
         {/* Left: Brand Identity + In-Browser/Offline Badge */}
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <button 
@@ -70,7 +70,7 @@ export function HeaderNavbar({
 
           {/* Privacy & In-Browser Processing Indicator */}
           <div 
-            className="hidden md:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-medium text-zinc-600 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800 shrink-0"
+            className="hidden md:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-medium text-zinc-700 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-700/60 shrink-0"
             title={isOffline ? "Operating offline in local browser memory" : "Client-side processing active — zero cloud upload"}
           >
             <span className={cn(
@@ -87,7 +87,7 @@ export function HeaderNavbar({
           {onOpenSearch && (
             <button
               onClick={onOpenSearch}
-              className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-300 bg-zinc-100 hover:bg-zinc-200/70 dark:bg-zinc-800 dark:hover:bg-zinc-700/80 rounded-lg transition-colors cursor-pointer shrink-0"
+              className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-2.5 py-1.5 text-xs font-medium text-zinc-700 dark:text-zinc-200 bg-zinc-100 hover:bg-zinc-200/80 dark:bg-zinc-800 dark:hover:bg-zinc-700/80 rounded-lg transition-colors cursor-pointer shrink-0"
               title="Search tools"
               aria-label="Search tools"
             >
@@ -100,10 +100,10 @@ export function HeaderNavbar({
           <button
             onClick={() => onNavigate('/tools')}
             className={cn(
-              "px-2 sm:px-3 py-1.5 text-xs font-medium rounded-lg transition-colors cursor-pointer shrink-0",
+              "px-2 sm:px-2.5 py-1.5 text-xs font-medium rounded-lg transition-colors cursor-pointer shrink-0",
               currentPath === '/tools' || currentPath.startsWith('/tools/')
-                ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900"
-                : "text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-bold"
+                : "text-zinc-700 dark:text-zinc-200 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800"
             )}
             title="Browse All Tools"
           >
@@ -114,10 +114,10 @@ export function HeaderNavbar({
           <button
             onClick={() => onNavigate('/articles')}
             className={cn(
-              "px-2 sm:px-3 py-1.5 text-xs font-medium rounded-lg transition-colors cursor-pointer shrink-0",
+              "px-2 sm:px-2.5 py-1.5 text-xs font-medium rounded-lg transition-colors cursor-pointer shrink-0",
               currentPath.startsWith('/articles')
-                ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900"
-                : "text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-bold"
+                : "text-zinc-700 dark:text-zinc-200 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800"
             )}
             title="Guides and Articles"
           >
@@ -128,7 +128,7 @@ export function HeaderNavbar({
           {onOpenDonate && (
             <button
               onClick={onOpenDonate}
-              className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-1.5 text-xs font-medium text-pink-600 dark:text-pink-400 hover:bg-pink-50 dark:hover:bg-pink-950/40 rounded-lg transition-colors cursor-pointer shrink-0"
+              className="inline-flex items-center gap-1 px-2 sm:px-2 py-1.5 text-xs font-medium text-pink-600 dark:text-pink-400 hover:bg-pink-50 dark:hover:bg-pink-950/40 rounded-lg transition-colors cursor-pointer shrink-0"
               title="Support Zapixal development"
               aria-label="Support Zapixal development"
             >
@@ -142,7 +142,7 @@ export function HeaderNavbar({
             href="https://github.com/Vahzryn/Zapixal"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden sm:inline-flex p-1.5 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors cursor-pointer shrink-0"
+            className="hidden sm:inline-flex p-1.5 text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors cursor-pointer shrink-0"
             aria-label="View source code on GitHub"
             title="Open Source GitHub"
           >
@@ -154,7 +154,7 @@ export function HeaderNavbar({
           {/* Theme Toggle */}
           <button
             onClick={onToggleDarkMode}
-            className="p-1.5 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors cursor-pointer shrink-0"
+            className="p-1.5 text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors cursor-pointer shrink-0"
             aria-label="Toggle theme"
             title="Toggle theme"
           >

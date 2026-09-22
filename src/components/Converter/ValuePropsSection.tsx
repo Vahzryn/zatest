@@ -1,56 +1,86 @@
 import React from 'react';
-import { ShieldCheck, Lock, Activity, Wrench } from 'lucide-react';
+import { Lock, Zap, Wrench } from 'lucide-react';
+import { InfoTooltip } from '../InfoTooltip';
 
 export const ValuePropsSection = React.memo(function ValuePropsSection() {
   return (
-    <section className="w-full max-w-5xl mx-auto mb-8 rounded-3xl border border-zinc-200/80 bg-white/60 p-6 dark:border-zinc-800 dark:bg-zinc-900/40 sm:p-8 shadow-sm hover:shadow-md transition-shadow">
-      <div className="max-w-2xl mb-6">
-        <h2 className="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">
+    <section className="w-full max-w-5xl mx-auto mb-6 rounded-2xl border border-zinc-200 bg-white p-4 sm:p-5 dark:border-zinc-800 dark:bg-zinc-900/60 shadow-2xs" id="value-props-section">
+      <div className="max-w-2xl mb-3.5">
+        <h2 className="text-sm sm:text-base font-bold text-zinc-900 dark:text-white tracking-tight">
           Why use Zapixal
         </h2>
-        <p className="mt-1.5 text-sm sm:text-base text-zinc-600 dark:text-zinc-400 font-medium">
-          Fast browser-based tools engineered for privacy, performance, and day-to-day workflow tasks.
+        <p className="mt-0.5 text-xs text-zinc-600 dark:text-zinc-400 font-normal">
+          Simple, fast tools designed for your everyday file tasks.
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <div className="rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-black/40 hover:border-emerald-500/50 dark:hover:border-emerald-500/50 transition-colors group">
-          <div className="flex items-center gap-2.5 text-sm sm:text-base font-bold text-zinc-900 dark:text-white">
-            <div className="p-1.5 rounded-lg bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform">
-              <Lock className="h-4 w-4" />
+      <div className="grid gap-3 sm:grid-cols-3">
+        {/* Value Prop 1: Private by design */}
+        <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-900/90 p-3 sm:p-3.5 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between gap-1 mb-1">
+              <div className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-zinc-900 dark:text-white">
+                <div className="p-1 rounded-md bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">
+                  <Lock className="h-3.5 w-3.5" />
+                </div>
+                <span>Private by design</span>
+              </div>
+              <InfoTooltip
+                title="Browser Processing"
+                text="Files stay on your local device and are processed directly in your browser. No files are uploaded to remote servers."
+                align="right"
+              />
             </div>
-            In-browser processing
+            <p className="text-xs text-zinc-600 dark:text-zinc-400 font-normal leading-relaxed">
+              Processed in your browser.
+            </p>
           </div>
-          <p className="mt-2 text-xs sm:text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-            Image compression, PDF manipulation, and developer parsing run locally in browser memory via WebAssembly and Web Workers.
-          </p>
         </div>
 
-        <div className="rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-black/40 hover:border-indigo-500/50 dark:hover:border-indigo-500/50 transition-colors group">
-          <div className="flex items-center gap-2.5 text-sm sm:text-base font-bold text-zinc-900 dark:text-white">
-            <div className="p-1.5 rounded-lg bg-indigo-100 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 group-hover:scale-110 transition-transform">
-              <Activity className="h-4 w-4" />
+        {/* Value Prop 2: No setup */}
+        <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-900/90 p-3 sm:p-3.5 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between gap-1 mb-1">
+              <div className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-zinc-900 dark:text-white">
+                <div className="p-1 rounded-md bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400">
+                  <Zap className="h-3.5 w-3.5" />
+                </div>
+                <span>No setup</span>
+              </div>
+              <InfoTooltip
+                title="Instant Access"
+                text="Works immediately on desktop, tablet, and mobile. Process single files or batches without signing up or installing software."
+                align="right"
+              />
             </div>
-            Zero software setup
+            <p className="text-xs text-zinc-600 dark:text-zinc-400 font-normal leading-relaxed">
+              No account or software installation required.
+            </p>
           </div>
-          <p className="mt-2 text-xs sm:text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-            No desktop applications or account signups required. Load the tool and process files immediately with full batch capabilities.
-          </p>
         </div>
 
-        <div className="rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-black/40 hover:border-amber-500/50 dark:hover:border-amber-500/50 transition-colors group">
-          <div className="flex items-center gap-2.5 text-sm sm:text-base font-bold text-zinc-900 dark:text-white">
-            <div className="p-1.5 rounded-lg bg-amber-100 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 group-hover:scale-110 transition-transform">
-              <Wrench className="h-4 w-4" />
+        {/* Value Prop 3: One toolkit */}
+        <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-900/90 p-3 sm:p-3.5 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between gap-1 mb-1">
+              <div className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-zinc-900 dark:text-white">
+                <div className="p-1 rounded-md bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400">
+                  <Wrench className="h-3.5 w-3.5" />
+                </div>
+                <span>One toolkit</span>
+              </div>
+              <InfoTooltip
+                title="Integrated Utilities"
+                text="Access image optimization, PDF manipulation, background removal, and developer tools in a single unified interface."
+                align="right"
+              />
             </div>
-            Unified toolkit
+            <p className="text-xs text-zinc-600 dark:text-zinc-400 font-normal leading-relaxed">
+              Images, PDFs, and useful developer tools in one place.
+            </p>
           </div>
-          <p className="mt-2 text-xs sm:text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-            From HEIC conversions and PDF merges to JWT inspection and text diffing, access all essential tools in one clean environment.
-          </p>
         </div>
       </div>
     </section>
   );
 });
-

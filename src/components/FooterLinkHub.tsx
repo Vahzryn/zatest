@@ -26,13 +26,13 @@ export function FooterLinkHub({ currentPath, onNavigate }: FooterLinkHubProps) {
       id="main-footer" 
       role="contentinfo" 
       aria-label="Zapixal Footer"
-      className="w-full bg-zinc-50/90 dark:bg-[#121315] border-t border-zinc-200/70 dark:border-[#222428] mt-20 pt-10 pb-8 transition-colors duration-200 text-zinc-600 dark:text-zinc-400 font-sans"
+      className="w-full bg-zinc-50 dark:bg-[#121315] border-t border-zinc-200 dark:border-zinc-800 mt-12 sm:mt-16 pt-7 pb-6 transition-colors duration-200 text-zinc-600 dark:text-zinc-400 font-sans"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-6">
         
         {/* Brand Header Section */}
-        <div className="pb-6 border-b border-zinc-200/70 dark:border-[#222428] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="space-y-0.5">
+        <div className="pb-5 border-b border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div className="space-y-1">
             <div className="flex items-center gap-2">
               <img 
                 src={logoImg} 
@@ -42,21 +42,21 @@ export function FooterLinkHub({ currentPath, onNavigate }: FooterLinkHubProps) {
                 decoding="async"
                 loading="lazy"
                 referrerPolicy="no-referrer"
-                className="w-7 h-7 rounded-lg object-contain bg-white dark:bg-[#1a1b1e] p-0.5 border border-zinc-200/80 dark:border-[#32353a]"
+                className="w-7 h-7 rounded-lg object-contain bg-white dark:bg-[#1a1b1e] p-0.5 border border-zinc-200 dark:border-zinc-700"
               />
-              <span className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight font-sans">
+              <span className="text-base font-bold text-zinc-900 dark:text-white tracking-tight font-sans">
                 Zapixal
               </span>
             </div>
 
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-lg font-sans">
+            <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-lg font-sans">
               Browser-based tools for image optimization, PDF documents, developer formatting, and media processing. Runs locally in browser memory via WebAssembly.
             </p>
           </div>
         </div>
 
         {/* Curated Contextual Link Columns */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 py-4 border-b border-zinc-200/70 dark:border-[#222428]">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 py-3 border-b border-zinc-200 dark:border-zinc-800">
           {/* Column 1: Categories & Directory */}
           <div className="space-y-2.5">
             <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white">

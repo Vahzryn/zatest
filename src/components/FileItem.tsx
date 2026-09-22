@@ -404,8 +404,8 @@ function FileItemComponent({
                 <button
                   onClick={(e) => { e.stopPropagation(); onInspectDetails(item); }}
                   className="p-1 transition-all rounded text-zinc-400 hover:bg-indigo-50 dark:hover:bg-[#21243a] hover:text-indigo-600 dark:hover:text-indigo-300 shrink-0 cursor-pointer"
-                  title="Inspect Specifications"
-                  aria-label="Inspect image specifications"
+                  title="File information"
+                  aria-label="View file information"
                 >
                   <Info className="w-3 h-3 shrink-0" />
                 </button>

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { SeoRouteData } from '../lib/seoEngine';
 import { Breadcrumbs } from './Breadcrumbs';
 import { SeoGuideContent } from './Converter/SeoGuideContent';
+import { AdSlot } from './AdSlot';
 import { 
   Upload, Download, RefreshCw, AlertTriangle, Loader2, 
   Layers, Palette, SlidersHorizontal, ChevronDown, 
@@ -320,17 +321,17 @@ export function BackgroundRemoverPage({ seoData, onNavigate }: BackgroundRemover
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 py-6 sm:py-8 space-y-6 animate-in fade-in duration-200">
+    <div className="w-full max-w-4xl mx-auto px-2 sm:px-4 py-1 sm:py-2 space-y-3.5 sm:space-y-4 animate-in fade-in duration-200">
       {seoData.breadcrumbs && seoData.breadcrumbs.length > 0 && (
         <Breadcrumbs items={seoData.breadcrumbs} onNavigate={onNavigate} />
       )}
 
       {/* Hero Header */}
-      <div className="text-center max-w-xl mx-auto space-y-2">
-        <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">
+      <div className="text-center max-w-xl mx-auto space-y-1 mb-1 sm:mb-2">
+        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">
           Background Remover
         </h1>
-        <p className="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
+        <p className="text-zinc-600 dark:text-zinc-400 text-xs sm:text-sm leading-relaxed">
           Remove image backgrounds instantly in your browser. Private, free, and runs entirely on your device.
         </p>
       </div>
@@ -974,6 +975,9 @@ export function BackgroundRemoverPage({ seoData, onNavigate }: BackgroundRemover
           </div>
         )}
       </div>
+
+      {/* Ad Slot: Reserved privacy-friendly ad placement after primary interaction/result */}
+      <AdSlot placement="tool-result" />
 
       {/* SEO Guide & Informational Content */}
       <SeoGuideContent seoData={seoData} onNavigate={onNavigate} />

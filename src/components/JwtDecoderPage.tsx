@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { Breadcrumbs } from './Breadcrumbs';
 import { SeoRouteData } from '../lib/seoEngine';
 import {
   decodeJwt,

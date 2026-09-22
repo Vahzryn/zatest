@@ -3,6 +3,7 @@ import { ImageFileItem, ConversionSettings, TargetFormat } from './types';
 import { Dropzone } from './components/Dropzone';
 import { HeaderNavbar } from './components/HeaderNavbar';
 import { HeroHeader } from './components/Converter/HeroHeader';
+import { AdSlot } from './components/AdSlot';
 import { CompleteView } from './components/Converter/CompleteView';
 import { ValuePropsSection } from './components/Converter/ValuePropsSection';
 import { PopularToolsSection } from './components/Converter/PopularToolsSection';
@@ -270,16 +271,20 @@ export default function App({ initialPath, initialSeoData }: AppProps) {
     handleReformatItems([id], format);
   }, [handleReformatItems]);
 
-  const isArticleOrStaticRoute = 
-    currentPath === '/privacy' ||
-    currentPath === '/terms' ||
-    currentPath === '/about' ||
-    currentPath === '/tools' ||
-    currentPath.startsWith('/tools/') ||
-    currentPath === '/widget' ||
-    currentPath === '/articles/benchmarks' ||
-    currentPath === '/articles' ||
-    currentPath.startsWith('/articles/') ||
+  // Dedicated tool pages and content views that provide their own self-contained page identity
+  // (breadcrumbs, H1, description, and custom layout) rather than using the generic HeroHeader.
+  const normalizedCurrentPath = normalizeRoutePath(currentPath);
+  const hasDedicatedPageHeader = 
+    normalizedCurrentPath === '/background-remover' ||
+    normalizedCurrentPath === '/privacy' ||
+    normalizedCurrentPath === '/terms' ||
+    normalizedCurrentPath === '/about' ||
+    normalizedCurrentPath === '/tools' ||
+    normalizedCurrentPath.startsWith('/tools/') ||
+    normalizedCurrentPath === '/widget' ||
+    normalizedCurrentPath === '/articles/benchmarks' ||
+    normalizedCurrentPath === '/articles' ||
+    normalizedCurrentPath.startsWith('/articles/') ||
     seoData.isNotFound;
 
   if (currentPath === '/embed' || currentPath.replace(/\.html$/, '') === '/embed') {
@@ -311,14 +316,14 @@ export default function App({ initialPath, initialSeoData }: AppProps) {
         isCopiedShareLink={isCopiedShareLink}
       />
 
-      <main id="main-content" className="max-w-6xl px-3 sm:px-6 py-4 sm:py-6 mx-auto lg:py-8">
+      <main id="main-content" className="max-w-6xl px-3 sm:px-5 py-3 sm:py-5 mx-auto lg:py-6">
         {/* Hero Header Section */}
-        {!isArticleOrStaticRoute && (
+        {!hasDedicatedPageHeader && (
           <HeroHeader seoData={seoData} onNavigate={handleNavigate} />
         )}
 
         {/* Category Workspace Switcher (Unified Sister Tools Navigation) */}
-        {!isArticleOrStaticRoute && (
+        {!hasDedicatedPageHeader && (
           <CategoryWorkspaceSwitcher
             currentPath={currentPath}
             onNavigate={handleNavigate}
@@ -493,6 +498,7 @@ export default function App({ initialPath, initialSeoData }: AppProps) {
                     )}
 
                     <PopularToolsSection onNavigate={handleNavigate} />
+                    <AdSlot placement="homepage" />
                     <ValuePropsSection />
                   </React.Fragment>
                 ) : (
@@ -512,6 +518,7 @@ export default function App({ initialPath, initialSeoData }: AppProps) {
                     />
 
                     <SeoGuideContent seoData={seoData} onNavigate={handleNavigate} />
+                    <AdSlot placement="tool-result" />
                     <PopularToolsSection onNavigate={handleNavigate} />
                     <ValuePropsSection />
                   </React.Fragment>
@@ -519,23 +526,28 @@ export default function App({ initialPath, initialSeoData }: AppProps) {
               </div>
             ) : showCompleteView && files.length > 0 ? (
               /* COMPLETE / DOWNLOAD VIEW */
-              <CompleteView
-                files={files}
-                settings={settings}
-                isCopiedShareLink={isCopiedShareLink}
-                onDownloadAll={handleDownloadAll}
-                onDownloadDirect={handleDownloadDirect}
-                onDownloadToDirectory={handleDownloadToDirectory}
-                hasDirectoryPicker={hasDirectoryPicker}
-                onShareApp={handleShareApp}
-                onClearAll={() => {
-                  handleClearAll();
-                  setShowCompleteView(false);
-                }}
-                onBackToWorkspace={() => setShowCompleteView(false)}
-                onDownloadSingle={handleDownloadSingle}
-                onRetryFile={handleRetryFile}
-              />
+              <React.Fragment>
+                <CompleteView
+                  files={files}
+                  settings={settings}
+                  isCopiedShareLink={isCopiedShareLink}
+                  onDownloadAll={handleDownloadAll}
+                  onDownloadDirect={handleDownloadDirect}
+                  onDownloadToDirectory={handleDownloadToDirectory}
+                  hasDirectoryPicker={hasDirectoryPicker}
+                  onShareApp={handleShareApp}
+                  onClearAll={() => {
+                    handleClearAll();
+                    setShowCompleteView(false);
+                  }}
+                  onBackToWorkspace={() => setShowCompleteView(false)}
+                  onDownloadSingle={handleDownloadSingle}
+                  onRetryFile={handleRetryFile}
+                />
+                <div className="mt-6">
+                  <AdSlot placement="tool-result" />
+                </div>
+              </React.Fragment>
             ) : (
               /* PERSISTENT WORKSPACE */
               <QueueSection

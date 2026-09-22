@@ -14,7 +14,6 @@ import {
   RefreshCw,
   Layers
 } from 'lucide-react';
-import { Breadcrumbs } from './Breadcrumbs';
 import { SeoRouteData } from '../lib/seoEngine';
 import { mergePdfFiles } from '../lib/pdfSplitMerge';
 import { loadPdfDocument } from '../lib/pdfProcessor';

@@ -319,7 +319,7 @@ export function ImageDetailsModal({ item, onClose }: ImageDetailsModalProps) {
                 {item.file.name}
               </h3>
               <p className="text-[10px] sm:text-xs text-zinc-500 dark:text-zinc-400 truncate">
-                {imgDimensions ? `${imgDimensions.width} × ${imgDimensions.height} px` : 'Loading specs...'} • {formatBytes(item.originalSize)}
+                {imgDimensions ? `${imgDimensions.width} × ${imgDimensions.height} px` : 'Loading dimensions...'} • {formatBytes(item.originalSize)}
               </p>
             </div>
           </div>
@@ -468,7 +468,7 @@ export function ImageDetailsModal({ item, onClose }: ImageDetailsModalProps) {
               <div className="flex items-center justify-between">
                 <h4 className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-200 flex items-center gap-2">
                   <Info className="w-4 h-4 text-indigo-600 dark:text-indigo-300" />
-                  Technical Specifications
+                  File Information
                 </h4>
                 <button
                   onClick={() => setShowInfoPanel(false)}
