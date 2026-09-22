@@ -66,6 +66,7 @@ export function PdfToJpgConverter({ onNavigate }: PdfToJpgConverterProps) {
   const abortControllerRef = useRef<boolean>(false);
   const activeDocIdRef = useRef<number>(0);
   const resultsRef = useRef<RenderedPdfPage[]>([]);
+  const thumbnailsRef = useRef<Record<number, string>>({});
 
   // Clean up object URLs when resetting or unmounting
   const cleanupResults = useCallback(() => {
@@ -80,28 +81,41 @@ export function PdfToJpgConverter({ onNavigate }: PdfToJpgConverterProps) {
     setProcessedResults([]);
   }, []);
 
+  const revokeThumbnails = useCallback(() => {
+    Object.values(thumbnailsRef.current).forEach((url) => {
+      if (url && url.startsWith('blob:')) {
+        try {
+          URL.revokeObjectURL(url);
+        } catch (e) {}
+      }
+    });
+    thumbnailsRef.current = {};
+    setThumbnails({});
+  }, []);
+
   useEffect(() => {
     return () => {
       activeDocIdRef.current += 1;
       abortControllerRef.current = true;
       cleanupResults();
+      revokeThumbnails();
     };
-  }, [cleanupResults]);
+  }, [cleanupResults, revokeThumbnails]);
 
   const handleReset = useCallback(() => {
     activeDocIdRef.current += 1;
     abortControllerRef.current = true;
     cleanupResults();
+    revokeThumbnails();
     setFile(null);
     setPdfDoc(null);
     setNumPages(0);
     setSelectedPages(new Set());
-    setThumbnails({});
     setErrorMessage(null);
     setIsProcessing(false);
     setCurrentProcessingPage(0);
     setRangeInput('');
-  }, [cleanupResults]);
+  }, [cleanupResults, revokeThumbnails]);
 
   // Load PDF when file is selected
   const processPdfFile = useCallback(async (selectedFile: File) => {
@@ -116,6 +130,7 @@ export function PdfToJpgConverter({ onNavigate }: PdfToJpgConverterProps) {
     setErrorMessage(null);
     setFile(selectedFile);
     cleanupResults();
+    revokeThumbnails();
 
     try {
       const buffer = await selectedFile.arrayBuffer();
@@ -146,7 +161,7 @@ export function PdfToJpgConverter({ onNavigate }: PdfToJpgConverterProps) {
         setLoadingPdf(false);
       }
     }
-  }, [cleanupResults]);
+  }, [cleanupResults, revokeThumbnails]);
 
   // Generate page thumbnails in small background batches
   const loadThumbnailsInBatches = async (doc: any, pageCount: number, docId: number) => {
@@ -156,7 +171,15 @@ export function PdfToJpgConverter({ onNavigate }: PdfToJpgConverterProps) {
       if (activeDocIdRef.current !== docId) return;
       try {
         const thumbUrl = await renderPdfPageThumbnail(doc, i, 180);
-        if (activeDocIdRef.current !== docId) return;
+        if (activeDocIdRef.current !== docId) {
+          if (thumbUrl && thumbUrl.startsWith('blob:')) {
+            try {
+              URL.revokeObjectURL(thumbUrl);
+            } catch (e) {}
+          }
+          return;
+        }
+        thumbnailsRef.current[i] = thumbUrl;
         setThumbnails((prev) => ({ ...prev, [i]: thumbUrl }));
       } catch (e) {
         console.warn(`Failed to generate thumbnail for page ${i}:`, e);

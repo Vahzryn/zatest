@@ -19,7 +19,7 @@
     "preview": "vite preview",
     "clean": "rm -rf dist dist-ssr",
     "lint": "tsc --noEmit",
-    "test": "tsx scripts/test-format-acceptance.ts"
+    "test": "tsx scripts/test-format-acceptance.ts && tsx scripts/test-share-config.ts"
   },
   "dependencies": {
     "@jsquash/avif": "^2.1.1",

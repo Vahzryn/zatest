@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TargetFormat, ConversionSettings } from '../types';
-import { Globe, Smartphone, Minimize2, Zap, Loader2, Maximize, Crop, Settings2, ShieldCheck, Printer, RotateCw, Check, FolderDown, Archive } from 'lucide-react';
+import { Globe, Smartphone, Minimize2, Zap, Loader2, Maximize, Crop, Settings2, ShieldCheck, Printer, RotateCw, Check, FolderDown, Archive, Share2 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { SeoRouteData } from '../lib/seoEngine';
 
@@ -16,6 +16,8 @@ interface GlobalControlsProps {
   pendingCount?: number;
   successCount?: number;
   onContinueToDownload?: () => void;
+  onShareSettings?: () => void;
+  isCopiedSettingsLink?: boolean;
 }
 
 function GlobalControlsComponent({
@@ -29,7 +31,9 @@ function GlobalControlsComponent({
   isStopping = false,
   pendingCount = 0,
   successCount = 0,
-  onContinueToDownload
+  onContinueToDownload,
+  onShareSettings,
+  isCopiedSettingsLink = false
 }: GlobalControlsProps) {
   const [localQuality, setLocalQuality] = React.useState(settings.quality);
   const [localMaxKB, setLocalMaxKB] = React.useState(settings.targetMaxKB ? String(settings.targetMaxKB) : '');
@@ -66,6 +70,7 @@ function GlobalControlsComponent({
     if (settings.targetMaxKB !== undefined && settings.targetMaxKB > 0) {
       setLocalMaxKB(settings.targetMaxKB.toString());
       setCompressionStrategy('target');
+      setMode('compress');
     }
   }, [settings.targetMaxKB]);
 
@@ -272,7 +277,7 @@ function GlobalControlsComponent({
   };
 
   const path = seoData?.path || '';
-  const isCompressionMode = seoData?.pageCategory === 'compression' || seoData?.targetMaxKB !== undefined || path.includes('compress');
+  const isCompressionMode = seoData?.pageCategory === 'compression' || seoData?.targetMaxKB !== undefined || path.includes('compress') || (settings.targetMaxKB !== undefined && settings.targetMaxKB > 0);
   const [mode, setMode] = useState<'convert' | 'compress'>(isCompressionMode ? 'compress' : 'convert');
 
   React.useEffect(() => {
@@ -733,18 +738,43 @@ function GlobalControlsComponent({
                   <label className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
                     Max File Size Limit
                   </label>
-                  <div className="flex items-center gap-2 w-full">
-                    <input
-                      type="number"
-                      min="1"
-                      placeholder="200"
-                      disabled={disabled}
-                      value={localMaxKB}
-                      onChange={(e) => handleMaxKBChange(e.target.value)}
-                      onBlur={handleMaxKBBlur}
-                      className="w-full sm:w-28 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white text-sm font-medium rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                    />
-                    <span className="text-xs font-semibold text-zinc-500">KB</span>
+                  <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 w-full">
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="number"
+                        min="1"
+                        placeholder="200"
+                        disabled={disabled}
+                        value={localMaxKB}
+                        onChange={(e) => handleMaxKBChange(e.target.value)}
+                        onBlur={handleMaxKBBlur}
+                        className="w-24 sm:w-28 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white text-sm font-medium rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                      />
+                      <span className="text-xs font-semibold text-zinc-500">KB</span>
+                    </div>
+
+                    {onShareSettings && (
+                      <button
+                        type="button"
+                        onClick={onShareSettings}
+                        disabled={disabled}
+                        className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-indigo-600 dark:text-indigo-400 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/60 dark:hover:bg-indigo-900/60 border border-indigo-200 dark:border-indigo-800 rounded-lg transition-colors cursor-pointer disabled:opacity-50 sm:ml-auto shrink-0 shadow-2xs"
+                        title="Copy a shareable link with this exact configuration"
+                        id="btn-share-settings-target"
+                      >
+                        {isCopiedSettingsLink ? (
+                          <>
+                            <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                            <span className="text-emerald-600 dark:text-emerald-400">Link copied!</span>
+                          </>
+                        ) : (
+                          <>
+                            <Share2 className="w-3.5 h-3.5" />
+                            <span>Share settings</span>
+                          </>
+                        )}
+                      </button>
+                    )}
                   </div>
                 </div>
               ) : (
@@ -882,17 +912,42 @@ function GlobalControlsComponent({
           )}
         </div>
 
-        {secondaryRenderers.length > 0 && (
-          <button
-            disabled={disabled}
-            onClick={() => setShowAdvanced(!showAdvanced)}
-            className="flex items-center justify-center gap-1.5 cursor-pointer w-full sm:w-auto px-3 py-1 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
-            aria-expanded={showAdvanced}
-          >
-            <Settings2 className="w-3.5 h-3.5" />
-            <span>{showAdvanced ? "Hide options" : "More options (Resize, Crop, Metadata)"}</span>
-          </button>
-        )}
+        <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+          {onShareSettings && compressionStrategy !== 'target' && (
+            <button
+              type="button"
+              onClick={onShareSettings}
+              disabled={disabled}
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-indigo-600 dark:text-indigo-400 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/60 dark:hover:bg-indigo-900/60 border border-indigo-200 dark:border-indigo-800 rounded-md transition-colors cursor-pointer disabled:opacity-50 shrink-0"
+              title="Copy a shareable link with this exact configuration"
+              id="btn-share-settings-general"
+            >
+              {isCopiedSettingsLink ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                  <span className="text-emerald-600 dark:text-emerald-400">Link copied!</span>
+                </>
+              ) : (
+                <>
+                  <Share2 className="w-3.5 h-3.5" />
+                  <span>Share settings</span>
+                </>
+              )}
+            </button>
+          )}
+
+          {secondaryRenderers.length > 0 && (
+            <button
+              disabled={disabled}
+              onClick={() => setShowAdvanced(!showAdvanced)}
+              className="flex items-center justify-center gap-1.5 cursor-pointer w-full sm:w-auto px-3 py-1 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
+              aria-expanded={showAdvanced}
+            >
+              <Settings2 className="w-3.5 h-3.5" />
+              <span>{showAdvanced ? "Hide options" : "More options (Resize, Crop, Metadata)"}</span>
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Advanced Collapsible Content */}

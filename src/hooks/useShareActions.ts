@@ -1,5 +1,7 @@
 import { useState, useCallback } from 'react';
-import { ImageFileItem } from '../types';
+import { ImageFileItem, ConversionSettings } from '../types';
+import { SeoRouteData } from '../lib/seoEngine';
+import { generateShareUrl } from '../lib/shareConfig';
 
 interface UseShareActionsOptions {
   files: ImageFileItem[];
@@ -7,10 +9,12 @@ interface UseShareActionsOptions {
 
 export function useShareActions({ files }: UseShareActionsOptions) {
   const [isCopiedShareLink, setIsCopiedShareLink] = useState(false);
+  const [isCopiedSettingsLink, setIsCopiedSettingsLink] = useState(false);
   const [copiedSuccessImage, setCopiedSuccessImage] = useState(false);
 
   const handleShareApp = useCallback(async () => {
-    const shareUrl = "https://www.zapixal.com";
+    const origin = typeof window !== 'undefined' ? window.location.origin : "https://www.zapixal.com";
+    const shareUrl = origin;
     const sharePayload = {
       title: "Zapixal - Fast & Private Image Converter",
       text: "Check out Zapixal! Free batch image converter that processes files locally.",
@@ -46,6 +50,47 @@ export function useShareActions({ files }: UseShareActionsOptions) {
     }
   }, []);
 
+  const handleShareSettings = useCallback(async (
+    currentPath: string,
+    settings: ConversionSettings,
+    seoData?: SeoRouteData
+  ) => {
+    const shareUrl = generateShareUrl(currentPath, settings, seoData);
+    const title = seoData?.h1Title || "Zapixal Tool Settings";
+    const text = "Open this tool with pre-configured compression and conversion settings.";
+
+    const copyToClipboard = async () => {
+      if (typeof navigator !== 'undefined' && navigator.clipboard) {
+        await navigator.clipboard.writeText(shareUrl);
+        setIsCopiedSettingsLink(true);
+        setTimeout(() => setIsCopiedSettingsLink(false), 2000);
+      }
+    };
+
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      try {
+        await navigator.share({ title, text, url: shareUrl });
+        setIsCopiedSettingsLink(true);
+        setTimeout(() => setIsCopiedSettingsLink(false), 2000);
+      } catch (err: any) {
+        if (err?.name !== 'AbortError' && err?.name !== 'NotAllowedError') {
+          try {
+            await copyToClipboard();
+          } catch (clipErr) {
+            console.error('Clipboard fallback error:', clipErr);
+          }
+        }
+      }
+    } else {
+      try {
+        await copyToClipboard();
+      } catch (err) {
+        console.error('Clipboard copy error:', err);
+      }
+    }
+    return shareUrl;
+  }, []);
+
   const handleCopyConvertedToClipboard = useCallback(async () => {
     const successFiles = files.filter(f => f.status === 'success' && f.blob);
     if (successFiles.length === 0) return;
@@ -76,8 +121,10 @@ export function useShareActions({ files }: UseShareActionsOptions) {
 
   return {
     isCopiedShareLink,
+    isCopiedSettingsLink,
     copiedSuccessImage,
     handleShareApp,
+    handleShareSettings,
     handleCopyConvertedToClipboard,
   };
 }

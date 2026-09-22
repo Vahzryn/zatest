@@ -50,6 +50,8 @@ interface QueueSectionProps {
   directoryHandle?: any | null;
   onSelectDirectory?: () => void;
   onDisconnectDirectory?: () => void;
+  onShareSettings?: () => void;
+  isCopiedSettingsLink?: boolean;
 }
 
 export const QueueSection = React.memo<QueueSectionProps>(function QueueSection({
@@ -95,7 +97,9 @@ export const QueueSection = React.memo<QueueSectionProps>(function QueueSection(
   onDismissAutoChunkedBanner,
   totalPendingBytes,
   seoData,
-  onContinueToDownload
+  onContinueToDownload,
+  onShareSettings,
+  isCopiedSettingsLink
 }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showDownloadMenu, setShowDownloadMenu] = useState(false);
@@ -233,6 +237,8 @@ export const QueueSection = React.memo<QueueSectionProps>(function QueueSection(
         pendingCount={pendingCount}
         successCount={successCount}
         onContinueToDownload={onContinueToDownload}
+        onShareSettings={onShareSettings}
+        isCopiedSettingsLink={isCopiedSettingsLink}
       />
 
       <div className="flex flex-col bg-white dark:bg-zinc-900 border rounded-2xl border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-xs">

@@ -10,6 +10,7 @@ import { HomeTaskDiscovery } from './components/HomeTaskDiscovery';
 import { CategoryDiscoverySection } from './components/CategoryDiscoverySection';
 import { SeoGuideContent } from './components/Converter/SeoGuideContent';
 import { QueueSection } from './components/Converter/QueueSection';
+import { GlobalControls } from './components/GlobalControls';
 import { ModalsOrchestrator } from './components/Modals/ModalsOrchestrator';
 import { LowTierWarningModal } from './components/Modals/LowTierWarningModal';
 import { RegionSelector } from './components/RegionSelector';
@@ -152,12 +153,29 @@ export default function App({ initialPath, initialSeoData }: AppProps) {
   const [redactingFileId, setRedactingFileId] = useState<string | null>(null);
   const [showCompleteView, setShowCompleteView] = useState<boolean>(false);
 
+  // Callback when URL settings are applied so touchedKeys are updated
+  const handleApplyUrlSettings = useCallback((appliedKeys: string[]) => {
+    if (appliedKeys.length === 0) return;
+    setTouchedKeys(old => {
+      const updated = new Set(old);
+      let changed = false;
+      appliedKeys.forEach(k => {
+        if (!updated.has(k)) {
+          updated.add(k);
+          changed = true;
+        }
+      });
+      return changed ? updated : old;
+    });
+  }, []);
+
   // Extracted Custom Hooks
   const { currentPath, handleNavigate, seoData } = useAppRouting({
     initialPath,
     initialSeoData,
     setSettings: setSettingsState,
-    touchedKeys
+    touchedKeys,
+    onApplyUrlSettings: handleApplyUrlSettings
   });
   const { isDarkMode, setIsDarkMode } = useDarkMode();
 
@@ -216,7 +234,8 @@ export default function App({ initialPath, initialSeoData }: AppProps) {
     }
   }, [isProcessing, hasConvertedInSession, totalCount, processedCount, successCount]);
 
-  const { isCopiedShareLink, handleShareApp } = useShareActions({ files });
+  const { isCopiedShareLink, isCopiedSettingsLink, handleShareApp, handleShareSettings } = useShareActions({ files });
+  const hasUrlSettings = typeof window !== 'undefined' && Boolean(window.location.search && window.location.search.length > 1);
 
   // Derive current modal target items live from files array
   const editItem = files.find((f) => f.id === editingFileId) || null;
@@ -419,7 +438,7 @@ export default function App({ initialPath, initialSeoData }: AppProps) {
             {files.length === 0 ? (
               /* STATE 1: IDLE / WORKSPACE READY */
               <div className="flex flex-col gap-5 mb-12 animate-in fade-in zoom-in-95 duration-300 min-h-[400px]">
-                {seoData.pageCategory === 'home' ? (
+                {seoData.pageCategory === 'home' && !hasUrlSettings ? (
                   <React.Fragment>
                     <HomeTaskDiscovery onNavigate={handleNavigate} />
                     <Dropzone onFilesAdded={handleFilesAdded} fromFormat={seoData.fromFormat} variant="compact" />
@@ -427,6 +446,14 @@ export default function App({ initialPath, initialSeoData }: AppProps) {
                   </React.Fragment>
                 ) : (
                   <React.Fragment>
+                    <GlobalControls
+                      settings={settings}
+                      onChange={handleUserSetSettings}
+                      seoData={seoData}
+                      disabled={isProcessing}
+                      onShareSettings={() => handleShareSettings(currentPath, settings, seoData)}
+                      isCopiedSettingsLink={isCopiedSettingsLink}
+                    />
                     <Dropzone onFilesAdded={handleFilesAdded} fromFormat={seoData.fromFormat} />
                     <SeoGuideContent seoData={seoData} onNavigate={handleNavigate} />
                     <PopularToolsSection onNavigate={handleNavigate} />
@@ -502,6 +529,8 @@ export default function App({ initialPath, initialSeoData }: AppProps) {
                 onDismissAutoChunkedBanner={dismissAutoChunkedBanner}
                 totalPendingBytes={totalPendingBytes}
                 onContinueToDownload={() => setShowCompleteView(true)}
+                onShareSettings={() => handleShareSettings(currentPath, settings, seoData)}
+                isCopiedSettingsLink={isCopiedSettingsLink}
               />
             )}
           </React.Fragment>

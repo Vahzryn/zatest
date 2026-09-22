@@ -33,7 +33,8 @@ export function applySeoToHead(seoData: SeoRouteData) {
     robotsMeta.setAttribute('name', 'robots');
     document.head.appendChild(robotsMeta);
   }
-  robotsMeta.setAttribute('content', seoData.isIndexable ? 'index, follow' : 'noindex, follow');
+  const hasQuery = typeof window !== 'undefined' && Boolean(window.location.search && window.location.search.length > 1);
+  robotsMeta.setAttribute('content', (!hasQuery && seoData.isIndexable) ? 'index, follow' : 'noindex, follow');
 
   // OpenGraph Title
   let ogTitle = document.querySelector('meta[property="og:title"]');

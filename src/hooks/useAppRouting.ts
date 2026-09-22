@@ -7,12 +7,14 @@ import { getNotFoundSeo } from '../lib/seoEngine';
 import { DOMAIN } from '../lib/seo/routes';
 import { ConversionSettings } from '../types';
 import { getArticleBySlug } from '../content/articles';
+import { parseConfigFromQuery } from '../lib/shareConfig';
 
 interface UseAppRoutingOptions {
   initialPath?: string;
   initialSeoData?: SeoRouteData;
   setSettings: React.Dispatch<React.SetStateAction<ConversionSettings>>;
   touchedKeys?: Set<string>;
+  onApplyUrlSettings?: (keys: string[]) => void;
 }
 
 const STATIC_KNOWN_ROUTES = new Set([
@@ -133,7 +135,7 @@ const REDIRECTS_MAP: Record<string, string> = {
   '/avif-to-jpg': '/convert-avif-to-jpg-converter',
 };
 
-export function useAppRouting({ initialPath, initialSeoData, setSettings, touchedKeys }: UseAppRoutingOptions) {
+export function useAppRouting({ initialPath, initialSeoData, setSettings, touchedKeys, onApplyUrlSettings }: UseAppRoutingOptions) {
   const [currentPath, setCurrentPath] = useState<string>(() => {
     let rawPath = initialPath;
     if (!rawPath && typeof window !== 'undefined') {
@@ -162,7 +164,9 @@ export function useAppRouting({ initialPath, initialSeoData, setSettings, touche
       if (article && path !== `/articles/${article.slug}`) {
         const target = `/articles/${article.slug}`;
         if (typeof window !== 'undefined') {
-          window.history.replaceState(null, '', target);
+          const search = window.location.search || '';
+          const hash = window.location.hash || '';
+          window.history.replaceState(null, '', `${target}${search}${hash}`);
         }
         return target;
       }
@@ -171,7 +175,9 @@ export function useAppRouting({ initialPath, initialSeoData, setSettings, touche
     if (path in REDIRECTS_MAP) {
       const target = REDIRECTS_MAP[path];
       if (typeof window !== 'undefined') {
-        window.history.replaceState(null, '', target);
+        const search = window.location.search || '';
+        const hash = window.location.hash || '';
+        window.history.replaceState(null, '', `${target}${search}${hash}`);
       }
       return target;
     }
@@ -196,6 +202,20 @@ export function useAppRouting({ initialPath, initialSeoData, setSettings, touche
   });
 
   const applySettings = useCallback((seo: SeoRouteData) => {
+    let urlConfig: Partial<ConversionSettings> = {};
+    const appliedKeys: string[] = [];
+
+    if (typeof window !== 'undefined' && window.location.search) {
+      urlConfig = parseConfigFromQuery(window.location.search);
+      for (const k of Object.keys(urlConfig)) {
+        appliedKeys.push(k);
+      }
+    }
+
+    if (appliedKeys.length > 0 && onApplyUrlSettings) {
+      onApplyUrlSettings(appliedKeys);
+    }
+
     setSettings(prev => {
       let next = { ...prev };
       const touched = touchedKeys || new Set<string>();
@@ -240,10 +260,36 @@ export function useAppRouting({ initialPath, initialSeoData, setSettings, touche
           next.cropAspectRatio = null;
         }
       }
+
+      // Apply shared settings from URL parameters on top of route defaults
+      if (urlConfig.targetFormat !== undefined) {
+        next.targetFormat = urlConfig.targetFormat;
+      }
+      if (urlConfig.targetMaxKB !== undefined) {
+        next.targetMaxKB = urlConfig.targetMaxKB;
+      }
+      if (urlConfig.quality !== undefined) {
+        next.quality = urlConfig.quality;
+      }
+      if (urlConfig.stripExif !== undefined) {
+        next.stripExif = urlConfig.stripExif;
+      }
+      if (urlConfig.resize !== undefined) {
+        next.resize = urlConfig.resize;
+      }
+      if (urlConfig.cropAspectRatio !== undefined) {
+        next.cropAspectRatio = urlConfig.cropAspectRatio;
+      }
+      if (urlConfig.targetDPI !== undefined) {
+        next.targetDPI = urlConfig.targetDPI;
+      }
+      if (urlConfig.rotation !== undefined) {
+        next.rotation = urlConfig.rotation;
+      }
       
       return next;
     });
-  }, [setSettings, touchedKeys]);
+  }, [setSettings, touchedKeys, onApplyUrlSettings]);
 
   // Handle path transitions asynchronously
   useEffect(() => {
@@ -273,6 +319,8 @@ export function useAppRouting({ initialPath, initialSeoData, setSettings, touche
     const handlePopState = () => {
       let path = window.location.pathname || '/';
       let normalizedPath = path.length > 1 && path.endsWith('/') ? path.slice(0, -1) : path;
+      const search = window.location.search || '';
+      const hash = window.location.hash || '';
       
       // Canonicalize nested article paths like /articles/workflows/slug to /articles/slug
       if (normalizedPath.startsWith('/articles/')) {
@@ -280,7 +328,7 @@ export function useAppRouting({ initialPath, initialSeoData, setSettings, touche
         const article = getArticleBySlug(subPath);
         if (article && normalizedPath !== `/articles/${article.slug}`) {
           const target = `/articles/${article.slug}`;
-          window.history.replaceState(null, '', target);
+          window.history.replaceState(null, '', `${target}${search}${hash}`);
           setCurrentPath(target);
           return;
         }
@@ -288,7 +336,7 @@ export function useAppRouting({ initialPath, initialSeoData, setSettings, touche
       
       if (normalizedPath in REDIRECTS_MAP) {
         const target = REDIRECTS_MAP[normalizedPath];
-        window.history.replaceState(null, '', target);
+        window.history.replaceState(null, '', `${target}${search}${hash}`);
         setCurrentPath(target);
       } else {
         setCurrentPath(normalizedPath);
@@ -301,7 +349,8 @@ export function useAppRouting({ initialPath, initialSeoData, setSettings, touche
 
   const handleNavigate = useCallback((newPath: string) => {
     if (typeof window !== 'undefined') {
-      let normalizedPath = newPath.length > 1 && newPath.endsWith('/') ? newPath.slice(0, -1) : newPath;
+      const [rawPath, rawSearch] = newPath.split('?');
+      let normalizedPath = rawPath.length > 1 && rawPath.endsWith('/') ? rawPath.slice(0, -1) : rawPath;
       
       // Canonicalize nested article paths like /articles/workflows/slug to /articles/slug
       if (normalizedPath.startsWith('/articles/')) {
@@ -313,10 +362,11 @@ export function useAppRouting({ initialPath, initialSeoData, setSettings, touche
       }
       
       const targetPath = normalizedPath in REDIRECTS_MAP ? REDIRECTS_MAP[normalizedPath] : normalizedPath;
+      const fullTarget = rawSearch !== undefined ? `${targetPath}?${rawSearch}` : targetPath;
       const currentWindowPath = window.location.pathname || '/';
       const isInternalToolsSwitch = currentWindowPath.startsWith('/tools') && targetPath.startsWith('/tools');
 
-      window.history.pushState(null, '', targetPath);
+      window.history.pushState(null, '', fullTarget);
       setCurrentPath(targetPath);
 
       // Normal route navigation scrolls to top; internal Tools Directory category changes do not trigger global scroll
