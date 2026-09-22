@@ -74,7 +74,7 @@ export function getCategoryPageSeo(categoryKey: CategoryKey, fullUrl: string, pa
 
   const breadcrumbs = [
     { name: 'Home', url: '/' },
-    { name: 'Tools Directory', url: '/tools' },
+    { name: 'Tools', url: '/tools' },
     { name: cat.name, url: cat.path },
   ];
 
@@ -83,20 +83,13 @@ export function getCategoryPageSeo(categoryKey: CategoryKey, fullUrl: string, pa
     { question: `Are ${cat.name} processed locally?`, answer: `Yes, core processing runs directly in your web browser memory for speed and privacy.` }
   ];
 
-  const steps = [
-    `Select a tool from the ${cat.name} category.`,
-    'Configure options and options locally in your browser.',
-    'Export or download your optimized result instantly.'
-  ];
-
   const jsonLd = generateJsonLdSchemas(
     cat.name,
     cat.metaDescription,
     fullUrl,
     faqs,
     breadcrumbs,
-    'use-case',
-    steps
+    'resource'
   );
 
   return {
@@ -106,7 +99,7 @@ export function getCategoryPageSeo(categoryKey: CategoryKey, fullUrl: string, pa
     metaDescription: cat.metaDescription,
     canonicalUrl: fullUrl,
     isIndexable: true,
-    pageCategory: 'use-case',
+    pageCategory: 'resource',
     breadcrumbs,
     jsonLd,
   };

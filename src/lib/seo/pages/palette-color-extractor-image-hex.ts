@@ -32,6 +32,12 @@ export function getPaletteColorExtractorContent(): RouteEditorialContent {
 export function getPageSeo(fullUrl: string): SeoRouteData {
   const path = '/palette-color-extractor-image-hex';
   const guideContent = getPaletteColorExtractorContent();
+  const breadcrumbs = [
+    { name: 'Home', url: '/' },
+    { name: 'Tools', url: '/tools' },
+    { name: 'Utilities & Design', url: '/tools/utilities' },
+    { name: 'Color Palette Extractor', url: path }
+  ];
   return {
     path,
     h1Title: 'Image Color Palette Hex Extractor',
@@ -39,16 +45,16 @@ export function getPageSeo(fullUrl: string): SeoRouteData {
     metaDescription: 'Extract dominant color palettes and HEX codes from images. Use the interactive eyedropper tool to copy pixel colors privately with zero uploads.',
     canonicalUrl: fullUrl,
     isIndexable: true,
-    pageCategory: 'resource',
-    breadcrumbs: [{ name: 'Home', url: '/' }, { name: 'Color Palette Extractor', url: path }],
+    pageCategory: 'use-case',
+    breadcrumbs,
     guideContent,
     jsonLd: generateJsonLdSchemas(
       'Image Color Palette Hex Extractor',
-      'Extract representative color palettes and custom HEX codes from your images.',
+      'Extract representative color palettes and custom HEX codes from your images locally.',
       fullUrl,
       guideContent.faqs,
-      [{ name: 'Home', url: '/' }, { name: 'Color Palette Extractor', url: path }],
-      'resource',
+      breadcrumbs,
+      'utilities',
       guideContent.steps
     )
   };

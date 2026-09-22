@@ -1,7 +1,7 @@
 import { SeoRouteData, getNotFoundSeo } from '../seoEngine';
 import { applySeoToHead } from './head';
 import { getArticleBySlug, getCategoryInfo } from '../../content/articles';
-import { generateArticleJsonLdSchema } from './schema';
+import { generateArticleJsonLdSchema, generateBreadcrumbSchema } from './schema';
 import { TOOL_REGISTRY } from '../toolRegistry';
 
 import * as homePage from './pages/home';
@@ -244,13 +244,19 @@ export async function parseSeoRoute(path: string): Promise<SeoRouteData> {
           { name: toolData.name, url: toolData.route }
         ];
 
+        const jsonLd = seoRes.jsonLd ? {
+          ...seoRes.jsonLd,
+          breadcrumbs: generateBreadcrumbSchema(breadcrumbs)
+        } : null;
+
         return { 
           ...seoRes, 
           path: normalizedPath,
           canonicalUrl: targetUrl,
           isIndexable: !isAlias,
           relatedRoutes: relatedRoutes.length > 0 ? relatedRoutes : seoRes.relatedRoutes,
-          breadcrumbs: breadcrumbs
+          breadcrumbs: breadcrumbs,
+          jsonLd: jsonLd || seoRes.jsonLd
         };
       }
 

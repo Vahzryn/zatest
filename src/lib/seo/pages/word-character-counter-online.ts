@@ -21,7 +21,7 @@ export function getWordCharacterCounterOnlineContent(): RouteEditorialContent {
     faqs: [
       makeFaq('Is my text uploaded to a server?', 'No. This word counter operates entirely client-side within your browser. Your text never leaves your device, ensuring complete privacy.'),
       makeFaq('Does this tool count spaces as characters?', 'The tool provides two separate metrics: total characters (which includes spaces and punctuation) and characters without spaces.'),
-      makeFaq('Is there a word limit?', 'Since the tool runs locally in your browser, there is no hard limit imposed by a server. You can paste massive documents with millions of words instantly.')
+      makeFaq('Is there a word limit?', 'Because processing happens locally in your browser, there is no server-imposed limit. It handles typical articles, essays, and documents smoothly based on your device memory.')
     ]
   };
 }
@@ -29,6 +29,12 @@ export function getWordCharacterCounterOnlineContent(): RouteEditorialContent {
 export function getPageSeo(fullUrl: string): SeoRouteData {
   const path = '/word-character-counter-online';
   const guideContent = getWordCharacterCounterOnlineContent();
+  const breadcrumbs = [
+    { name: 'Home', url: '/' },
+    { name: 'Tools', url: '/tools' },
+    { name: 'Text Tools', url: '/tools/text' },
+    { name: 'Word Counter', url: path }
+  ];
   
   return {
     path,
@@ -37,24 +43,16 @@ export function getPageSeo(fullUrl: string): SeoRouteData {
     metaDescription: 'Instantly count words, characters, sentences, and paragraphs. 100% free, private, and offline-capable text analyzer with no server uploads.',
     canonicalUrl: `https://zapixal.com${path}`,
     isIndexable: true,
-    pageCategory: 'resource',
-    breadcrumbs: [
-      { name: 'Home', url: '/' },
-      { name: 'Tools Directory', url: '/tools' },
-      { name: 'Word Counter', url: path }
-    ],
+    pageCategory: 'use-case',
+    breadcrumbs,
     guideContent,
     jsonLd: generateJsonLdSchemas(
       'Word & Character Counter',
-      'Instantly count words, characters, sentences, and paragraphs.',
+      'Instantly count words, characters, sentences, and paragraphs in browser memory.',
       fullUrl,
       guideContent.faqs,
-      [
-        { name: 'Home', url: '/' },
-        { name: 'Tools', url: '/tools' },
-        { name: 'Word Counter', url: path }
-      ],
-      'resource',
+      breadcrumbs,
+      'text',
       guideContent.steps
     )
   };

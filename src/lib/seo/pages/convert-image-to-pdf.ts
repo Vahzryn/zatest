@@ -52,8 +52,8 @@ export function getPageSeo(fullUrl: string, path: string): SeoRouteData {
     breadcrumbs,
     guideContent: {
       badge: 'Client-Side PDF Generator',
-      section1Title: 'Secure, Offline Image-to-PDF Generation',
-      section1Body: 'Zapixal Image to PDF runs entirely in browser memory. Unlike cloud converters that require uploading personal photos, receipts, or documents to remote servers, our client-side architecture keeps your images locally private.',
+      section1Title: 'Secure, Local Image-to-PDF Generation',
+      section1Body: 'Zapixal Image to PDF runs entirely in browser memory, keeping your photos, receipts, and documents locally on your device without server uploads.',
       section2Title: 'Combine Multiple Formats Easily',
       section2Body: 'Seamlessly mix JPGs, PNGs, and HEIC files from your phone into one continuous PDF document. The PDF pages are automatically sized to fit the high-resolution quality of your original photos.',
       steps: howToSteps,

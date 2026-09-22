@@ -29,6 +29,12 @@ export function getSecurePasswordGeneratorOnlineContent(): RouteEditorialContent
 export function getPageSeo(fullUrl: string): SeoRouteData {
   const path = '/secure-password-generator-online';
   const guideContent = getSecurePasswordGeneratorOnlineContent();
+  const breadcrumbs = [
+    { name: 'Home', url: '/' },
+    { name: 'Tools', url: '/tools' },
+    { name: 'Utilities & Design', url: '/tools/utilities' },
+    { name: 'Password Generator', url: path }
+  ];
   
   return {
     path,
@@ -37,24 +43,16 @@ export function getPageSeo(fullUrl: string): SeoRouteData {
     metaDescription: 'Generate strong, cryptographically secure random passwords offline. Our client-side password generator never stores or transmits your data.',
     canonicalUrl: `https://zapixal.com${path}`,
     isIndexable: true,
-    pageCategory: 'resource',
-    breadcrumbs: [
-      { name: 'Home', url: '/' },
-      { name: 'Tools Directory', url: '/tools' },
-      { name: 'Password Generator', url: path }
-    ],
+    pageCategory: 'use-case',
+    breadcrumbs,
     guideContent,
     jsonLd: generateJsonLdSchemas(
       'Secure Password Generator',
-      'Generate strong, cryptographically secure random passwords offline.',
+      'Generate strong, cryptographically secure random passwords in your browser.',
       fullUrl,
       guideContent.faqs,
-      [
-        { name: 'Home', url: '/' },
-        { name: 'Tools', url: '/tools' },
-        { name: 'Password Generator', url: path }
-      ],
-      'resource',
+      breadcrumbs,
+      'utilities',
       guideContent.steps
     )
   };

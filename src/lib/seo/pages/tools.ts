@@ -12,7 +12,7 @@ export function getPageSeo(fullUrl: string, path: string): SeoRouteData {
     pageCategory: 'resource',
     breadcrumbs: [
       { name: 'Home', url: '/' },
-      { name: 'Tools Directory', url: '/tools' }
+      { name: 'Tools', url: '/tools' }
     ],
     guideContent: null,
     jsonLd: generateJsonLdSchemas(
@@ -20,7 +20,7 @@ export function getPageSeo(fullUrl: string, path: string): SeoRouteData {
       'Explore client-side privacy-first image, document, developer, and text tools powered by WebAssembly and local browser memory.',
       fullUrl,
       [],
-      [{ name: 'Home', url: '/' }, { name: 'Tools Directory', url: '/tools' }],
+      [{ name: 'Home', url: '/' }, { name: 'Tools', url: '/tools' }],
       'resource'
     )
   };

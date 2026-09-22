@@ -121,7 +121,7 @@ export function FileEditModal({
           {/* Format Settings */}
           <div className="space-y-1.5">
             <label className="text-[10px] sm:text-xs font-bold text-zinc-700 dark:text-zinc-200 uppercase tracking-wider block">
-              Per-File Target Format
+              Target Format
             </label>
             <select
               value={item.customTargetFormat || ''}
@@ -135,16 +135,16 @@ export function FileEditModal({
               }}
               className="w-full px-3 py-1.5 sm:px-3.5 sm:py-2 text-xs sm:text-sm font-bold border-2 rounded-lg sm:rounded-xl bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:border-indigo-500 cursor-pointer"
             >
-              <option value="">Auto (Use Global Format Setting)</option>
-              <option value="webp">WebP (Optimized & Responsive)</option>
-              <option value="avif">AVIF (Next-Gen Compression)</option>
-              <option value="jpg">JPEG (Universal Compatibility)</option>
-              <option value="png">PNG (Lossless Transparency)</option>
-              <option value="bmp">BMP (Uncompressed Bitmap)</option>
-              <option value="ico">ICO (Favicon Icon)</option>
+              <option value="">Default (Use batch format)</option>
+              <option value="webp">WebP</option>
+              <option value="avif">AVIF</option>
+              <option value="jpg">JPEG</option>
+              <option value="png">PNG</option>
+              <option value="bmp">BMP</option>
+              <option value="ico">ICO</option>
             </select>
             <p className="text-[10px] sm:text-[11px] text-zinc-500 dark:text-zinc-400">
-              {item.customTargetFormat ? `Custom format ${item.customTargetFormat.toUpperCase()} active for this file.` : 'Defaulting to global batch conversion format.'}
+              {item.customTargetFormat ? `Custom format: ${item.customTargetFormat.toUpperCase()}` : 'Using default batch conversion format.'}
             </p>
           </div>
 
@@ -152,7 +152,7 @@ export function FileEditModal({
           {onRotate && (
             <div className="space-y-1.5">
               <label className="text-[10px] sm:text-xs font-bold text-zinc-700 dark:text-zinc-200 uppercase tracking-wider block">
-                Rotation Angle
+                Rotate
               </label>
               <div className="grid grid-cols-2 gap-2">
                 <button
@@ -161,7 +161,7 @@ export function FileEditModal({
                   className="px-2 py-1.5 sm:px-3 sm:py-2 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold text-zinc-800 dark:text-zinc-200 flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
                 >
                   <RotateCcw className="w-3.5 h-3.5 text-indigo-500" />
-                  <span>Left (-90°)</span>
+                  <span>90° Left</span>
                 </button>
                 <button
                   type="button"
@@ -169,7 +169,7 @@ export function FileEditModal({
                   className="px-2 py-1.5 sm:px-3 sm:py-2 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold text-zinc-800 dark:text-zinc-200 flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
                 >
                   <RotateCw className="w-3.5 h-3.5 text-indigo-500" />
-                  <span>Right (+90°)</span>
+                  <span>90° Right</span>
                 </button>
               </div>
             </div>
@@ -178,7 +178,7 @@ export function FileEditModal({
           {/* Special Tools */}
           <div className="space-y-2 pt-2 border-t border-zinc-200 dark:border-zinc-800">
             <label className="text-[10px] sm:text-xs font-bold text-zinc-700 dark:text-zinc-200 uppercase tracking-wider block">
-              Advanced Image Tools
+              Image Tools
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {onSelectRegions && (

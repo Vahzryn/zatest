@@ -32,6 +32,12 @@ export function getClientSideImageToBase64Content(): RouteEditorialContent {
 export function getPageSeo(fullUrl: string): SeoRouteData {
   const path = '/client-side-image-to-base64';
   const guideContent = getClientSideImageToBase64Content();
+  const breadcrumbs = [
+    { name: 'Home', url: '/' },
+    { name: 'Tools', url: '/tools' },
+    { name: 'Developer Tools', url: '/tools/developer' },
+    { name: 'Image to Base64', url: path }
+  ];
   return {
     path,
     h1Title: 'Convert Image to Base64 Data URL',
@@ -39,16 +45,16 @@ export function getPageSeo(fullUrl: string): SeoRouteData {
     metaDescription: 'Convert PNG, JPG, WebP, or SVG images to Base64 strings in your browser. Get HTML/CSS Data URLs and raw Base64 payloads with zero server uploads.',
     canonicalUrl: fullUrl,
     isIndexable: true,
-    pageCategory: 'resource',
-    breadcrumbs: [{ name: 'Home', url: '/' }, { name: 'Image to Base64 Converter', url: path }],
+    pageCategory: 'use-case',
+    breadcrumbs,
     guideContent,
     jsonLd: generateJsonLdSchemas(
       'Image to Base64 Converter',
       'Convert images to Base64 strings locally in your browser.',
       fullUrl,
       guideContent.faqs,
-      [{ name: 'Home', url: '/' }, { name: 'Image to Base64 Converter', url: path }],
-      'resource',
+      breadcrumbs,
+      'developer',
       guideContent.steps
     )
   };

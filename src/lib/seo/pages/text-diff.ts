@@ -5,7 +5,7 @@ export function getPageSeo(fullUrl: string, path: string): SeoRouteData {
   const breadcrumbs = [
     { name: 'Home', url: '/' },
     { name: 'Tools', url: '/tools' },
-    { name: 'Developer Tools', url: '/tools?category=developer' },
+    { name: 'Text Tools', url: '/tools/text' },
     { name: 'Diff Viewer & Text Comparator', url: '/text-diff' }
   ];
 

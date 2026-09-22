@@ -1,53 +1,152 @@
 import { DOMAIN } from './routes';
 
+export type JsonLdCategory =
+  | 'converter'
+  | 'compression'
+  | 'use-case'
+  | 'home'
+  | 'resource'
+  | 'legal'
+  | 'e-commerce'
+  | 'job-application'
+  | 'developer'
+  | 'text'
+  | 'utilities'
+  | 'documents';
+
 export function generateJsonLdSchemas(
   name: string,
   description: string,
   url: string,
   faqs: { question: string; answer: string }[] = [],
   breadcrumbs: { name: string; url: string }[] = [],
-  category: 'converter' | 'compression' | 'use-case' | 'home' | 'resource' | 'legal' | 'e-commerce' | 'job-application' = 'home',
+  category: JsonLdCategory = 'home',
   customSteps?: string[]
 ) {
-  const softwareApp = {
-    '@context': 'https://schema.org',
-    '@type': ['SoftwareApplication', 'WebApplication'],
-    'name': `Zapixal - ${name}`,
-    'applicationCategory': 'MultimediaApplication',
-    'applicationSubCategory': 'Image Conversion and Compression',
-    'softwareVersion': '1.0.0',
-    'operatingSystem': 'All (Windows, macOS, Linux, iOS, Android)',
-    'browserRequirements': 'Requires Modern Web Browser with WebAssembly (WASM) support',
-    'license': 'Proprietary',
-    'isAccessibleForFree': true,
-    'keywords': ['image converter', 'image compressor', 'client-side image tool', 'private image converter', 'HEIC to JPG', 'PNG to WebP'],
-    'offers': {
-      '@type': 'Offer',
-      'price': '0',
-      'priceCurrency': 'USD',
-      'availability': 'https://schema.org/InStock',
-    },
-    'featureList': [
-      'Client-Side In-Browser Image Processing',
-      'Zero Cloud Server Uploads for conversion privacy',
+  let softwareApp: object | null = null;
+
+  if (category === 'legal' || category === 'resource') {
+    softwareApp = null;
+  } else if (category === 'home') {
+    softwareApp = {
+      '@context': 'https://schema.org',
+      '@type': ['SoftwareApplication', 'WebApplication'],
+      'name': 'Zapixal',
+      'applicationCategory': 'UtilitiesApplication',
+      'applicationSubCategory': 'Browser Utilities Hub',
+      'softwareVersion': '1.0.0',
+      'operatingSystem': 'All (Windows, macOS, Linux, iOS, Android)',
+      'browserRequirements': 'Requires Modern Web Browser with WebAssembly (WASM) and JavaScript support',
+      'license': 'Proprietary',
+      'isAccessibleForFree': true,
+      'offers': {
+        '@type': 'Offer',
+        'price': '0',
+        'priceCurrency': 'USD',
+        'availability': 'https://schema.org/InStock',
+      },
+      'featureList': [
+        'Client-side image conversion and compression',
+        'PDF merging, splitting, and image export',
+        'Developer utilities for JSON, CSV, JWT, and regex debugging',
+        'Privacy-first local processing without server uploads'
+      ],
+      'description': description,
+      'url': url,
+      'screenshot': `${DOMAIN}/icon-512.png`,
+      'author': {
+        '@type': 'Organization',
+        'name': 'Zapixal',
+        'url': DOMAIN,
+      },
+      'creator': {
+        '@type': 'Organization',
+        'name': 'Zapixal',
+        'url': DOMAIN,
+      },
+    };
+  } else {
+    let appCategory = 'MultimediaApplication';
+    let subCategory = 'Image Conversion and Compression';
+    let browserReq = 'Requires Modern Web Browser with WebAssembly (WASM) support';
+    let featureList = [
+      'Client-Side In-Browser Processing',
+      'Zero Cloud Server Uploads for file privacy',
       'WebAssembly (WASM) and Web Worker processing',
-      'Adaptive Batch Image Processing',
-      'Practical guidance for compatibility, accessibility, and file-size targets',
-    ],
-    'description': description,
-    'url': url,
-    'screenshot': `${DOMAIN}/icon-512.png`,
-    'author': {
-      '@type': 'Organization',
-      'name': 'Zapixal',
-      'url': DOMAIN,
-    },
-    'creator': {
-      '@type': 'Organization',
-      'name': 'Zapixal',
-      'url': DOMAIN,
-    },
-  };
+      'Local device processing'
+    ];
+
+    if (category === 'developer') {
+      appCategory = 'DeveloperApplication';
+      subCategory = 'Developer Utility';
+      browserReq = 'Requires Modern Web Browser';
+      featureList = [
+        'Client-Side In-Browser Execution',
+        'Zero Cloud Server Uploads for data privacy',
+        'Real-time parsing and validation'
+      ];
+    } else if (category === 'text') {
+      appCategory = 'UtilitiesApplication';
+      subCategory = 'Text Utility';
+      browserReq = 'Requires Modern Web Browser';
+      featureList = [
+        'Client-Side Text Processing',
+        'Zero Cloud Server Uploads',
+        'Instant analysis in browser memory'
+      ];
+    } else if (category === 'utilities') {
+      appCategory = 'UtilitiesApplication';
+      subCategory = 'Utility Tool';
+      browserReq = 'Requires Modern Web Browser';
+      featureList = [
+        'Client-Side In-Browser Execution',
+        'Zero Cloud Server Uploads',
+        'Local memory computation'
+      ];
+    } else if (category === 'documents') {
+      appCategory = 'BusinessApplication';
+      subCategory = 'PDF Tool';
+      browserReq = 'Requires Modern Web Browser';
+      featureList = [
+        'Client-Side PDF Processing',
+        'Zero Cloud Server Uploads',
+        'Local document manipulation'
+      ];
+    }
+
+    softwareApp = {
+      '@context': 'https://schema.org',
+      '@type': ['SoftwareApplication', 'WebApplication'],
+      'name': `Zapixal - ${name}`,
+      'applicationCategory': appCategory,
+      'applicationSubCategory': subCategory,
+      'softwareVersion': '1.0.0',
+      'operatingSystem': 'All (Windows, macOS, Linux, iOS, Android)',
+      'browserRequirements': browserReq,
+      'license': 'Proprietary',
+      'isAccessibleForFree': true,
+      'offers': {
+        '@type': 'Offer',
+        'price': '0',
+        'priceCurrency': 'USD',
+        'availability': 'https://schema.org/InStock',
+      },
+      'featureList': featureList,
+      'description': description,
+      'url': url,
+      'screenshot': `${DOMAIN}/icon-512.png`,
+      'author': {
+        '@type': 'Organization',
+        'name': 'Zapixal',
+        'url': DOMAIN,
+      },
+      'creator': {
+        '@type': 'Organization',
+        'name': 'Zapixal',
+        'url': DOMAIN,
+      },
+    };
+  }
 
   const faqPage = faqs && faqs.length > 0 ? {
     '@context': 'https://schema.org',
@@ -63,49 +162,84 @@ export function generateJsonLdSchemas(
   } : null;
 
   let howTo: object | null = null;
-  if (category !== 'legal') {
-    let stepsList: { name: string; text: string }[] = [];
-
+  if (category !== 'legal' && category !== 'resource' && category !== 'home') {
     if (customSteps && customSteps.length > 0) {
-      stepsList = customSteps.map((stepText, idx) => ({
+      const stepsList = customSteps.map((stepText, idx) => ({
         name: `Step ${idx + 1}`,
         text: stepText,
       }));
+      const howToName = name.toLowerCase().startsWith('how to') ? name : `How to use ${name}`;
+      howTo = {
+        '@context': 'https://schema.org',
+        '@type': 'HowTo',
+        'name': howToName,
+        'description': description,
+        'totalTime': 'PT1M',
+        'step': stepsList.map((s) => ({
+          '@type': 'HowToStep',
+          'name': s.name,
+          'text': s.text,
+        })),
+      };
     } else if (category === 'compression') {
-      stepsList = [
-        { name: 'Upload Files', text: 'Select or drag & drop images needing file size reduction.' },
-        { name: 'Set KB/MB Target', text: 'Configure target file size cap or compression slider.' },
-        { name: 'Download Compressed Output', text: 'Export compressed images directly without server upload.' },
+      const stepsList = [
+        { name: 'Select Files', text: 'Drag and drop or select images needing compression.' },
+        { name: 'Adjust Settings', text: 'Configure target file size or compression quality slider.' },
+        { name: 'Download Output', text: 'Download compressed images directly from browser memory.' },
       ];
+      howTo = {
+        '@context': 'https://schema.org',
+        '@type': 'HowTo',
+        'name': `How to compress images with ${name}`,
+        'description': description,
+        'totalTime': 'PT1M',
+        'step': stepsList.map((s) => ({
+          '@type': 'HowToStep',
+          'name': s.name,
+          'text': s.text,
+        })),
+      };
     } else if (category === 'converter') {
-      stepsList = [
+      const stepsList = [
         { name: 'Select Images', text: 'Drag and drop source images into the conversion dropzone.' },
-        { name: 'Choose Target Format', text: 'Select output image format (WEBP, AVIF, JPG, PNG, PDF, ICO).' },
-        { name: 'Download Converted Files', text: 'Download converted images individually or as a single ZIP package.' },
+        { name: 'Choose Target Format', text: 'Select desired output format (WEBP, AVIF, JPG, PNG, PDF, ICO).' },
+        { name: 'Download Converted Files', text: 'Download converted images individually or as a ZIP archive.' },
       ];
-    } else {
-      stepsList = [
-        { name: 'Add Images', text: 'Select image files from your local device or drop into the browser.' },
-        { name: 'Configure Options', text: 'Set image quality, format, or dimensional constraints.' },
-        { name: 'Export Outputs', text: 'Save processed images directly from browser memory.' },
+      howTo = {
+        '@context': 'https://schema.org',
+        '@type': 'HowTo',
+        'name': `How to convert images with ${name}`,
+        'description': description,
+        'totalTime': 'PT1M',
+        'step': stepsList.map((s) => ({
+          '@type': 'HowToStep',
+          'name': s.name,
+          'text': s.text,
+        })),
+      };
+    } else if (category === 'documents') {
+      const stepsList = [
+        { name: 'Add Documents', text: 'Select or drop PDF or document files into the workspace.' },
+        { name: 'Configure Options', text: 'Rearrange pages, set extraction ranges, or configure document options.' },
+        { name: 'Save Output', text: 'Download processed documents directly without server uploads.' },
       ];
+      howTo = {
+        '@context': 'https://schema.org',
+        '@type': 'HowTo',
+        'name': `How to process documents with ${name}`,
+        'description': description,
+        'totalTime': 'PT1M',
+        'step': stepsList.map((s) => ({
+          '@type': 'HowToStep',
+          'name': s.name,
+          'text': s.text,
+        })),
+      };
     }
-
-    howTo = {
-      '@context': 'https://schema.org',
-      '@type': 'HowTo',
-      'name': `How to process images with ${name}`,
-      'description': description,
-      'totalTime': 'PT1M',
-      'step': stepsList.map((s) => ({
-        '@type': 'HowToStep',
-        'name': s.name,
-        'text': s.text,
-      })),
-    };
   }
 
-  const breadcrumbsSchema = breadcrumbs && breadcrumbs.length > 0 ? {
+  const isHomepage = url === DOMAIN || url === `${DOMAIN}/` || url === '/';
+  const breadcrumbsSchema = (!isHomepage && breadcrumbs && breadcrumbs.length > 1) ? {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     'itemListElement': breadcrumbs.map((b, idx) => ({
@@ -132,7 +266,7 @@ export function generateJsonLdSchemas(
   };
 
   return {
-    softwareApp: category === 'legal' ? null : softwareApp,
+    softwareApp,
     howTo,
     faqPage,
     breadcrumbs: breadcrumbsSchema,
@@ -221,15 +355,33 @@ export function generateArticleJsonLdSchema(
 }
 
 export function generateSoftwareAppSchema(name: string, description: string, url: string, subCategory: string = 'PDFTool') {
+  let appCategory = 'MultimediaApplication';
+  let browserReq = 'Requires Modern Web Browser with WebAssembly (WASM) support';
+
+  const lowerSub = subCategory.toLowerCase();
+  if (lowerSub.includes('developer')) {
+    appCategory = 'DeveloperApplication';
+    browserReq = 'Requires Modern Web Browser';
+  } else if (lowerSub.includes('text')) {
+    appCategory = 'UtilitiesApplication';
+    browserReq = 'Requires Modern Web Browser';
+  } else if (lowerSub.includes('pdf') || lowerSub.includes('document') || lowerSub.includes('business')) {
+    appCategory = 'BusinessApplication';
+    browserReq = 'Requires Modern Web Browser';
+  } else if (lowerSub.includes('utilit')) {
+    appCategory = 'UtilitiesApplication';
+    browserReq = 'Requires Modern Web Browser';
+  }
+
   return {
     '@context': 'https://schema.org',
     '@type': ['SoftwareApplication', 'WebApplication'],
     'name': `Zapixal - ${name}`,
-    'applicationCategory': 'MultimediaApplication',
+    'applicationCategory': appCategory,
     'applicationSubCategory': subCategory,
     'softwareVersion': '1.0.0',
     'operatingSystem': 'All (Windows, macOS, Linux, iOS, Android)',
-    'browserRequirements': 'Requires Modern Web Browser with WebAssembly (WASM) support',
+    'browserRequirements': browserReq,
     'license': 'Proprietary',
     'isAccessibleForFree': true,
     'offers': {

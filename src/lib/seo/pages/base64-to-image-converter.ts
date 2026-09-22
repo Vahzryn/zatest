@@ -37,10 +37,11 @@ export function getPageSeo(fullUrl: string): SeoRouteData {
     metaDescription: 'Instantly decode Base64 strings to image files (PNG, JPG, SVG) directly in your browser. 100% free, private, offline-capable tool with no server uploads.',
     canonicalUrl: `https://zapixal.com${path}`,
     isIndexable: true,
-    pageCategory: 'resource',
+    pageCategory: 'use-case',
     breadcrumbs: [
       { name: 'Home', url: '/' },
-      { name: 'Tools Directory', url: '/tools' },
+      { name: 'Tools', url: '/tools' },
+      { name: 'Developer Tools', url: '/tools/developer' },
       { name: 'Base64 to Image', url: path }
     ],
     guideContent,
@@ -52,9 +53,10 @@ export function getPageSeo(fullUrl: string): SeoRouteData {
       [
         { name: 'Home', url: '/' },
         { name: 'Tools', url: '/tools' },
+        { name: 'Developer Tools', url: '/tools/developer' },
         { name: 'Base64 to Image', url: path }
       ],
-      'resource',
+      'developer',
       guideContent.steps
     )
   };
