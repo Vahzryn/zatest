@@ -458,35 +458,36 @@ export default function App({ initialPath, initialSeoData }: AppProps) {
                       variant="compact"
                     />
 
-                    {/* Compact indicator when shared URL settings are active */}
+                    {/* Only rendered when shared URL settings are active on the homepage */}
                     {hasSharedUrlSettings && (
-                      <div className="flex flex-wrap items-center justify-between gap-2.5 px-3.5 py-2.5 bg-indigo-50/80 dark:bg-indigo-950/40 border border-indigo-200/80 dark:border-indigo-800/60 rounded-xl text-xs animate-in fade-in duration-200">
-                        <div className="flex flex-wrap items-center gap-2 text-indigo-950 dark:text-indigo-200">
-                          <span className="font-semibold text-indigo-700 dark:text-indigo-400">Shared settings applied:</span>
-                          <span className="font-medium text-zinc-700 dark:text-zinc-300">
-                            {[
-                              settings.targetMaxKB ? `Target size: ${settings.targetMaxKB} KB` : null,
-                              settings.targetFormat && settings.targetFormat !== 'auto' ? `Format: ${settings.targetFormat.toUpperCase()}` : null,
-                              settings.quality && !settings.targetMaxKB && Math.round(settings.quality * 100) !== 80 ? `Quality: ${Math.round(settings.quality * 100)}%` : null,
-                              settings.resize?.enabled ? `Resize: ${settings.resize.maxWidth || 'auto'}×${settings.resize.maxHeight || 'auto'}` : null,
-                              settings.stripExif ? 'Strip EXIF' : null,
-                            ].filter(Boolean).join(' • ') || 'Custom configuration'}
-                          </span>
+                      <React.Fragment>
+                        <div className="flex flex-wrap items-center justify-between gap-2.5 px-3.5 py-2.5 bg-indigo-50/80 dark:bg-indigo-950/40 border border-indigo-200/80 dark:border-indigo-800/60 rounded-xl text-xs animate-in fade-in duration-200">
+                          <div className="flex flex-wrap items-center gap-2 text-indigo-950 dark:text-indigo-200">
+                            <span className="font-semibold text-indigo-700 dark:text-indigo-400">Shared settings applied:</span>
+                            <span className="font-medium text-zinc-700 dark:text-zinc-300">
+                              {[
+                                settings.targetMaxKB ? `Target size: ${settings.targetMaxKB} KB` : null,
+                                settings.targetFormat && settings.targetFormat !== 'auto' ? `Format: ${settings.targetFormat.toUpperCase()}` : null,
+                                settings.quality && !settings.targetMaxKB && Math.round(settings.quality * 100) !== 80 ? `Quality: ${Math.round(settings.quality * 100)}%` : null,
+                                settings.resize?.enabled ? `Resize: ${settings.resize.maxWidth || 'auto'}×${settings.resize.maxHeight || 'auto'}` : null,
+                                settings.stripExif ? 'Strip EXIF' : null,
+                              ].filter(Boolean).join(' • ') || 'Custom configuration'}
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                    )}
 
-                    {/* Global controls with always visible Share Settings and collapsed advanced options */}
-                    <div className="w-full">
-                      <GlobalControls
-                        settings={settings}
-                        onChange={handleUserSetSettings}
-                        seoData={seoData}
-                        disabled={isProcessing}
-                        onShareSettings={() => handleShareSettings(currentPath, settings, seoData)}
-                        isCopiedSettingsLink={isCopiedSettingsLink}
-                      />
-                    </div>
+                        <div className="w-full">
+                          <GlobalControls
+                            settings={settings}
+                            onChange={handleUserSetSettings}
+                            seoData={seoData}
+                            disabled={isProcessing}
+                            onShareSettings={() => handleShareSettings(currentPath, settings, seoData)}
+                            isCopiedSettingsLink={isCopiedSettingsLink}
+                          />
+                        </div>
+                      </React.Fragment>
+                    )}
 
                     <PopularToolsSection onNavigate={handleNavigate} />
                     <ValuePropsSection />
@@ -581,7 +582,7 @@ export default function App({ initialPath, initialSeoData }: AppProps) {
                 onDismissAutoChunkedBanner={dismissAutoChunkedBanner}
                 totalPendingBytes={totalPendingBytes}
                 onContinueToDownload={() => setShowCompleteView(true)}
-                onShareSettings={() => handleShareSettings(currentPath, settings, seoData)}
+                onShareSettings={seoData.pageCategory !== 'home' || hasSharedUrlSettings ? () => handleShareSettings(currentPath, settings, seoData) : undefined}
                 isCopiedSettingsLink={isCopiedSettingsLink}
               />
             )}

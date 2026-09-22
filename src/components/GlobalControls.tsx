@@ -43,30 +43,7 @@ function GlobalControlsComponent({
     return 'quality';
   });
   const [showAdvanced, setShowAdvanced] = React.useState(false);
-  const [isShareOpen, setIsShareOpen] = React.useState(false);
-  const shareDropdownRef = React.useRef<HTMLDivElement | null>(null);
   const debounceTimerRef = React.useRef<NodeJS.Timeout | null>(null);
-
-  React.useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (shareDropdownRef.current && !shareDropdownRef.current.contains(event.target as Node)) {
-        setIsShareOpen(false);
-      }
-    }
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') {
-        setIsShareOpen(false);
-      }
-    }
-    if (isShareOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-      document.addEventListener('keydown', handleKeyDown);
-    }
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isShareOpen]);
 
   const [localResizeWidth, setLocalResizeWidth] = React.useState<string>(
     settings.resize.maxWidth ? String(settings.resize.maxWidth) : ''
@@ -928,96 +905,28 @@ function GlobalControlsComponent({
           )}
         </div>
 
-        {/* Share Settings Dropdown Menu */}
+        {/* Share Settings Action (Always directly accessible on tool pages, hidden when onShareSettings is undefined) */}
         {onShareSettings && (
-          <div className="relative ml-auto sm:ml-0" ref={shareDropdownRef}>
-            <button
-              type="button"
-              onClick={() => setIsShareOpen(prev => !prev)}
-              disabled={disabled}
-              className={cn(
-                "inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer disabled:opacity-50 shrink-0 shadow-2xs border",
-                isShareOpen
-                  ? "text-indigo-700 dark:text-indigo-300 bg-indigo-100 dark:bg-indigo-900/80 border-indigo-300 dark:border-indigo-700"
-                  : "text-indigo-600 dark:text-indigo-400 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/60 dark:hover:bg-indigo-900/60 border border-indigo-200 dark:border-indigo-800"
-              )}
-              title="Share these image processing settings"
-              aria-expanded={isShareOpen}
-              aria-haspopup="true"
-              id="btn-share-dropdown-trigger"
-            >
-              <Share2 className="w-3.5 h-3.5" />
-              <span>Share Settings</span>
-              <ChevronDown className={cn("w-3.5 h-3.5 transition-transform duration-200", isShareOpen && "rotate-180")} />
-            </button>
-
-            {/* Dropdown Popover */}
-            {isShareOpen && (
-              <div
-                className="absolute right-0 top-full mt-2 w-72 sm:w-80 p-3.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl z-50 animate-in fade-in zoom-in-95 duration-150"
-                role="dialog"
-                aria-label="Share Settings"
-              >
-                <div className="pb-2.5 border-b border-zinc-100 dark:border-zinc-800">
-                  <div className="flex items-center gap-1.5">
-                    <Share2 className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
-                    <h4 className="text-xs font-bold text-zinc-900 dark:text-white">Share Configuration</h4>
-                  </div>
-                  <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 leading-snug">
-                    Share a direct link with your exact settings. Files are never uploaded or included.
-                  </p>
-                </div>
-
-                {/* Configuration Summary Pills */}
-                <div className="flex flex-wrap gap-1.5 my-2.5">
-                  {settings.targetMaxKB ? (
-                    <span className="px-2 py-0.5 text-[10.5px] font-medium bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300 rounded-md border border-amber-200 dark:border-amber-800">
-                      Target: {settings.targetMaxKB} KB
-                    </span>
-                  ) : null}
-                  <span className="px-2 py-0.5 text-[10.5px] font-medium bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 rounded-md">
-                    Format: {settings.targetFormat.toUpperCase()}
-                  </span>
-                  {!settings.targetMaxKB && (
-                    <span className="px-2 py-0.5 text-[10.5px] font-medium bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 rounded-md">
-                      Quality: {Math.round(settings.quality * 100)}%
-                    </span>
-                  )}
-                  {settings.resize?.enabled && (
-                    <span className="px-2 py-0.5 text-[10.5px] font-medium bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 rounded-md">
-                      Resize: {settings.resize.maxWidth || 'auto'}×{settings.resize.maxHeight || 'auto'}
-                    </span>
-                  )}
-                  {settings.stripExif && (
-                    <span className="px-2 py-0.5 text-[10.5px] font-medium bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 rounded-md">
-                      Strip EXIF
-                    </span>
-                  )}
-                </div>
-
-                {/* Copy Link Action Button */}
-                <button
-                  type="button"
-                  onClick={onShareSettings}
-                  disabled={disabled}
-                  className="w-full flex items-center justify-center gap-2 px-3.5 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 rounded-lg transition-colors cursor-pointer shadow-xs disabled:opacity-50"
-                  id="btn-share-settings-main"
-                >
-                  {isCopiedSettingsLink ? (
-                    <>
-                      <Check className="w-3.5 h-3.5 text-white" />
-                      <span>Link Copied to Clipboard!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Share2 className="w-3.5 h-3.5" />
-                      <span>Copy Shareable Settings Link</span>
-                    </>
-                  )}
-                </button>
-              </div>
+          <button
+            type="button"
+            onClick={onShareSettings}
+            disabled={disabled}
+            className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/60 dark:hover:bg-indigo-900/60 border border-indigo-200 dark:border-indigo-800 rounded-lg transition-colors cursor-pointer disabled:opacity-50 shrink-0 shadow-2xs ml-auto sm:ml-0"
+            title="Copy a shareable link with this exact configuration"
+            id="btn-share-settings-main"
+          >
+            {isCopiedSettingsLink ? (
+              <>
+                <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                <span className="text-emerald-600 dark:text-emerald-400">Link Copied!</span>
+              </>
+            ) : (
+              <>
+                <Share2 className="w-3.5 h-3.5" />
+                <span>Share Settings</span>
+              </>
             )}
-          </div>
+          </button>
         )}
       </div>
 
