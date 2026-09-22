@@ -163,19 +163,10 @@ export default function App({ initialPath, initialSeoData }: AppProps) {
     return false;
   });
 
-  const [isHomeSettingsExpanded, setIsHomeSettingsExpanded] = useState<boolean>(() => {
-    if (typeof window !== 'undefined' && window.location.search) {
-      const parsed = parseConfigFromQuery(window.location.search);
-      return Object.keys(parsed).length > 0;
-    }
-    return false;
-  });
-
   // Callback when URL settings are applied so touchedKeys are updated
   const handleApplyUrlSettings = useCallback((appliedKeys: string[]) => {
     if (appliedKeys.length === 0) return;
     setHasSharedUrlSettings(true);
-    setIsHomeSettingsExpanded(true);
     setTouchedKeys(old => {
       const updated = new Set(old);
       let changed = false;
@@ -482,42 +473,19 @@ export default function App({ initialPath, initialSeoData }: AppProps) {
                             ].filter(Boolean).join(' • ') || 'Custom configuration'}
                           </span>
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => setIsHomeSettingsExpanded(prev => !prev)}
-                          className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer ml-auto"
-                        >
-                          {isHomeSettingsExpanded ? 'Hide settings' : 'Edit settings'}
-                        </button>
                       </div>
                     )}
 
-                    {/* Subtle collapsed entry point */}
-                    <div className="w-full flex flex-col items-center pt-1">
-                      <button
-                        type="button"
-                        onClick={() => setIsHomeSettingsExpanded(prev => !prev)}
-                        className="inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors cursor-pointer rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800/60"
-                        aria-expanded={isHomeSettingsExpanded}
-                        id="btn-toggle-home-settings"
-                      >
-                        <SlidersHorizontal className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400" />
-                        <span>Advanced settings & sharing</span>
-                        <ChevronDown className={cn("w-3.5 h-3.5 transition-transform duration-200", isHomeSettingsExpanded && "rotate-180")} />
-                      </button>
-
-                      {isHomeSettingsExpanded && (
-                        <div className="w-full mt-3 animate-in fade-in slide-in-from-top-1 duration-200">
-                          <GlobalControls
-                            settings={settings}
-                            onChange={handleUserSetSettings}
-                            seoData={seoData}
-                            disabled={isProcessing}
-                            onShareSettings={() => handleShareSettings(currentPath, settings, seoData)}
-                            isCopiedSettingsLink={isCopiedSettingsLink}
-                          />
-                        </div>
-                      )}
+                    {/* Global controls with always visible Share Settings and collapsed advanced options */}
+                    <div className="w-full">
+                      <GlobalControls
+                        settings={settings}
+                        onChange={handleUserSetSettings}
+                        seoData={seoData}
+                        disabled={isProcessing}
+                        onShareSettings={() => handleShareSettings(currentPath, settings, seoData)}
+                        isCopiedSettingsLink={isCopiedSettingsLink}
+                      />
                     </div>
 
                     <PopularToolsSection onNavigate={handleNavigate} />
