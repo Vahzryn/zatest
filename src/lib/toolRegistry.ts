@@ -14,6 +14,19 @@ export interface ToolDefinition {
 
 export const TOOL_REGISTRY: ToolDefinition[] = [
   {
+    id: 'background-remover',
+    name: 'Background Remover',
+    description: 'Remove background from images instantly with WebGPU & AI on your device.',
+    category: 'images',
+    route: '/background-remover',
+    status: 'active',
+    indexable: true,
+    capabilities: ['ai', 'webgpu', 'wasm', 'segmentation', 'transparency'],
+    searchIntents: ['background remover', 'remove bg offline', 'free background remover private', 'transparent background png'],
+    relatedTools: ['client-side-private-image-compressor', 'compress-png-images-online', 'convert-heic-to-jpg-locally'],
+    featured: true
+  },
+  {
     id: 'client-side-private-image-compressor',
     name: 'Image Compressor',
     description: 'Compress PNG, JPEG, WebP, and AVIF images locally with quality controls.',

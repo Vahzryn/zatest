@@ -19,9 +19,10 @@
     "preview": "vite preview",
     "clean": "rm -rf dist dist-ssr",
     "lint": "tsc --noEmit",
-    "test": "tsx scripts/test-format-acceptance.ts && tsx scripts/test-share-config.ts"
+    "test": "tsx scripts/test-format-acceptance.ts && tsx scripts/test-share-config.ts && tsx scripts/test-bg-remover.ts"
   },
   "dependencies": {
+    "@huggingface/transformers": "^4.3.0",
     "@jsquash/avif": "^2.1.1",
     "@jsquash/jpeg": "^1.6.0",
     "@jsquash/webp": "^1.5.0",

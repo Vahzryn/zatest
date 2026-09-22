@@ -55,6 +55,7 @@ const JwtDecoderPage = lazy(() => import('./components/JwtDecoderPage'));
 const RegexTesterPage = lazy(() => import('./components/RegexTesterPage'));
 const MarkdownLivePreviewPage = lazy(() => import('./components/MarkdownLivePreviewPage').then(module => ({ default: module.MarkdownLivePreviewPage })));
 const TextDiffPage = lazy(() => import('./components/TextDiffPage').then(module => ({ default: module.TextDiffPage })));
+const BackgroundRemoverPage = lazy(() => import('./components/BackgroundRemoverPage').then(module => ({ default: module.BackgroundRemoverPage })));
 const EmbedWidget = lazy(() => import('./components/Widget/EmbedWidget'));
 const WidgetDocumentationPage = lazy(() => import('./components/Widget/WidgetDocumentationPage'));
 
@@ -431,6 +432,8 @@ export default function App({ initialPath, initialSeoData }: AppProps) {
           <MarkdownLivePreviewPage seoData={seoData} onNavigate={handleNavigate} />
         ) : currentPath === '/text-diff' ? (
           <TextDiffPage seoData={seoData} onNavigate={handleNavigate} />
+        ) : currentPath === '/background-remover' ? (
+          <BackgroundRemoverPage seoData={seoData} onNavigate={handleNavigate} />
         ) : currentPath === '/word-character-counter-online' ? (
           <React.Fragment>
             <WordCharacterCounter />

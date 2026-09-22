@@ -10,6 +10,11 @@ export const DOMAIN = 'https://zapixal.com';
 
 export const PSEO_ROUTES_LIST: SeoRouteItem[] = [
   {
+    path: '/background-remover',
+    label: 'AI Background Remover (WebGPU & Offline)',
+    category: 'use-case'
+  },
+  {
     path: '/client-side-private-image-compressor',
     label: 'Client-Side Private Image Compressor',
     category: 'compression'
