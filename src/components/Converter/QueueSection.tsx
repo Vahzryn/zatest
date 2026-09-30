@@ -115,7 +115,7 @@ export const QueueSection = React.memo<QueueSectionProps>(function QueueSection(
   };
 
   return (
-    <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-8 duration-500">
+    <div className="flex flex-col gap-3.5 sm:gap-4 animate-in fade-in slide-in-from-bottom-4 duration-300">
       <input
         type="file"
         ref={fileInputRef}
@@ -128,21 +128,21 @@ export const QueueSection = React.memo<QueueSectionProps>(function QueueSection(
       {/* Large Batch Non-Blocking Banner */}
       {showLargeBatchBanner && (
         <div 
-          className="p-4 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 rounded-2xl flex items-center justify-between gap-3 text-amber-900 dark:text-amber-200 animate-in slide-in-from-top-2 duration-200"
+          className="p-3 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 rounded-xl flex items-center justify-between gap-2.5 text-amber-900 dark:text-amber-200 animate-in slide-in-from-top-2 duration-200 text-xs sm:text-sm"
           id="large-batch-warning-banner"
         >
-          <div className="flex items-center gap-2.5 text-sm font-semibold text-left">
-            <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" />
+          <div className="flex items-center gap-2 font-semibold text-left">
+            <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
             <span>Large batch detected — processing in smaller memory-safe batches for this device.</span>
           </div>
           {onDismissLargeBatchBanner && (
             <button
               onClick={onDismissLargeBatchBanner}
-              className="p-1.5 rounded-xl text-amber-600 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/50 transition-colors cursor-pointer shrink-0"
+              className="p-1 rounded-lg text-amber-600 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/50 transition-colors cursor-pointer shrink-0"
               aria-label="Dismiss banner"
               id="btn-dismiss-large-batch-banner"
             >
-              <X className="w-4 h-4" />
+              <X className="w-3.5 h-3.5" />
             </button>
           )}
         </div>
@@ -151,11 +151,11 @@ export const QueueSection = React.memo<QueueSectionProps>(function QueueSection(
       {/* Auto-Chunked Notice Banner */}
       {showAutoChunkedBanner && (
         <div 
-          className="p-4 bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800/60 rounded-2xl flex items-center justify-between gap-3 text-indigo-900 dark:text-indigo-200 animate-in slide-in-from-top-2 duration-200"
+          className="p-3 bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800/60 rounded-xl flex items-center justify-between gap-2.5 text-indigo-900 dark:text-indigo-200 animate-in slide-in-from-top-2 duration-200 text-xs sm:text-sm"
           id="auto-chunked-notice-banner"
         >
-          <div className="flex items-center gap-2.5 text-sm font-semibold text-left">
-            <ShieldCheck className="w-5 h-5 text-indigo-600 dark:text-indigo-400 shrink-0" />
+          <div className="flex items-center gap-2 font-semibold text-left">
+            <ShieldCheck className="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0" />
             <span>
               Large batch detected — processing in smaller memory-safe batches for this device.
             </span>
@@ -163,11 +163,11 @@ export const QueueSection = React.memo<QueueSectionProps>(function QueueSection(
           {onDismissAutoChunkedBanner && (
             <button
               onClick={onDismissAutoChunkedBanner}
-              className="p-1.5 rounded-xl text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors cursor-pointer shrink-0"
+              className="p-1 rounded-lg text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors cursor-pointer shrink-0"
               aria-label="Dismiss notice"
               id="btn-dismiss-auto-chunked-banner"
             >
-              <X className="w-4 h-4" />
+              <X className="w-3.5 h-3.5" />
             </button>
           )}
         </div>
@@ -176,16 +176,16 @@ export const QueueSection = React.memo<QueueSectionProps>(function QueueSection(
       {/* Direct Folder Save UI Panel (Clean & quiet) */}
       {hasDirectoryPicker && (
         <div 
-          className="p-3.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-left"
+          className="p-3 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-left"
           id="direct-folder-save-panel"
         >
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="p-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 shrink-0">
+            <div className="p-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 shrink-0">
               <FolderDown className="w-4 h-4" />
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold text-zinc-900 dark:text-white">Direct Folder Save</span>
+                <span className="text-xs font-bold text-zinc-900 dark:text-white">Direct Folder Save</span>
                 {directoryHandle && (
                   <span className="px-1.5 py-0.2 text-[10px] bg-emerald-100 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 rounded font-medium">
                     Active: {directoryHandle.name}
@@ -206,7 +206,7 @@ export const QueueSection = React.memo<QueueSectionProps>(function QueueSection(
               <button
                 onClick={onDisconnectDirectory}
                 disabled={isProcessing}
-                className="px-3 py-1.5 text-xs font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
+                className="px-2.5 py-1 text-xs font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
                 id="btn-disconnect-folder"
               >
                 Disconnect
@@ -215,7 +215,7 @@ export const QueueSection = React.memo<QueueSectionProps>(function QueueSection(
               <button
                 onClick={onSelectDirectory}
                 disabled={isProcessing}
-                className="px-3 py-1.5 text-xs font-medium text-zinc-700 dark:text-zinc-200 bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
+                className="px-2.5 py-1 text-xs font-semibold text-zinc-700 dark:text-zinc-200 bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
                 id="btn-choose-folder"
               >
                 Choose Folder
@@ -241,8 +241,8 @@ export const QueueSection = React.memo<QueueSectionProps>(function QueueSection(
         isCopiedSettingsLink={isCopiedSettingsLink}
       />
 
-      <div className="flex flex-col bg-white dark:bg-zinc-900 border rounded-2xl border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-xs">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-3.5 sm:px-5 py-3 sm:py-3.5 border-b border-zinc-100 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/60">
+      <div className="flex flex-col bg-white dark:bg-zinc-900 border rounded-xl border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-2xs">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 px-3 sm:px-4 py-2.5 sm:py-3 border-b border-zinc-100 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/60">
           <div className="flex flex-wrap items-center gap-2">
             <span className="font-bold text-zinc-900 dark:text-white text-sm">Files ({files.length})</span>
             {successCount > 0 && (
@@ -267,11 +267,11 @@ export const QueueSection = React.memo<QueueSectionProps>(function QueueSection(
               onClick={() => fileInputRef.current?.click()}
               disabled={isProcessing}
               className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-zinc-100 hover:bg-zinc-200/70 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 transition-colors disabled:opacity-50 cursor-pointer"
-              title="Add more images to the queue"
+              title="Add more files to the queue"
               id="btn-add-more-images"
             >
               <Plus className="w-3.5 h-3.5" />
-              <span>Add Images</span>
+              <span>Add files</span>
             </button>
 
             <button 
@@ -371,9 +371,10 @@ export const QueueSection = React.memo<QueueSectionProps>(function QueueSection(
           <button
             onClick={onContinueToDownload}
             className="flex items-center gap-2 px-5 py-3 text-sm font-black text-white bg-emerald-600 hover:bg-emerald-700 active:scale-95 transition-all rounded-full shadow-xl border border-emerald-800"
-            aria-label="Continue to Download"
+            aria-label="Download results"
           >
-            <span>Continue to Download</span>
+            <Download className="w-4 h-4" />
+            <span>Download all</span>
           </button>
         ) : pendingCount > 0 ? (
           <button

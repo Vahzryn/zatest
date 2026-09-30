@@ -455,7 +455,7 @@ export default function App({ initialPath, initialSeoData }: AppProps) {
           <React.Fragment>
             {files.length === 0 ? (
               /* STATE 1: IDLE / WORKSPACE READY */
-              <div className="flex flex-col gap-5 mb-12 animate-in fade-in zoom-in-95 duration-300 min-h-[400px]">
+              <div className="flex flex-col gap-3.5 sm:gap-4 mb-8 sm:mb-12 animate-in fade-in zoom-in-95 duration-300 min-h-[300px]">
                 {seoData.pageCategory === 'home' ? (
                   <React.Fragment>
                     <HomeTaskDiscovery onNavigate={handleNavigate} />
@@ -503,19 +503,28 @@ export default function App({ initialPath, initialSeoData }: AppProps) {
                   </React.Fragment>
                 ) : (
                   <React.Fragment>
-                    <GlobalControls
-                      settings={settings}
-                      onChange={handleUserSetSettings}
-                      seoData={seoData}
-                      disabled={isProcessing}
-                      onShareSettings={() => handleShareSettings(currentPath, settings, seoData)}
-                      isCopiedSettingsLink={isCopiedSettingsLink}
-                    />
-
                     <Dropzone
                       onFilesAdded={handleFilesAdded}
                       fromFormat={seoData.fromFormat}
                     />
+
+                    {/* Only rendered when shared URL settings are active */}
+                    {hasSharedUrlSettings && (
+                      <div className="flex flex-wrap items-center justify-between gap-2.5 px-3.5 py-2 bg-indigo-50/80 dark:bg-indigo-950/40 border border-indigo-200/80 dark:border-indigo-800/60 rounded-xl text-xs animate-in fade-in duration-200">
+                        <div className="flex flex-wrap items-center gap-2 text-indigo-950 dark:text-indigo-200">
+                          <span className="font-semibold text-indigo-700 dark:text-indigo-400">Shared settings active:</span>
+                          <span className="font-medium text-zinc-700 dark:text-zinc-300">
+                            {[
+                              settings.targetMaxKB ? `Target size: ${settings.targetMaxKB} KB` : null,
+                              settings.targetFormat && settings.targetFormat !== 'auto' ? `Format: ${settings.targetFormat.toUpperCase()}` : null,
+                              settings.quality && !settings.targetMaxKB && Math.round(settings.quality * 100) !== 80 ? `Quality: ${Math.round(settings.quality * 100)}%` : null,
+                              settings.resize?.enabled ? `Resize: ${settings.resize.maxWidth || 'auto'}×${settings.resize.maxHeight || 'auto'}` : null,
+                              settings.stripExif ? 'Strip EXIF' : null,
+                            ].filter(Boolean).join(' • ') || 'Custom configuration'}
+                          </span>
+                        </div>
+                      </div>
+                    )}
 
                     <SeoGuideContent seoData={seoData} onNavigate={handleNavigate} />
                     <AdSlot placement="tool-result" />

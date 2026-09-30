@@ -81,7 +81,7 @@ export const CompleteView = React.memo<CompleteViewProps>(function CompleteView(
 
   return (
     <div 
-      className="max-w-2xl mx-auto w-full px-2 sm:px-4 py-4 space-y-6 animate-in fade-in zoom-in-98 duration-300"
+      className="max-w-2xl mx-auto w-full px-2 sm:px-4 py-2 space-y-4 animate-in fade-in zoom-in-98 duration-300"
       id="tool-completion-view"
     >
       {/* Screen Reader Live Region */}
@@ -93,16 +93,16 @@ export const CompleteView = React.memo<CompleteViewProps>(function CompleteView(
       </div>
 
       {/* Main Result Card */}
-      <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden p-4 sm:p-7 space-y-5 text-center">
+      <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-2xs overflow-hidden p-4 sm:p-5 space-y-4 text-center">
         
         {/* Status Indicator & Main Headline */}
-        <div className="flex flex-col items-center gap-2.5">
-          <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-950/70 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-xs">
-            <Check className="w-6 h-6 stroke-[2.5]" />
+        <div className="flex flex-col items-center gap-2">
+          <div className="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-950/70 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-2xs">
+            <Check className="w-5 h-5 stroke-[2.5]" />
           </div>
 
-          <div className="space-y-1">
-            <h2 className="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white tracking-tight">
+          <div className="space-y-0.5">
+            <h2 className="text-lg sm:text-xl font-black text-zinc-900 dark:text-white tracking-tight">
               {failedCount > 0 
                 ? `${successCount} of ${totalCount} Files Ready`
                 : successCount === 1 
@@ -125,16 +125,16 @@ export const CompleteView = React.memo<CompleteViewProps>(function CompleteView(
 
         {/* Compression / Format Summary Metrics */}
         {successCount > 0 && (
-          <div className="bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3.5">
+          <div className="bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3">
             {netSaved > 0 ? (
               <div className="grid grid-cols-3 divide-x divide-zinc-200 dark:divide-zinc-800 text-center">
                 <div className="px-2">
                   <div className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">Original</div>
-                  <div className="text-sm font-bold text-zinc-800 dark:text-zinc-200 mt-0.5">{formatBytes(totOrig)}</div>
+                  <div className="text-xs sm:text-sm font-bold text-zinc-800 dark:text-zinc-200 mt-0.5">{formatBytes(totOrig)}</div>
                 </div>
                 <div className="px-2">
                   <div className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">New Size</div>
-                  <div className="text-sm font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">{formatBytes(totConv)}</div>
+                  <div className="text-xs sm:text-sm font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">{formatBytes(totConv)}</div>
                 </div>
                 <div className="px-1 sm:px-2">
                   <div className="text-[10px] sm:text-[11px] font-medium text-zinc-500 dark:text-zinc-400">Reduction</div>
@@ -160,28 +160,28 @@ export const CompleteView = React.memo<CompleteViewProps>(function CompleteView(
 
         {/* Primary Action Button */}
         {successCount > 0 && (
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             <button
               onClick={handleTriggerDownloadAll}
               disabled={downloadStarted}
-              className="w-full flex items-center justify-center gap-2.5 py-3.5 px-6 text-sm sm:text-base font-bold text-white bg-indigo-600 hover:bg-indigo-700 active:scale-[0.99] rounded-2xl shadow-lg shadow-indigo-600/25 transition-all cursor-pointer disabled:opacity-90"
+              className="w-full flex items-center justify-center gap-2 py-3 px-5 text-sm sm:text-base font-bold text-white bg-indigo-600 hover:bg-indigo-700 active:scale-[0.99] rounded-xl shadow-md shadow-indigo-600/20 transition-all cursor-pointer disabled:opacity-90"
               id="btn-primary-completion-download"
               aria-label={successCount === 1 ? 'Download processed file' : `Download all ${successCount} files as ZIP archive`}
             >
               {downloadStarted ? (
                 <>
-                  <CheckCircle2 className="w-5 h-5 text-white animate-in zoom-in" />
+                  <CheckCircle2 className="w-4 h-4 text-white animate-in zoom-in" />
                   <span>{downloadFeedbackText}</span>
                 </>
               ) : successCount === 1 ? (
                 <>
-                  <Download className="w-5 h-5" />
-                  <span>Download File</span>
+                  <Download className="w-4 h-4" />
+                  <span>Download file</span>
                 </>
               ) : (
                 <>
-                  <Archive className="w-5 h-5" />
-                  <span>Download All ({successCount} Files · .ZIP)</span>
+                  <Archive className="w-4 h-4" />
+                  <span>Download all ({successCount})</span>
                 </>
               )}
             </button>
@@ -195,7 +195,7 @@ export const CompleteView = React.memo<CompleteViewProps>(function CompleteView(
                   id="btn-secondary-save-folder"
                 >
                   <FolderDown className="w-3.5 h-3.5" />
-                  <span>Save to Folder</span>
+                  <span>Save to folder</span>
                 </button>
               )}
 
@@ -206,7 +206,7 @@ export const CompleteView = React.memo<CompleteViewProps>(function CompleteView(
                   id="btn-secondary-download-separately"
                 >
                   <Download className="w-3.5 h-3.5" />
-                  <span>Download Separately</span>
+                  <span>Download individually</span>
                 </button>
               )}
             </div>
@@ -225,7 +225,7 @@ export const CompleteView = React.memo<CompleteViewProps>(function CompleteView(
               className="inline-flex items-center gap-1 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer shrink-0"
             >
               <RotateCw className="w-3 h-3" />
-              <span>Retry Failed</span>
+              <span>Retry failed</span>
             </button>
           </div>
         )}
@@ -235,7 +235,7 @@ export const CompleteView = React.memo<CompleteViewProps>(function CompleteView(
           <div className="space-y-2 text-left pt-2 border-t border-zinc-100 dark:border-zinc-800">
             <div className="flex items-center justify-between px-1">
               <span className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
-                Output Files ({completed.length})
+                Output files ({completed.length})
               </span>
             </div>
 
@@ -288,7 +288,7 @@ export const CompleteView = React.memo<CompleteViewProps>(function CompleteView(
               className="inline-flex items-center gap-1 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors cursor-pointer"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Back to Workspace</span>
+              <span>Back to workspace</span>
             </button>
           )}
 
@@ -299,7 +299,7 @@ export const CompleteView = React.memo<CompleteViewProps>(function CompleteView(
             className="inline-flex items-center gap-1 text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
           >
             <Plus className="w-3.5 h-3.5" />
-            <span>Process More Files</span>
+            <span>New files</span>
           </button>
         </div>
 
@@ -310,8 +310,7 @@ export const CompleteView = React.memo<CompleteViewProps>(function CompleteView(
             onClick={() => window.dispatchEvent(new CustomEvent('zapixal-open-feedback'))}
             className="inline-flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer"
           >
-            <span>Having trouble with this result?</span>
-            <span className="font-semibold underline underline-offset-2">Report a problem</span>
+            <span className="underline underline-offset-2">Report a problem</span>
           </button>
         </div>
 

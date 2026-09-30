@@ -78,6 +78,28 @@ export function BackgroundRemoverPage({ seoData, onNavigate }: BackgroundRemover
     };
   }, [originalPreviewUrl, result]);
 
+  // Global Paste Handler for instant clipboard image drop
+  useEffect(() => {
+    const handlePaste = (e: ClipboardEvent) => {
+      if (selectedFile || isProcessing) return;
+      if (!e.clipboardData) return;
+      const items = Array.from(e.clipboardData.items);
+      for (const item of items) {
+        if (item.type.indexOf('image') !== -1) {
+          const file = item.getAsFile();
+          if (file) {
+            e.preventDefault();
+            handleFileSelect([file]);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('paste', handlePaste);
+    return () => window.removeEventListener('paste', handlePaste);
+  }, [selectedFile, isProcessing]);
+
   // Core Processing Invocation (fast re-compositing if mask is already computed)
   const runRemoval = useCallback(async (
     fileToProcess: File, 
@@ -337,7 +359,7 @@ export function BackgroundRemoverPage({ seoData, onNavigate }: BackgroundRemover
       </div>
 
       {/* Main Card */}
-      <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 sm:p-6 shadow-xs space-y-5">
+      <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3.5 sm:p-5 shadow-2xs space-y-4">
         
         {/* ========================================================= */}
         {/* STATE 1: UPLOAD DROPZONE                                  */}
@@ -354,10 +376,10 @@ export function BackgroundRemoverPage({ seoData, onNavigate }: BackgroundRemover
               }
             }}
             onClick={() => fileInputRef.current?.click()}
-            className={`border-2 border-dashed rounded-xl p-8 sm:p-12 text-center transition-colors cursor-pointer flex flex-col items-center justify-center gap-3.5 ${
+            className={`border-2 border-dashed rounded-2xl py-10 sm:py-14 px-6 text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-3 min-h-[180px] sm:min-h-[220px] ${
               dragActive 
-                ? 'border-indigo-600 bg-indigo-50/40 dark:bg-indigo-950/20' 
-                : 'border-zinc-300 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-600 hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30'
+                ? 'border-indigo-600 bg-indigo-50/50 dark:bg-indigo-950/30 ring-2 ring-indigo-500/20' 
+                : 'border-zinc-300 dark:border-zinc-700 hover:border-indigo-400 dark:hover:border-indigo-500 hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30'
             }`}
           >
             <input 
@@ -367,16 +389,22 @@ export function BackgroundRemoverPage({ seoData, onNavigate }: BackgroundRemover
               className="hidden" 
               onChange={(e) => e.target.files && handleFileSelect(e.target.files)}
             />
-            <div className="w-12 h-12 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200/60 dark:border-indigo-800/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shadow-2xs">
               <Upload className="w-6 h-6" />
             </div>
             <div className="space-y-1">
-              <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                Click to upload or drag and drop
+              <p className="text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-100">
+                Click to upload, drag and drop, or <span className="text-indigo-600 dark:text-indigo-400">paste</span>
               </p>
               <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                PNG, JPG, WebP, AVIF, HEIC • Runs 100% locally
+                PNG, JPG, WebP, AVIF, HEIC • Runs 100% locally on your device
               </p>
+              <div className="pt-1.5 flex items-center justify-center gap-1 text-[11px] font-medium text-zinc-400 dark:text-zinc-500">
+                <kbd className="px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 font-mono text-[10px] text-zinc-600 dark:text-zinc-400">Ctrl+V</kbd>
+                <span>or</span>
+                <kbd className="px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 font-mono text-[10px] text-zinc-600 dark:text-zinc-400">⌘+V</kbd>
+                <span>to paste image</span>
+              </div>
             </div>
           </div>
         )}
@@ -741,7 +769,7 @@ export function BackgroundRemoverPage({ seoData, onNavigate }: BackgroundRemover
                 className="w-full sm:w-auto py-3 px-4 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-sm font-medium rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-1.5"
               >
                 <RefreshCw className="w-4 h-4" />
-                <span>Replace Image</span>
+                <span>New file</span>
               </button>
             </div>
 
@@ -754,7 +782,7 @@ export function BackgroundRemoverPage({ seoData, onNavigate }: BackgroundRemover
               >
                 <span className="flex items-center gap-1.5">
                   <SlidersHorizontal className="w-3.5 h-3.5" />
-                  <span>Advanced Output Settings</span>
+                  <span>More</span>
                 </span>
                 {showAdvanced ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
               </button>

@@ -668,7 +668,7 @@ export function PdfToJpgConverter({ onNavigate }: PdfToJpgConverterProps) {
                   }`}
                 >
                   <Sparkles className="w-4 h-4" />
-                  <span>Convert {selectedPages.size} {selectedPages.size === 1 ? 'Page' : 'Pages'} to JPG</span>
+                  <span>Convert ({selectedPages.size})</span>
                 </button>
               )}
             </div>
@@ -731,7 +731,7 @@ export function PdfToJpgConverter({ onNavigate }: PdfToJpgConverterProps) {
                       ) : (
                         <>
                           <Archive className="w-5 h-5" />
-                          <span>Download All ({processedResults.length} Pages · .ZIP)</span>
+                          <span>Download all ({processedResults.length})</span>
                         </>
                       )}
                     </button>
@@ -742,7 +742,7 @@ export function PdfToJpgConverter({ onNavigate }: PdfToJpgConverterProps) {
                       id="btn-download-single-jpg"
                     >
                       <Download className="w-5 h-5" />
-                      <span>Download JPG Image</span>
+                      <span>Download JPG</span>
                     </button>
                   )}
 
@@ -752,7 +752,7 @@ export function PdfToJpgConverter({ onNavigate }: PdfToJpgConverterProps) {
                       className="inline-flex items-center gap-1.5 font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors cursor-pointer"
                     >
                       <RefreshCw className="w-3.5 h-3.5" />
-                      <span>Choose Another PDF</span>
+                      <span>New file</span>
                     </button>
                   </div>
                 </div>

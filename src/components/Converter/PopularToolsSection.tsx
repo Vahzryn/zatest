@@ -145,31 +145,26 @@ export const PopularToolsSection: React.FC<PopularToolsSectionProps> = ({ onNavi
       </div>
 
       {/* Featured Tools Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-2.5 sm:gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-2 sm:gap-2.5">
         {displayedTools.map((tool) => (
           <a
             key={tool.path}
             href={tool.path}
             onClick={(e) => handleClick(e, tool.path)}
-            className="group flex flex-col justify-between p-3.5 sm:p-4 rounded-xl border border-zinc-200/90 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 motion-reduce:transition-none motion-reduce:transform-none"
+            className="group flex flex-col justify-between p-2.5 sm:p-3 rounded-xl border border-zinc-200/90 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xs hover:border-indigo-300 dark:hover:border-indigo-600/60 hover:shadow-xs hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-150 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50"
           >
             <div>
-              <div className="flex items-center justify-between gap-2 mb-1.5">
-                <span className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-200">
+              <div className="flex items-center justify-between gap-2 mb-1">
+                <span className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                   {tool.name}
                 </span>
-                <span className="text-[10px] font-semibold text-zinc-600 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-700/50 px-2 py-0.5 rounded shrink-0 group-hover:text-indigo-600 dark:group-hover:text-indigo-300 group-hover:border-indigo-200/50 dark:group-hover:border-indigo-800/50 transition-colors duration-200">
+                <span className="text-[10px] font-semibold text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-700/50 px-1.5 py-0.2 rounded shrink-0">
                   {tool.badge}
                 </span>
               </div>
-              <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed line-clamp-2">
+              <p className="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed line-clamp-2">
                 {tool.desc}
               </p>
-            </div>
-
-            <div className="pt-2.5 mt-3 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between text-[11px] font-semibold text-zinc-400 dark:text-zinc-500 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-200">
-              <span>Open tool</span>
-              <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform duration-200" />
             </div>
           </a>
         ))}

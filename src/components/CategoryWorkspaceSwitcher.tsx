@@ -93,6 +93,9 @@ export const CategoryWorkspaceSwitcher: React.FC<CategoryWorkspaceSwitcherProps>
   currentPath,
   onNavigate,
 }) => {
+  const tabsContainerRef = React.useRef<HTMLDivElement>(null);
+  const activeTabRef = React.useRef<HTMLButtonElement>(null);
+
   // Identify the matching workspace category for the current path
   let activeGroup: WorkspaceGroup | null = null;
 
@@ -110,6 +113,21 @@ export const CategoryWorkspaceSwitcher: React.FC<CategoryWorkspaceSwitcherProps>
     else if (currentPath === '/tools/text') activeGroup = WORKSPACE_GROUPS.text;
     else if (currentPath === '/tools/utilities') activeGroup = WORKSPACE_GROUPS.utilities;
   }
+
+  React.useEffect(() => {
+    const container = tabsContainerRef.current;
+    const tab = activeTabRef.current;
+    if (container && tab && container.scrollWidth > container.clientWidth) {
+      const tabLeft = tab.offsetLeft;
+      const tabWidth = tab.offsetWidth;
+      const containerWidth = container.clientWidth;
+      const targetScroll = tabLeft - (containerWidth / 2) + (tabWidth / 2);
+      container.scrollTo({
+        left: Math.max(0, targetScroll),
+        behavior: 'smooth'
+      });
+    }
+  }, [currentPath]);
 
   if (!activeGroup) {
     return null;
@@ -135,8 +153,11 @@ export const CategoryWorkspaceSwitcher: React.FC<CategoryWorkspaceSwitcherProps>
           </div>
         </div>
 
-        {/* Right: Horizontal Tool Tabs */}
-        <div className="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5 px-1 scroll-smooth">
+        {/* Right: Horizontal Tool Tabs with Auto Centering */}
+        <div 
+          ref={tabsContainerRef}
+          className="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5 px-1 scroll-smooth touch-pan-x"
+        >
           {activeGroup.tools.map((tool) => {
             const isActive = currentPath === tool.path;
             const ToolIcon = tool.icon;
@@ -144,6 +165,7 @@ export const CategoryWorkspaceSwitcher: React.FC<CategoryWorkspaceSwitcherProps>
             return (
               <button
                 key={tool.path}
+                ref={isActive ? activeTabRef : undefined}
                 type="button"
                 onClick={() => onNavigate(tool.path)}
                 className={cn(

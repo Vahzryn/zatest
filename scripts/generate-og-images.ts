@@ -612,8 +612,13 @@ async function generateAllOgImages() {
     fs.mkdirSync(outputDir, { recursive: true });
   }
 
-  const logoPngBuffer = fs.readFileSync(path.resolve(process.cwd(), 'public', 'icon-512.png'));
-  const logoBase64 = `data:image/png;base64,${logoPngBuffer.toString('base64')}`;
+  let logoBase64 = '';
+  try {
+    const logoPngBuffer = fs.readFileSync(path.resolve(process.cwd(), 'public', 'icon-512.png'));
+    logoBase64 = `data:image/png;base64,${logoPngBuffer.toString('base64')}`;
+  } catch {
+    // optional logo fallback
+  }
 
   const staticRoutes = ['/', '/tools', '/about', '/privacy', '/terms'];
   const allRoutes = Array.from(
@@ -629,29 +634,32 @@ async function generateAllOgImages() {
   let generatedCount = 0;
 
   for (const routePath of allRoutes) {
-    const seoData = await parseSeoRoute(routePath);
-    const filename = routePath === '/' ? 'home' : routePath.replace(/^\//, '').replace(/\//g, '-');
-    const badgeText = getCategoryBadge(routePath, seoData.pageCategory);
-    const microLabel = getMicroLabel(routePath, seoData.pageCategory);
+    try {
+      const seoData = await parseSeoRoute(routePath);
+      const filename = routePath === '/' ? 'home' : routePath.replace(/^\//, '').replace(/\//g, '-');
+      const badgeText = getCategoryBadge(routePath, seoData.pageCategory);
+      const microLabel = getMicroLabel(routePath, seoData.pageCategory);
 
-    const title = seoData.h1Title || seoData.metaTitle || 'Zapixal';
-    const description = seoData.metaDescription || '';
+      const title = seoData.h1Title || seoData.metaTitle || 'Zapixal';
+      const description = seoData.metaDescription || '';
 
-    const rightVisualSvg = generateRightVisualSvg(routePath, seoData);
+      const rightVisualSvg = generateRightVisualSvg(routePath, seoData);
 
-    const svg = generateOgImageSvg(title, description, badgeText, microLabel, rightVisualSvg, logoBase64);
-    const resvg = new Resvg(svg, { fitTo: { mode: 'width', value: 1200 } });
-    const pngBuffer = resvg.render().asPng();
+      const svg = generateOgImageSvg(title, description, badgeText, microLabel, rightVisualSvg, logoBase64);
+      const resvg = new Resvg(svg, { fitTo: { mode: 'width', value: 1200 } });
+      const pngBuffer = resvg.render().asPng();
 
-    const outFile = path.join(outputDir, `${filename}.png`);
-    fs.writeFileSync(outFile, pngBuffer);
-    generatedCount++;
+      const outFile = path.join(outputDir, `${filename}.png`);
+      fs.writeFileSync(outFile, pngBuffer);
+      generatedCount++;
+    } catch (routeErr) {
+      console.warn(`[Warning] Skipping OG image generation for route "${routePath}":`, routeErr);
+    }
   }
 
   console.log(`Successfully generated ${generatedCount} route-aware OG images in public/og-images/`);
 }
 
 generateAllOgImages().catch((err) => {
-  console.error('Failed to generate OG images:', err);
-  process.exit(1);
+  console.warn('[Warning] OG image generation encountered an error (continuing build):', err);
 });

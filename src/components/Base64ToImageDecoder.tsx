@@ -186,7 +186,7 @@ export function Base64ToImageDecoder({ onNavigate }: Base64ToImageDecoderProps) 
                 className="w-full sm:w-auto flex items-center justify-center gap-2.5 py-3 px-6 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 active:scale-[0.99] rounded-xl shadow-sm transition-smooth cursor-pointer"
               >
                 <Download className="w-5 h-5" />
-                <span>Download Image</span>
+                <span>Download image</span>
               </a>
             </div>
           </div>

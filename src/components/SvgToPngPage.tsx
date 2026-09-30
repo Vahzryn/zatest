@@ -149,7 +149,7 @@ export function SvgToPngPage({ seoData, onNavigate }: SvgToPngPageProps) {
   }, [successResult]);
 
   return (
-    <div className="max-w-5xl mx-auto px-2 sm:px-4 py-2 sm:py-4 space-y-8">
+    <div className="max-w-5xl mx-auto px-2 sm:px-4 py-2 sm:py-3 space-y-4 sm:space-y-5">
       {/* Screen Reader Announcement */}
       <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
         {successResult 
@@ -157,11 +157,11 @@ export function SvgToPngPage({ seoData, onNavigate }: SvgToPngPageProps) {
           : ''}
       </div>
 
-      <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xl overflow-hidden p-4 sm:p-8 space-y-6">
+      <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-2xs overflow-hidden p-3.5 sm:p-5 space-y-4">
         <canvas ref={canvasRef} className="hidden" />
         
         <div 
-          className={`relative border-2 border-dashed rounded-2xl p-8 transition-smooth flex flex-col items-center justify-center gap-3 ${
+          className={`relative border-2 border-dashed rounded-xl p-5 sm:p-6 transition-smooth flex flex-col items-center justify-center gap-2 cursor-pointer ${
             dragActive 
               ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/20' 
               : 'border-zinc-300 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800/50'
@@ -177,14 +177,14 @@ export function SvgToPngPage({ seoData, onNavigate }: SvgToPngPageProps) {
           }}
           onClick={() => fileInputRef.current?.click()}
         >
-          <div className="w-12 h-12 rounded-xl bg-indigo-100 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-2">
-            <Upload className="w-6 h-6" />
+          <div className="w-10 h-10 rounded-lg bg-indigo-100 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+            <Upload className="w-5 h-5" />
           </div>
-          <div className="text-center cursor-pointer space-y-1">
-            <p className="text-sm font-bold text-zinc-800 dark:text-zinc-200">
+          <div className="text-center cursor-pointer space-y-0.5">
+            <p className="text-xs sm:text-sm font-bold text-zinc-800 dark:text-zinc-200">
               Drag & drop an SVG file here, or <span className="text-indigo-600 dark:text-indigo-400 underline">browse</span>
             </p>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400">
               Preserves transparency. Scaled losslessly in browser memory.
             </p>
           </div>
@@ -203,39 +203,39 @@ export function SvgToPngPage({ seoData, onNavigate }: SvgToPngPageProps) {
         </div>
 
         {errorMessage && (
-          <div className="p-4 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 flex items-center gap-3 text-red-700 dark:text-red-300 text-xs sm:text-sm">
-            <AlertTriangle className="w-5 h-5 shrink-0 text-red-500" />
+          <div className="p-3 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 flex items-center gap-2.5 text-red-700 dark:text-red-300 text-xs">
+            <AlertTriangle className="w-4 h-4 shrink-0 text-red-500" />
             <span>{errorMessage}</span>
           </div>
         )}
 
         {item && !successResult && (
-          <div className="space-y-6">
-            <div className="p-4 sm:p-5 rounded-2xl bg-zinc-50 dark:bg-[#25282c] border border-zinc-200 dark:border-zinc-700/80 flex flex-col gap-4">
-              <div className="flex items-center gap-4 border-b border-zinc-200 dark:border-zinc-700/50 pb-4">
-                <div className="w-12 h-12 rounded-xl bg-indigo-100 dark:bg-indigo-950/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shrink-0">
-                  <FileImage className="w-6 h-6" />
+          <div className="space-y-4">
+            <div className="p-3 sm:p-3.5 rounded-xl bg-zinc-50 dark:bg-[#25282c] border border-zinc-200 dark:border-zinc-700/80 flex flex-col gap-3">
+              <div className="flex items-center gap-3 border-b border-zinc-200 dark:border-zinc-700/50 pb-3">
+                <div className="w-10 h-10 rounded-lg bg-indigo-100 dark:bg-indigo-950/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shrink-0">
+                  <FileImage className="w-5 h-5" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-sm font-bold text-zinc-900 dark:text-white truncate">
+                  <p className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white truncate">
                     {item.name}
                   </p>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                  <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
                     Native size: {item.originalWidth} × {item.originalHeight} px • {formatBytes(item.file.size)}
                   </p>
                 </div>
               </div>
               
-              <div className="space-y-3 pt-1">
-                <label className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 flex items-center gap-2">
-                  <Crop className="w-4 h-4 text-zinc-500" /> PNG Output Scale
+              <div className="space-y-2 pt-0.5">
+                <label className="text-xs font-bold text-zinc-800 dark:text-zinc-200 flex items-center gap-1.5 uppercase tracking-wider">
+                  <Crop className="w-3.5 h-3.5 text-zinc-500" /> PNG Output Scale
                 </label>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5">
                   {[0.5, 1, 2, 4, 8].map(scale => (
                     <button
                       key={scale}
                       onClick={() => setTargetScale(scale)}
-                      className={`px-2.5 sm:px-4 py-1.5 sm:py-2 text-xs font-bold rounded-lg border transition-smooth cursor-pointer ${
+                      className={`px-2.5 sm:px-3 py-1 text-xs font-bold rounded-lg border transition-smooth cursor-pointer ${
                         targetScale === scale
                           ? 'bg-indigo-100 border-indigo-300 text-indigo-700 dark:bg-indigo-950/60 dark:border-indigo-700 dark:text-indigo-300'
                           : 'bg-white border-zinc-200 text-zinc-600 hover:bg-zinc-50 dark:bg-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800'
@@ -248,16 +248,16 @@ export function SvgToPngPage({ seoData, onNavigate }: SvgToPngPageProps) {
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
-                <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                <span>Local Privacy — Processed entirely in browser memory</span>
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400">
+                <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
+                <span>Processed entirely in browser memory</span>
               </div>
               
               <button
                 disabled={isProcessing}
                 onClick={handleConvert}
-                className="w-full sm:w-auto px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold text-sm shadow-sm transition-smooth flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold text-xs sm:text-sm shadow-sm transition-smooth flex items-center justify-center gap-2 cursor-pointer active:scale-95"
               >
                 {isProcessing ? (
                   <>
@@ -267,7 +267,7 @@ export function SvgToPngPage({ seoData, onNavigate }: SvgToPngPageProps) {
                 ) : (
                   <>
                     <Zap className="w-4 h-4" />
-                    <span>Generate PNG</span>
+                    <span>Convert</span>
                   </>
                 )}
               </button>
@@ -276,13 +276,13 @@ export function SvgToPngPage({ seoData, onNavigate }: SvgToPngPageProps) {
         )}
 
         {successResult && item && (
-          <div className="flex flex-col items-center gap-6 py-4 max-w-lg mx-auto text-center animate-subtle-in">
-            <div className="w-14 h-14 rounded-full bg-emerald-100 dark:bg-emerald-950/70 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-xs">
-              <CheckCircle2 className="w-8 h-8 stroke-[2.5]" />
+          <div className="flex flex-col items-center gap-4 py-2 max-w-lg mx-auto text-center animate-subtle-in">
+            <div className="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-950/70 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-2xs">
+              <CheckCircle2 className="w-6 h-6 stroke-[2.5]" />
             </div>
 
-            <div className="space-y-1">
-              <h2 className="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white">
+            <div className="space-y-0.5">
+              <h2 className="text-lg sm:text-xl font-black text-zinc-900 dark:text-white">
                 PNG Rendered Successfully
               </h2>
               <p className="text-xs text-zinc-500 dark:text-zinc-400">
@@ -290,18 +290,18 @@ export function SvgToPngPage({ seoData, onNavigate }: SvgToPngPageProps) {
               </p>
             </div>
 
-            <div className="w-full space-y-3 pt-2">
+            <div className="w-full space-y-2.5 pt-1">
               <a
                 href={successResult.url}
                 download={item.name.replace(/\.svg$/i, '.png')}
-                className="w-full flex items-center justify-center gap-2.5 py-3.5 px-6 text-sm sm:text-base font-bold text-white bg-indigo-600 hover:bg-indigo-700 active:scale-[0.99] rounded-2xl shadow-sm transition-smooth cursor-pointer"
+                className="w-full flex items-center justify-center gap-2 py-3 px-5 text-sm sm:text-base font-bold text-white bg-indigo-600 hover:bg-indigo-700 active:scale-[0.99] rounded-xl shadow-sm transition-smooth cursor-pointer"
                 id="btn-download-svg-png"
               >
-                <Download className="w-5 h-5" />
-                <span>Download PNG Image</span>
+                <Download className="w-4 h-4" />
+                <span>Download PNG</span>
               </a>
 
-              <div className="flex items-center justify-center gap-4 pt-1">
+              <div className="flex items-center justify-center gap-4 pt-0.5">
                 <button
                   onClick={() => {
                     setSuccessResult(null);
@@ -310,7 +310,7 @@ export function SvgToPngPage({ seoData, onNavigate }: SvgToPngPageProps) {
                   className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors cursor-pointer"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
-                  <span>Convert Another SVG</span>
+                  <span>New file</span>
                 </button>
               </div>
             </div>

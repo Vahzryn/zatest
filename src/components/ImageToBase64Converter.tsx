@@ -242,7 +242,7 @@ export function ImageToBase64Converter({ onNavigate }: ImageToBase64ConverterPro
                   className="w-full flex items-center justify-center gap-2 py-2.5 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-white text-xs font-bold rounded-xl transition-all"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
-                  <span>Convert Another Image</span>
+                  <span>New file</span>
                 </button>
               </div>
             </div>
@@ -280,12 +280,12 @@ export function ImageToBase64Converter({ onNavigate }: ImageToBase64ConverterPro
                         {copiedType === 'complete' ? (
                           <React.Fragment>
                             <Check className="w-3.5 h-3.5" />
-                            <span>Copied Complete!</span>
+                            <span>Copied</span>
                           </React.Fragment>
                         ) : (
                           <React.Fragment>
                             <Copy className="w-3.5 h-3.5" />
-                            <span>Copy Complete Data URL</span>
+                            <span>Copy Data URL</span>
                           </React.Fragment>
                         )}
                       </button>
@@ -324,12 +324,12 @@ export function ImageToBase64Converter({ onNavigate }: ImageToBase64ConverterPro
                         {copiedType === 'raw' ? (
                           <React.Fragment>
                             <Check className="w-3.5 h-3.5" />
-                            <span>Copied Raw!</span>
+                            <span>Copied</span>
                           </React.Fragment>
                         ) : (
                           <React.Fragment>
                             <Copy className="w-3.5 h-3.5" />
-                            <span>Copy Raw Payload</span>
+                            <span>Copy raw</span>
                           </React.Fragment>
                         )}
                       </button>
